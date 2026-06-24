@@ -1,0 +1,1616 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<script src="./support.js"></script>
+</head>
+<body>
+<x-dc>
+<helmet>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&family=JetBrains+Mono:wght@400;500;600&display=swap" rel="stylesheet">
+<style>
+  * { box-sizing: border-box; }
+  html, body { margin: 0; padding: 0; }
+  body { font-family: 'Plus Jakarta Sans', system-ui, sans-serif; background: #faf9f7; color: #1d2129; -webkit-font-smoothing: antialiased; }
+  ::-webkit-scrollbar { width: 10px; height: 10px; }
+  ::-webkit-scrollbar-thumb { background: #e2e0db; border-radius: 8px; border: 3px solid #faf9f7; }
+  ::-webkit-scrollbar-thumb:hover { background: #d2cfc8; }
+  @keyframes pw-fade { from { opacity: 0; transform: translateY(6px); } to { opacity: 1; transform: translateY(0); } }
+  @keyframes pw-pop { from { opacity: 0; transform: scale(.96); } to { opacity: 1; transform: scale(1); } }
+  @keyframes spin { to { transform: rotate(360deg); } }
+  input:focus, textarea:focus { outline: none; }
+</style>
+</helmet>
+<sc-if value="{{ showAuth }}" hint-placeholder-val="{{ false }}">
+  <div style="display: grid; grid-template-columns: 0.95fr 1.05fr; min-height: 100vh;">
+    <div style="background: linear-gradient(165deg,#4f46e5 0%,#4338ca 55%,#312e81 100%); padding: 48px 52px; color: #fff; display: flex; flex-direction: column; position: relative; overflow: hidden;">
+      <div style="position:absolute; inset:0; background: radial-gradient(circle at 85% 8%, rgba(255,255,255,.14), transparent 50%);"></div>
+      <div style="position: relative; display: flex; align-items: center; gap: 11px;">
+        <div style="width: 36px; height: 36px; border-radius: 10px; background: rgba(255,255,255,.16); display:flex; align-items:center; justify-content:center;"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="2.1" stroke-linecap="round" stroke-linejoin="round"><path d="M5 19c3-9 11-9 14-14"></path><path d="M19 5c0 4-2 7-6 8"></path></svg></div>
+        <div style="font-size: 17px; font-weight: 800;">Pathway</div>
+      </div>
+      <div style="position: relative; margin-top: auto;">
+        <div style="font-size: 33px; font-weight: 800; letter-spacing: -.03em; line-height: 1.14;">Your roadmap to the right college — starting today.</div>
+        <div style="font-size: 14px; opacity: .85; line-height: 1.6; margin-top: 16px; max-width: 410px;">Tell Pathway about yourself and get a personalized Pathway Score, a multi-year plan, and AI-generated essay ideas and passion projects built around who you are.</div>
+        <div style="display: flex; flex-direction: column; gap: 14px; margin-top: 26px;">
+          <sc-for list="{{ authFeatures }}" as="ft" hint-placeholder-count="3">
+            <div style="display: flex; align-items: center; gap: 13px;">
+              <div style="width: 38px; height: 38px; border-radius: 11px; background: rgba(255,255,255,.14); display:flex; align-items:center; justify-content:center;">{{ ft.iconEl }}</div>
+              <div><div style="font-size: 13.5px; font-weight: 700;">{{ ft.title }}</div><div style="font-size: 12px; opacity: .8;">{{ ft.sub }}</div></div>
+            </div>
+          </sc-for>
+        </div>
+      </div>
+      <div style="position: relative; margin-top: auto; font-size: 12px; opacity: .7; padding-top: 28px;">Grades 6–12 · Discover · Build · Apply · Succeed</div>
+    </div>
+    <div style="display: flex; align-items: center; justify-content: center; padding: 40px;">
+      <div style="width: 100%; max-width: 420px;">
+        <sc-if value="{{ showLogin }}" hint-placeholder-val="{{ false }}">
+          <div style="animation: pw-fade .3s ease;">
+            <div style="font-size: 24px; font-weight: 800; letter-spacing: -.02em;">Welcome back</div>
+            <div style="font-size: 13.5px; color: #868c96; margin-top: 5px;">Log in to continue your Pathway.</div>
+            <div style="margin-top: 24px;"><label style="font-size:12px;font-weight:700;color:#4a4f59;margin-bottom:6px;display:block;">Email</label><input value="{{ form.email }}" onChange="{{ onEmail }}" placeholder="you@email.com" style="width:100%;padding:11px 13px;border:1px solid #e2e0db;border-radius:10px;font-family:inherit;font-size:14px;color:#1d2129;background:#fff;" style-focus="border-color:#4f46e5"></div>
+            <div style="margin-top: 14px;"><label style="font-size:12px;font-weight:700;color:#4a4f59;margin-bottom:6px;display:block;">Password</label><input type="password" value="{{ form.password }}" onChange="{{ onPassword }}" placeholder="••••••••" style="width:100%;padding:11px 13px;border:1px solid #e2e0db;border-radius:10px;font-family:inherit;font-size:14px;background:#fff;" style-focus="border-color:#4f46e5"></div>
+            <button onClick="{{ login }}" style="margin-top: 20px; width: 100%; border: none; background: #4f46e5; color: #fff; font-weight: 700; font-size: 14px; padding: 12px; border-radius: 10px; cursor: pointer; font-family: inherit;" style-hover="background:#4338ca;">Log in</button>
+            <div style="display:flex; align-items:center; gap:12px; margin: 18px 0;"><span style="flex:1; height:1px; background:#ececea;"></span><span style="font-size:11px; color:#aab;">or</span><span style="flex:1; height:1px; background:#ececea;"></span></div>
+            <button onClick="{{ login }}" style="width: 100%; border: 1px solid #e2e0db; background: #fff; color: #2c313a; font-weight: 700; font-size: 13.5px; padding: 11px; border-radius: 10px; cursor: pointer; font-family: inherit;" style-hover="border-color:#c8c4ec;">Explore the demo profile</button>
+            <div style="text-align: center; font-size: 13px; color: #868c96; margin-top: 22px;">New to Pathway? <span onClick="{{ gotoSignup }}" style="color: #4f46e5; font-weight: 700; cursor: pointer;">Create your account</span></div>
+          </div>
+        </sc-if>
+        <sc-if value="{{ showSignup }}" hint-placeholder-val="{{ false }}">
+          <div style="animation: pw-fade .3s ease;">
+            <div style="display:flex; align-items:center; justify-content: space-between; margin-bottom: 6px;"><span style="font-size: 12px; font-weight: 700; color: #9aa0ab;">Step {{ stepNum }} of 4</span><span onClick="{{ gotoLogin }}" style="font-size: 12px; color: #9aa0ab; cursor: pointer;">Have an account? Log in</span></div>
+            <div style="height: 6px; background: #efeeea; border-radius: 4px; overflow: hidden; margin-bottom: 22px;"><div style="height:100%; width: {{ stepPct }}%; background: linear-gradient(90deg,#6366f1,#4f46e5); border-radius: 4px; transition: width .25s;"></div></div>
+            <sc-if value="{{ s0 }}" hint-placeholder-val="{{ true }}">
+              <div style="font-size: 22px; font-weight: 800; letter-spacing: -.02em;">Create your account</div>
+              <div style="font-size: 13px; color: #868c96; margin-top: 4px;">Let's start with the basics.</div>
+              <div style="margin-top: 20px; display:flex; flex-direction:column; gap:14px;">
+                <div><label style="font-size:12px;font-weight:700;color:#4a4f59;margin-bottom:6px;display:block;">Full name</label><input value="{{ form.name }}" onChange="{{ onName }}" placeholder="Your name" style="width:100%;padding:11px 13px;border:1px solid #e2e0db;border-radius:10px;font-family:inherit;font-size:14px;" style-focus="border-color:#4f46e5"></div>
+                <div><label style="font-size:12px;font-weight:700;color:#4a4f59;margin-bottom:6px;display:block;">Email</label><input value="{{ form.email }}" onChange="{{ onEmail }}" placeholder="you@email.com" style="width:100%;padding:11px 13px;border:1px solid #e2e0db;border-radius:10px;font-family:inherit;font-size:14px;" style-focus="border-color:#4f46e5"></div>
+                <div><label style="font-size:12px;font-weight:700;color:#4a4f59;margin-bottom:6px;display:block;">Password</label><input type="password" value="{{ form.password }}" onChange="{{ onPassword }}" placeholder="Create a password" style="width:100%;padding:11px 13px;border:1px solid #e2e0db;border-radius:10px;font-family:inherit;font-size:14px;" style-focus="border-color:#4f46e5"></div>
+              </div>
+            </sc-if>
+            <sc-if value="{{ s1 }}" hint-placeholder-val="{{ false }}">
+              <div style="font-size: 22px; font-weight: 800;">About you</div>
+              <div style="font-size: 13px; color: #868c96; margin-top: 4px;">This shapes your roadmap and recommendations.</div>
+              <div style="margin-top: 20px;"><label style="font-size:12px;font-weight:700;color:#4a4f59;margin-bottom:8px;display:block;">Current grade</label><div style="display:flex; gap:6px;"><sc-for list="{{ gradeOptions }}" as="o" hint-placeholder-count="7"><button onClick="{{ o.onClick }}" style="flex:1; border:1px solid {{ o.border }}; background:{{ o.bg }}; color:{{ o.fg }}; font-weight:700; font-size:13px; padding:9px 0; border-radius:9px; cursor:pointer; font-family:inherit;">{{ o.label }}</button></sc-for></div></div>
+              <div style="margin-top:16px;"><label style="font-size:12px;font-weight:700;color:#4a4f59;margin-bottom:6px;display:block;">School</label><input value="{{ form.school }}" onChange="{{ onSchool }}" placeholder="Your school" style="width:100%;padding:11px 13px;border:1px solid #e2e0db;border-radius:10px;font-family:inherit;font-size:14px;" style-focus="border-color:#4f46e5"></div>
+              <div style="margin-top:16px;"><label style="font-size:12px;font-weight:700;color:#4a4f59;margin-bottom:6px;display:block;">Intended major or field</label><input value="{{ form.major }}" onChange="{{ onMajor }}" placeholder="e.g. Computer Science, Pre-med, Business…" style="width:100%;padding:11px 13px;border:1px solid #e2e0db;border-radius:10px;font-family:inherit;font-size:14px;" style-focus="border-color:#4f46e5"></div>
+              <div style="margin-top:16px;"><label style="font-size:12px;font-weight:700;color:#4a4f59;margin-bottom:6px;display:block;">Interests <span style="font-weight:500;color:#aab;">(press Enter to add)</span></label><input value="{{ form.interestDraft }}" onChange="{{ onInterestDraft }}" onKeyDown="{{ onInterestKey }}" placeholder="e.g. robotics, debate, art…" style="width:100%;padding:11px 13px;border:1px solid #e2e0db;border-radius:10px;font-family:inherit;font-size:14px;" style-focus="border-color:#4f46e5"><div style="display:flex; flex-wrap:wrap; gap:6px; margin-top:10px;"><sc-for list="{{ interestChips }}" as="c" hint-placeholder-count="0"><span style="display:inline-flex; align-items:center; gap:6px; font-size:12px; font-weight:600; color:#4338ca; background:#eef0fc; padding:5px 10px; border-radius:8px;">{{ c.label }}<span onClick="{{ c.onRemove }}" style="cursor:pointer; color:#9aa0ab; font-weight:700;">×</span></span></sc-for></div></div>
+            </sc-if>
+            <sc-if value="{{ s2 }}" hint-placeholder-val="{{ false }}">
+              <div style="font-size:22px;font-weight:800;">Academics</div>
+              <div style="font-size:13px;color:#868c96;margin-top:4px;">An honest snapshot — update it anytime.</div>
+              <div style="margin-top:20px;"><label style="font-size:12px;font-weight:700;color:#4a4f59;margin-bottom:8px;display:block;">Weighted GPA — <strong style="color:#4f46e5;">{{ form.gpa }}</strong></label><input type="range" min="1" max="4" step="0.01" value="{{ form.gpa }}" onChange="{{ onGpa }}" style="width:100%; accent-color:#4f46e5;"></div>
+              <div style="margin-top:18px;"><label style="font-size:12px;font-weight:700;color:#4a4f59;margin-bottom:8px;display:block;">Honors / AP / IB courses taken</label><div style="display:flex;gap:6px;"><sc-for list="{{ rigorOptions }}" as="o" hint-placeholder-count="3"><button onClick="{{ o.onClick }}" style="flex:1;border:1px solid {{ o.border }};background:{{ o.bg }};color:{{ o.fg }};font-weight:700;font-size:13px;padding:9px 0;border-radius:9px;cursor:pointer;font-family:inherit;">{{ o.label }}</button></sc-for></div></div>
+              <div style="margin-top:18px;"><label style="font-size:12px;font-weight:700;color:#4a4f59;margin-bottom:8px;display:block;">Standardized testing</label><div style="display:flex;gap:6px;"><sc-for list="{{ testingOptions }}" as="o" hint-placeholder-count="3"><button onClick="{{ o.onClick }}" style="flex:1;border:1px solid {{ o.border }};background:{{ o.bg }};color:{{ o.fg }};font-weight:700;font-size:12px;padding:9px 4px;border-radius:9px;cursor:pointer;font-family:inherit;">{{ o.label }}</button></sc-for></div></div>
+              <div style="margin-top:18px;"><label style="font-size:12px;font-weight:700;color:#4a4f59;margin-bottom:6px;display:block;">Awards / honors so far</label><input type="number" value="{{ form.awards }}" onChange="{{ onAwards }}" style="width:100%;padding:11px 13px;border:1px solid #e2e0db;border-radius:10px;font-family:inherit;font-size:14px;" style-focus="border-color:#4f46e5"></div>
+            </sc-if>
+            <sc-if value="{{ s3 }}" hint-placeholder-val="{{ false }}">
+              <div style="font-size:22px;font-weight:800;">Activities & goals</div>
+              <div style="font-size:13px;color:#868c96;margin-top:4px;">The more you share, the sharper your plan.</div>
+              <div style="margin-top:18px;"><label style="font-size:12px;font-weight:700;color:#4a4f59;margin-bottom:6px;display:block;">Activities <span style="font-weight:500;color:#aab;">(one per line)</span></label><textarea value="{{ form.activitiesText }}" onChange="{{ onActs }}" rows="3" placeholder="One activity per line" style="width:100%;padding:11px 13px;border:1px solid #e2e0db;border-radius:10px;font-family:inherit;font-size:14px;resize:vertical;" style-focus="border-color:#4f46e5"></textarea></div>
+              <div style="display:flex; gap:12px; margin-top:16px;">
+                <div style="flex:1;"><label style="font-size:12px;font-weight:700;color:#4a4f59;margin-bottom:8px;display:block;">Leadership</label><div style="display:flex;flex-direction:column;gap:6px;"><sc-for list="{{ leadershipOptions }}" as="o" hint-placeholder-count="3"><button onClick="{{ o.onClick }}" style="border:1px solid {{ o.border }};background:{{ o.bg }};color:{{ o.fg }};font-weight:700;font-size:12.5px;padding:9px;border-radius:9px;cursor:pointer;font-family:inherit;">{{ o.label }}</button></sc-for></div></div>
+                <div style="width:124px;"><label style="font-size:12px;font-weight:700;color:#4a4f59;margin-bottom:8px;display:block;">Service hrs</label><input type="number" value="{{ form.serviceHours }}" onChange="{{ onServiceHours }}" style="width:100%;padding:11px 13px;border:1px solid #e2e0db;border-radius:10px;font-family:inherit;font-size:14px;" style-focus="border-color:#4f46e5"><label style="font-size:12px;font-weight:700;color:#4a4f59;margin:12px 0 8px;display:block;">Research?</label><div style="display:flex;gap:6px;"><sc-for list="{{ researchOptions }}" as="o" hint-placeholder-count="2"><button onClick="{{ o.onClick }}" style="flex:1;border:1px solid {{ o.border }};background:{{ o.bg }};color:{{ o.fg }};font-weight:700;font-size:12px;padding:8px 0;border-radius:8px;cursor:pointer;font-family:inherit;">{{ o.label }}</button></sc-for></div></div>
+              </div>
+              <div style="margin-top:16px;"><label style="font-size:12px;font-weight:700;color:#4a4f59;margin-bottom:8px;display:block;">What do you want help with?</label><div style="display:flex;flex-wrap:wrap;gap:6px;"><sc-for list="{{ helpOptions }}" as="o" hint-placeholder-count="6"><button onClick="{{ o.onClick }}" style="border:1px solid {{ o.border }};background:{{ o.bg }};color:{{ o.fg }};font-weight:600;font-size:12px;padding:7px 12px;border-radius:20px;cursor:pointer;font-family:inherit;">{{ o.label }}</button></sc-for></div></div>
+            </sc-if>
+            <div style="display:flex; gap:10px; margin-top: 26px;">
+              <sc-if value="{{ showBack }}" hint-placeholder-val="{{ false }}"><button onClick="{{ prevStep }}" style="border:1px solid #e2e0db; background:#fff; color:#4a4f59; font-weight:700; font-size:13.5px; padding:12px 18px; border-radius:10px; cursor:pointer; font-family:inherit;">Back</button></sc-if>
+              <sc-if value="{{ showNext }}" hint-placeholder-val="{{ true }}"><button onClick="{{ nextStep }}" style="flex:1; border:none; background:#4f46e5; color:#fff; font-weight:700; font-size:14px; padding:12px; border-radius:10px; cursor:pointer; font-family:inherit;" style-hover="background:#4338ca;">Continue</button></sc-if>
+              <sc-if value="{{ showBuild }}" hint-placeholder-val="{{ false }}"><button onClick="{{ buildPathway }}" style="flex:1; border:none; background:linear-gradient(145deg,#5b54e0,#4338ca); color:#fff; font-weight:800; font-size:14px; padding:12px; border-radius:10px; cursor:pointer; font-family:inherit; display:flex; align-items:center; justify-content:center; gap:8px;"><svg width="16" height="16" viewBox="0 0 24 24" fill="#fff" stroke="none"><path d="M12 2l1.9 5.6L19.5 9l-4.4 3.5L16 18l-4-3.2L8 18l.9-5.5L4.5 9l5.6-1.4z"></path></svg>Build my Pathway</button></sc-if>
+            </div>
+          </div>
+        </sc-if>
+      </div>
+    </div>
+  </div>
+</sc-if>
+<sc-if value="{{ showBuilding }}" hint-placeholder-val="{{ false }}">
+  <div style="min-height: 100vh; display:flex; align-items:center; justify-content:center; background: #faf9f7;">
+    <div style="text-align:center; animation: pw-pop .35s ease;">
+      <div style="width:60px; height:60px; margin:0 auto; border-radius:50%; border:5px solid #eceaf6; border-top-color:#4f46e5; animation: spin 0.9s linear infinite;"></div>
+      <div style="font-size:22px; font-weight:800; letter-spacing:-.02em; margin-top:24px;">Building your Pathway…</div>
+      <div style="font-size:13.5px; color:#868c96; margin-top:6px;">Our AI is analyzing your profile and designing your strategy.</div>
+      <div style="display:flex; flex-direction:column; gap:10px; margin-top:24px; text-align:left; width:280px;"><sc-for list="{{ buildSteps }}" as="b" hint-placeholder-count="4"><div style="display:flex; align-items:center; gap:10px; font-size:13px; color:#4a4f59;"><span style="width:8px; height:8px; border-radius:50%; background:#4f46e5;"></span>{{ b.label }}</div></sc-for></div>
+    </div>
+  </div>
+</sc-if>
+<sc-if value="{{ showApp }}" hint-placeholder-val="{{ true }}">
+<div style="display: grid; grid-template-columns: 250px 1fr; min-height: 100vh; max-height: 100vh; overflow: hidden;">
+
+  <!-- ============ SIDEBAR ============ -->
+  <aside style="background: #ffffff; border-right: 1px solid #ececea; display: flex; flex-direction: column; height: 100vh; overflow-y: auto;">
+    <div style="display: flex; align-items: center; gap: 11px; padding: 20px 20px 16px;">
+      <div style="width: 34px; height: 34px; border-radius: 10px; background: linear-gradient(145deg, #5b54e0, #4338ca); display: flex; align-items: center; justify-content: center; box-shadow: 0 2px 8px rgba(79,70,229,.28);">
+        <svg width="19" height="19" viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="2.1" stroke-linecap="round" stroke-linejoin="round"><path d="M5 19c3-9 11-9 14-14"></path><path d="M19 5c0 4-2 7-6 8"></path><circle cx="6" cy="18" r="1.6" fill="#fff" stroke="none"></circle></svg>
+      </div>
+      <div>
+        <div style="font-size: 15.5px; font-weight: 800; letter-spacing: -.02em; line-height: 1;">Pathway</div>
+        <div style="font-size: 10px; font-weight: 600; color: #9aa0ab; letter-spacing: .14em; text-transform: uppercase; margin-top: 3px;">to College</div>
+      </div>
+    </div>
+
+    <nav style="flex: 1; padding: 4px 12px 12px;">
+      <sc-for list="{{ navGroups }}" as="group" hint-placeholder-count="5">
+        <div style="margin-bottom: 16px;">
+          <div style="font-size: 10.5px; font-weight: 700; letter-spacing: .12em; text-transform: uppercase; color: #b3b8c0; padding: 0 10px 7px;">{{ group.label }}</div>
+          <sc-for list="{{ group.items }}" as="item" hint-placeholder-count="3">
+            <div onClick="{{ item.onClick }}" style="display: flex; align-items: center; gap: 11px; padding: 8px 10px; border-radius: 9px; cursor: pointer; margin-bottom: 1px; background: {{ item.bg }}; color: {{ item.fg }}; font-weight: {{ item.weight }}; font-size: 13.5px; transition: background .12s;" style-hover="background: #f4f3f0;">
+              <span style="display: flex; color: {{ item.iconColor }};">{{ item.iconEl }}</span>
+              <span style="flex: 1;">{{ item.name }}</span>
+              <sc-if value="{{ item.badge }}" hint-placeholder-val="">
+                <span style="font-size: 9.5px; font-weight: 700; letter-spacing: .04em; background: #ede9fe; color: #6d28d9; padding: 2px 6px; border-radius: 5px;">{{ item.badge }}</span>
+              </sc-if>
+            </div>
+          </sc-for>
+        </div>
+      </sc-for>
+    </nav>
+
+    <div style="padding: 12px; border-top: 1px solid #f0efec;">
+      <div style="background: linear-gradient(160deg, #f5f3ff, #eef0ff); border: 1px solid #e7e3fb; border-radius: 13px; padding: 13px 14px;">
+        <div style="font-size: 12.5px; font-weight: 700; color: #4338ca;">Pathway Pro</div>
+        <div style="font-size: 11.5px; color: #6b6f7a; line-height: 1.45; margin-top: 4px;">Unlock essay reviews, counselor chat & full opportunity database.</div>
+        <button style="margin-top: 10px; width: 100%; border: none; background: #4f46e5; color: #fff; font-weight: 700; font-size: 12px; padding: 8px; border-radius: 8px; cursor: pointer; font-family: inherit;" style-hover="background: #4338ca;">Upgrade</button>
+      </div>
+    </div>
+  </aside>
+
+  <!-- ============ MAIN ============ -->
+  <main style="display: flex; flex-direction: column; height: 100vh; overflow: hidden;">
+    <!-- topbar -->
+    <header style="display: flex; align-items: center; gap: 16px; padding: 13px 28px; border-bottom: 1px solid #ececea; background: rgba(250,249,247,.85); backdrop-filter: blur(8px); flex-shrink: 0;">
+      <div>
+        <div style="font-size: 18px; font-weight: 800; letter-spacing: -.02em;">{{ viewTitle }}</div>
+        <div style="font-size: 12px; color: #9aa0ab; margin-top: 1px;">{{ viewSub }}</div>
+      </div>
+      <div style="flex: 1;"></div>
+      <div style="display: flex; align-items: center; gap: 9px; background: #fff; border: 1px solid #e8e6e2; border-radius: 9px; padding: 7px 12px; width: 260px; color: #aab; font-size: 13px;">
+        <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="#a8adb6" stroke-width="2" stroke-linecap="round"><circle cx="11" cy="11" r="7"></circle><path d="m20 20-3.2-3.2"></path></svg>
+        <span style="color: #9aa0ab;">Search opportunities, colleges…</span>
+        <span style="margin-left: auto; font-size: 11px; font-family: 'JetBrains Mono'; color: #c3c6cc; border: 1px solid #ececea; border-radius: 4px; padding: 1px 5px;">/</span>
+      </div>
+      <div style="display: flex; align-items: center; gap: 7px; background: #ecfdf5; border: 1px solid #d1fae5; color: #047857; padding: 6px 11px; border-radius: 9px; font-size: 12.5px; font-weight: 700;">
+        <span style="width: 7px; height: 7px; border-radius: 50%; background: #10b981; display: inline-block;"></span>On track
+      </div>
+      <button style="position: relative; width: 38px; height: 38px; border: 1px solid #e8e6e2; background: #fff; border-radius: 10px; display: flex; align-items: center; justify-content: center; cursor: pointer;">
+        <svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="#4a4f59" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round"><path d="M18 8a6 6 0 0 0-12 0c0 7-3 9-3 9h18s-3-2-3-9"></path><path d="M13.5 21a2 2 0 0 1-3 0"></path></svg>
+        <span style="position: absolute; top: 7px; right: 8px; width: 7px; height: 7px; border-radius: 50%; background: #ef4444; border: 1.5px solid #fff;"></span>
+      </button>
+      <div style="display: flex; align-items: center; gap: 9px; padding-left: 4px;">
+        <div style="width: 38px; height: 38px; border-radius: 11px; background: linear-gradient(145deg, #fb923c, #ea580c); color: #fff; display: flex; align-items: center; justify-content: center; font-weight: 800; font-size: 14px;">{{ student.initials }}</div>
+        <div style="line-height: 1.2;">
+          <div style="font-size: 13px; font-weight: 700;">{{ student.name }}</div>
+          <div style="font-size: 11px; color: #9aa0ab;">{{ student.grade }}</div>
+        </div>
+      </div>
+    </header>
+
+    <!-- scroll area -->
+    <div style="flex: 1; overflow-y: auto; padding: 26px 28px 60px;">
+
+    <!-- ===== DASHBOARD ===== -->
+    <sc-if value="{{ is.home }}" hint-placeholder-val="{{ true }}">
+      <div style="animation: pw-fade .3s ease;">
+        <div style="display: flex; align-items: flex-end; justify-content: space-between; margin-bottom: 20px;">
+          <div>
+            <div style="font-size: 23px; font-weight: 800; letter-spacing: -.02em;">{{ greeting }}</div>
+            <div style="font-size: 13.5px; color: #777c86; margin-top: 4px;">You have <strong style="color: #4f46e5;">3 tasks</strong> due this week and 1 new AI recommendation. Let's keep climbing.</div>
+          </div>
+          <div style="display: flex; gap: 8px;">
+            <sc-for list="{{ quickActions }}" as="qa" hint-placeholder-count="3">
+              <button onClick="{{ qa.onClick }}" style="border: 1px solid #e6e4e0; background: #fff; color: #2c313a; font-weight: 600; font-size: 12.5px; padding: 9px 13px; border-radius: 9px; cursor: pointer; font-family: inherit; display: flex; align-items: center; gap: 7px;" style-hover="border-color: #c8c4ec; color: #4f46e5;">{{ qa.iconEl }}{{ qa.label }}</button>
+            </sc-for>
+          </div>
+        </div>
+
+        <div style="display: grid; grid-template-columns: 1.15fr 1fr 1fr; gap: 16px; margin-bottom: 16px;">
+          <!-- pathway hero -->
+          <div onClick="{{ goPathway }}" style="grid-row: span 2; background: linear-gradient(165deg, #4f46e5 0%, #4338ca 60%, #3730a3 100%); border-radius: 18px; padding: 22px; color: #fff; position: relative; overflow: hidden; cursor: pointer; box-shadow: 0 12px 30px -12px rgba(79,70,229,.55);">
+            <div style="position: absolute; inset: 0; background: radial-gradient(circle at 80% 0%, rgba(255,255,255,.16), transparent 55%);"></div>
+            <div style="position: relative;">
+              <div style="display: flex; align-items: center; justify-content: space-between;">
+                <div style="font-size: 12px; font-weight: 700; letter-spacing: .1em; text-transform: uppercase; opacity: .85;">Pathway Score</div>
+                <span style="font-size: 11px; font-weight: 700; background: rgba(255,255,255,.18); padding: 4px 9px; border-radius: 20px;">{{ pathwayTier }}</span>
+              </div>
+              <div style="display: flex; align-items: center; gap: 18px; margin: 14px 0 6px;">
+                <div style="position: relative; width: 132px; height: 132px; flex-shrink: 0;">
+                  {{ heroRing }}
+                  <div style="position: absolute; inset: 0; display: flex; flex-direction: column; align-items: center; justify-content: center;">
+                    <div style="font-size: 42px; font-weight: 800; line-height: 1; letter-spacing: -.03em;">{{ pathwayScore }}</div>
+                    <div style="font-size: 11px; opacity: .8; margin-top: 2px;">of 100</div>
+                  </div>
+                </div>
+                <div style="flex: 1;">
+                  <div style="display: flex; align-items: center; gap: 6px; font-size: 13px; font-weight: 700;">
+                    <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="#86efac" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><path d="M5 15l7-7 7 7"></path></svg>
+                    +14 this semester
+                  </div>
+                  <div style="font-size: 12.5px; opacity: .82; line-height: 1.5; margin-top: 8px;">Top {{ percentile }}% for your grade & intended major. Strong academics — research is your highest-leverage gap.</div>
+                  <div style="display: inline-flex; align-items: center; gap: 6px; margin-top: 14px; background: rgba(255,255,255,.16); padding: 7px 12px; border-radius: 9px; font-size: 12.5px; font-weight: 700;">View breakdown
+                    <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14M13 6l6 6-6 6"></path></svg>
+                  </div>
+                </div>
+              </div>
+              <div style="display: grid; grid-template-columns: repeat(3,1fr); gap: 8px; margin-top: 16px; border-top: 1px solid rgba(255,255,255,.16); padding-top: 14px;">
+                <sc-for list="{{ heroStats }}" as="s" hint-placeholder-count="3">
+                  <div>
+                    <div style="font-size: 19px; font-weight: 800; letter-spacing: -.02em;">{{ s.val }}</div>
+                    <div style="font-size: 10.5px; opacity: .78; margin-top: 1px;">{{ s.label }}</div>
+                  </div>
+                </sc-for>
+              </div>
+            </div>
+          </div>
+
+          <!-- progress overview cards -->
+          <sc-for list="{{ overviewCards }}" as="c" hint-placeholder-count="4">
+            <div style="background: #fff; border: 1px solid #ececea; border-radius: 16px; padding: 16px 17px;">
+              <div style="display: flex; align-items: center; justify-content: space-between;">
+                <div style="width: 32px; height: 32px; border-radius: 9px; background: {{ c.tintBg }}; color: {{ c.tintFg }}; display: flex; align-items: center; justify-content: center;">{{ c.iconEl }}</div>
+                <span style="font-size: 11px; font-weight: 700; color: {{ c.deltaColor }};">{{ c.delta }}</span>
+              </div>
+              <div style="font-size: 24px; font-weight: 800; letter-spacing: -.02em; margin-top: 12px;">{{ c.value }}</div>
+              <div style="font-size: 12px; color: #868c96; margin-top: 2px;">{{ c.label }}</div>
+            </div>
+          </sc-for>
+        </div>
+
+        <div style="display: grid; grid-template-columns: 1.4fr 1fr; gap: 16px; margin-bottom: 16px;">
+          <!-- AI recommendations -->
+          <div style="background: #fff; border: 1px solid #ececea; border-radius: 16px; padding: 18px 19px;">
+            <div style="display: flex; align-items: center; gap: 9px; margin-bottom: 4px;">
+              <div style="width: 26px; height: 26px; border-radius: 8px; background: linear-gradient(145deg,#7c3aed,#6d28d9); display: flex; align-items: center; justify-content: center;">
+                <svg width="15" height="15" viewBox="0 0 24 24" fill="#fff" stroke="none"><path d="M12 2l1.9 5.6L19.5 9l-4.4 3.5L16 18l-4-3.2L8 18l.9-5.5L4.5 9l5.6-1.4z"></path></svg>
+              </div>
+              <div style="font-size: 15px; font-weight: 800;">AI Recommendations</div>
+              <span style="font-size: 11px; font-weight: 700; color: #7c3aed; background: #f3eefe; padding: 3px 8px; border-radius: 6px;">3 new</span>
+              <div style="flex: 1;"></div>
+              <button onClick="{{ goCoach }}" style="border: none; background: none; color: #4f46e5; font-weight: 700; font-size: 12.5px; cursor: pointer; font-family: inherit;">Ask Coach →</button>
+            </div>
+            <div style="display: flex; flex-direction: column; gap: 9px; margin-top: 13px;">
+              <sc-for list="{{ recommendations }}" as="r" hint-placeholder-count="3">
+                <div style="display: flex; gap: 13px; align-items: center; padding: 12px 13px; border: 1px solid #f0efec; border-radius: 12px; background: #fcfcfb;" style-hover="border-color: #ddd9f5; background: #fbfaff;">
+                  <div style="width: 38px; height: 38px; border-radius: 10px; background: {{ r.tintBg }}; color: {{ r.tintFg }}; display: flex; align-items: center; justify-content: center; flex-shrink: 0;">{{ r.iconEl }}</div>
+                  <div style="flex: 1; min-width: 0;">
+                    <div style="font-size: 13.5px; font-weight: 700;">{{ r.title }}</div>
+                    <div style="font-size: 12px; color: #868c96; line-height: 1.4; margin-top: 2px;">{{ r.why }}</div>
+                  </div>
+                  <div style="text-align: right; flex-shrink: 0;">
+                    <div style="font-size: 13px; font-weight: 800; color: #059669;">{{ r.impact }}</div>
+                    <div style="font-size: 10px; color: #a3a8b0;">to score</div>
+                  </div>
+                </div>
+              </sc-for>
+            </div>
+          </div>
+
+          <!-- tasks -->
+          <div style="background: #fff; border: 1px solid #ececea; border-radius: 16px; padding: 18px 19px;">
+            <div style="display: flex; align-items: center; justify-content: space-between; margin-bottom: 4px;">
+              <div style="font-size: 15px; font-weight: 800;">This Week</div>
+              <span style="font-size: 12px; color: #9aa0ab; font-weight: 600;">{{ tasksDone }}/{{ tasksTotal }} done</span>
+            </div>
+            <div style="height: 6px; background: #f0efec; border-radius: 4px; overflow: hidden; margin: 10px 0 14px;">
+              <div style="height: 100%; width: {{ tasksPct }}%; background: linear-gradient(90deg,#6366f1,#4f46e5); border-radius: 4px; transition: width .3s;"></div>
+            </div>
+            <div style="display: flex; flex-direction: column; gap: 3px;">
+              <sc-for list="{{ tasks }}" as="t" hint-placeholder-count="5">
+                <div onClick="{{ t.onToggle }}" style="display: flex; align-items: center; gap: 11px; padding: 9px 6px; border-radius: 8px; cursor: pointer;" style-hover="background: #f7f6f3;">
+                  <span style="width: 19px; height: 19px; border-radius: 6px; border: 1.8px solid {{ t.checkBorder }}; background: {{ t.checkBg }}; display: flex; align-items: center; justify-content: center; flex-shrink: 0;">{{ t.checkEl }}</span>
+                  <span style="flex: 1; font-size: 13px; color: {{ t.textColor }}; text-decoration: {{ t.strike }};">{{ t.text }}</span>
+                  <span style="font-size: 10px; font-weight: 700; color: {{ t.tagFg }}; background: {{ t.tagBg }}; padding: 2px 7px; border-radius: 5px;">{{ t.tag }}</span>
+                </div>
+              </sc-for>
+            </div>
+          </div>
+        </div>
+
+        <div style="display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 16px;">
+          <!-- deadlines -->
+          <div style="background: #fff; border: 1px solid #ececea; border-radius: 16px; padding: 18px 19px;">
+            <div style="font-size: 15px; font-weight: 800; margin-bottom: 13px;">Upcoming Deadlines</div>
+            <div style="display: flex; flex-direction: column; gap: 11px;">
+              <sc-for list="{{ deadlines }}" as="d" hint-placeholder-count="4">
+                <div style="display: flex; gap: 12px; align-items: center;">
+                  <div style="width: 44px; flex-shrink: 0; text-align: center; border: 1px solid {{ d.dateBorder }}; border-radius: 9px; padding: 5px 0; background: {{ d.dateBg }};">
+                    <div style="font-size: 9.5px; font-weight: 700; letter-spacing: .06em; color: {{ d.dateFg }}; text-transform: uppercase;">{{ d.mon }}</div>
+                    <div style="font-size: 16px; font-weight: 800; color: {{ d.dayFg }}; line-height: 1;">{{ d.day }}</div>
+                  </div>
+                  <div style="flex: 1; min-width: 0;">
+                    <div style="font-size: 12.5px; font-weight: 700; white-space: nowrap; overflow: hidden; text-overflow: ellipsis;">{{ d.title }}</div>
+                    <div style="font-size: 11px; color: #9aa0ab; margin-top: 1px;">{{ d.org }} · {{ d.in }}</div>
+                  </div>
+                </div>
+              </sc-for>
+            </div>
+          </div>
+
+          <!-- recent activity -->
+          <div style="background: #fff; border: 1px solid #ececea; border-radius: 16px; padding: 18px 19px;">
+            <div style="font-size: 15px; font-weight: 800; margin-bottom: 13px;">Recent Activity</div>
+            <div style="display: flex; flex-direction: column; gap: 0;">
+              <sc-for list="{{ recentActivity }}" as="a" hint-placeholder-count="4">
+                <div style="display: flex; gap: 11px; padding-bottom: 13px; position: relative;">
+                  <div style="display: flex; flex-direction: column; align-items: center;">
+                    <span style="width: 9px; height: 9px; border-radius: 50%; background: {{ a.dot }}; margin-top: 4px; flex-shrink: 0; box-shadow: 0 0 0 3px {{ a.dotRing }};"></span>
+                    <span style="flex: 1; width: 1.5px; background: #efeeea;"></span>
+                  </div>
+                  <div style="flex: 1; padding-bottom: 2px;">
+                    <div style="font-size: 12.5px; line-height: 1.45;"><strong>{{ a.who }}</strong> {{ a.what }}</div>
+                    <div style="font-size: 11px; color: #aab; margin-top: 1px;">{{ a.when }}</div>
+                  </div>
+                </div>
+              </sc-for>
+            </div>
+          </div>
+
+          <!-- scholarships mini -->
+          <div style="background: #fff; border: 1px solid #ececea; border-radius: 16px; padding: 18px 19px;">
+            <div style="display: flex; align-items: center; justify-content: space-between; margin-bottom: 13px;">
+              <div style="font-size: 15px; font-weight: 800;">Top Matches</div>
+              <button onClick="{{ goScholarships }}" style="border: none; background: none; color: #4f46e5; font-weight: 700; font-size: 12px; cursor: pointer; font-family: inherit;">All →</button>
+            </div>
+            <div style="display: flex; flex-direction: column; gap: 11px;">
+              <sc-for list="{{ scholarshipsMini }}" as="s" hint-placeholder-count="3">
+                <div style="display: flex; align-items: center; gap: 12px; padding: 10px 11px; border: 1px solid #f0efec; border-radius: 11px;" style-hover="border-color: #e0ddf5;">
+                  <div style="flex-shrink: 0;">{{ s.ring }}</div>
+                  <div style="flex: 1; min-width: 0;">
+                    <div style="font-size: 12.5px; font-weight: 700; white-space: nowrap; overflow: hidden; text-overflow: ellipsis;">{{ s.name }}</div>
+                    <div style="font-size: 11px; color: #9aa0ab;">{{ s.amount }} · {{ s.deadline }}</div>
+                  </div>
+                </div>
+              </sc-for>
+            </div>
+          </div>
+        </div>
+      </div>
+    </sc-if>
+
+    <!-- ===== PATHWAY SCORE ===== -->
+    <sc-if value="{{ is.pathway }}" hint-placeholder-val="{{ false }}">
+      <div style="animation: pw-fade .3s ease; display: grid; grid-template-columns: 360px 1fr; gap: 18px;">
+        <div style="display: flex; flex-direction: column; gap: 16px;">
+          <div style="background: linear-gradient(165deg,#4f46e5,#3730a3); border-radius: 18px; padding: 24px; color: #fff; text-align: center; box-shadow: 0 12px 30px -14px rgba(79,70,229,.55);">
+            <div style="font-size: 12px; font-weight: 700; letter-spacing: .1em; text-transform: uppercase; opacity: .85;">Overall Pathway Score</div>
+            <div style="position: relative; width: 200px; height: 200px; margin: 12px auto 6px;">
+              {{ bigRing }}
+              <div style="position: absolute; inset: 0; display: flex; flex-direction: column; align-items: center; justify-content: center;">
+                <div style="font-size: 64px; font-weight: 800; line-height: 1; letter-spacing: -.04em;">{{ pathwayScore }}</div>
+                <div style="font-size: 13px; opacity: .8;">{{ pathwayTier }}</div>
+              </div>
+            </div>
+            <div style="display: inline-flex; align-items: center; gap: 6px; background: rgba(255,255,255,.16); padding: 6px 13px; border-radius: 20px; font-size: 12.5px; font-weight: 700; margin-top: 6px;">
+              <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="#86efac" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><path d="M5 15l7-7 7 7"></path></svg>
+              +14 since January · goal {{ pathwayGoal }}
+            </div>
+          </div>
+          <div style="background: #fff; border: 1px solid #ececea; border-radius: 16px; padding: 18px 19px;">
+            <div style="font-size: 14px; font-weight: 800; margin-bottom: 12px;">Score over time</div>
+            {{ trendChart }}
+          </div>
+        </div>
+
+        <div style="display: flex; flex-direction: column; gap: 16px;">
+          <div style="display: grid; grid-template-columns: 290px 1fr; gap: 16px;">
+            <div style="background: #fff; border: 1px solid #ececea; border-radius: 16px; padding: 18px; display: flex; flex-direction: column; align-items: center;">
+              <div style="font-size: 14px; font-weight: 800; align-self: flex-start; margin-bottom: 6px;">Profile shape</div>
+              {{ radarChart }}
+            </div>
+            <div style="background: #fff; border: 1px solid #ececea; border-radius: 16px; padding: 18px 19px;">
+              <div style="font-size: 14px; font-weight: 800; margin-bottom: 14px;">Category breakdown</div>
+              <div style="display: flex; flex-direction: column; gap: 12px;">
+                <sc-for list="{{ categories }}" as="c" hint-placeholder-count="9">
+                  <div>
+                    <div style="display: flex; justify-content: space-between; align-items: baseline; margin-bottom: 5px;">
+                      <span style="font-size: 12.5px; font-weight: 600;">{{ c.name }}</span>
+                      <span style="font-size: 11px; color: #9aa0ab;">{{ c.note }} · <strong style="color: {{ c.color }};">{{ c.score }}</strong></span>
+                    </div>
+                    <div style="height: 7px; background: #f1f0ec; border-radius: 4px; overflow: hidden;">
+                      <div style="height: 100%; width: {{ c.score }}%; background: {{ c.color }}; border-radius: 4px;"></div>
+                    </div>
+                  </div>
+                </sc-for>
+              </div>
+            </div>
+          </div>
+
+          <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 16px;">
+            <div style="background: #f0fdf4; border: 1px solid #d3f0dd; border-radius: 16px; padding: 18px 19px;">
+              <div style="display: flex; align-items: center; gap: 8px; font-size: 14px; font-weight: 800; color: #047857; margin-bottom: 12px;">
+                <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#059669" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M20 6 9 17l-5-5"></path></svg>Strengths
+              </div>
+              <div style="display: flex; flex-direction: column; gap: 10px;">
+                <sc-for list="{{ strengths }}" as="s" hint-placeholder-count="3">
+                  <div style="font-size: 12.5px; line-height: 1.5; color: #2f5d45; display: flex; gap: 8px;"><span style="color: #10b981;">●</span>{{ s }}</div>
+                </sc-for>
+              </div>
+            </div>
+            <div style="background: #fff7ed; border: 1px solid #fce6cd; border-radius: 16px; padding: 18px 19px;">
+              <div style="display: flex; align-items: center; gap: 8px; font-size: 14px; font-weight: 800; color: #c2410c; margin-bottom: 12px;">
+                <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#ea580c" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 8v5M12 16h.01"></path><circle cx="12" cy="12" r="9"></circle></svg>Grow next
+              </div>
+              <div style="display: flex; flex-direction: column; gap: 10px;">
+                <sc-for list="{{ improvements }}" as="s" hint-placeholder-count="3">
+                  <div style="font-size: 12.5px; line-height: 1.5; color: #92400e; display: flex; gap: 8px;"><span style="color: #f59e0b;">●</span>{{ s }}</div>
+                </sc-for>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </sc-if>
+
+    <!-- ===== ROADMAP ===== -->
+    <sc-if value="{{ is.roadmap }}" hint-placeholder-val="{{ false }}">
+      <div style="animation: pw-fade .3s ease;">
+        <div style="display: flex; gap: 14px; margin-bottom: 20px;">
+          <sc-for list="{{ roadmapYears }}" as="y" hint-placeholder-count="4">
+            <div style="flex: 1; background: {{ y.headBg }}; border: 1px solid {{ y.headBorder }}; border-radius: 13px; padding: 13px 15px;">
+              <div style="display: flex; align-items: center; justify-content: space-between;">
+                <span style="font-size: 13.5px; font-weight: 800; color: {{ y.headFg }};">{{ y.grade }}</span>
+                <span style="font-size: 10.5px; font-weight: 700; color: {{ y.statusFg }}; background: {{ y.statusBg }}; padding: 3px 8px; border-radius: 6px;">{{ y.status }}</span>
+              </div>
+              <div style="font-size: 11.5px; color: #868c96; margin-top: 3px;">{{ y.label }}</div>
+            </div>
+          </sc-for>
+        </div>
+        <div style="display: grid; grid-template-columns: repeat(4, 1fr); gap: 14px;">
+          <sc-for list="{{ roadmapYears }}" as="y" hint-placeholder-count="4">
+            <div style="display: flex; flex-direction: column; gap: 10px;">
+              <sc-for list="{{ y.items }}" as="m" hint-placeholder-count="5">
+                <div style="background: #fff; border: 1px solid #ececea; border-left: 3px solid {{ m.accent }}; border-radius: 11px; padding: 12px 13px;">
+                  <div style="display: flex; align-items: center; gap: 7px; margin-bottom: 4px;">
+                    <span style="font-size: 9.5px; font-weight: 700; letter-spacing: .05em; text-transform: uppercase; color: #aab;">{{ m.term }}</span>
+                    <span style="margin-left: auto;">{{ m.statusEl }}</span>
+                  </div>
+                  <div style="font-size: 12.5px; font-weight: 700; line-height: 1.35;">{{ m.title }}</div>
+                  <div style="font-size: 11px; color: #9097a0; margin-top: 3px; line-height: 1.4;">{{ m.detail }}</div>
+                </div>
+              </sc-for>
+            </div>
+          </sc-for>
+        </div>
+      </div>
+    </sc-if>
+
+    <!-- ===== ACTIVITIES ===== -->
+    <sc-if value="{{ is.activities }}" hint-placeholder-val="{{ false }}">
+      <div style="animation: pw-fade .3s ease;">
+        <div style="display: flex; align-items: center; gap: 8px; margin-bottom: 18px;">
+          <sc-for list="{{ activityTabs }}" as="t" hint-placeholder-count="4">
+            <button onClick="{{ t.onClick }}" style="border: 1px solid {{ t.border }}; background: {{ t.bg }}; color: {{ t.fg }}; font-weight: 700; font-size: 12.5px; padding: 8px 14px; border-radius: 9px; cursor: pointer; font-family: inherit;">{{ t.label }}</button>
+          </sc-for>
+          <div style="flex: 1;"></div>
+          <button style="border: none; background: #4f46e5; color: #fff; font-weight: 700; font-size: 12.5px; padding: 9px 15px; border-radius: 9px; cursor: pointer; font-family: inherit; display: flex; align-items: center; gap: 7px;"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="2.4" stroke-linecap="round"><path d="M12 5v14M5 12h14"></path></svg>Add activity</button>
+        </div>
+        <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 14px;">
+          <sc-for list="{{ filteredActivities }}" as="a" hint-placeholder-count="5">
+            <div style="background: #fff; border: 1px solid #ececea; border-radius: 14px; padding: 17px 18px;">
+              <div style="display: flex; align-items: flex-start; gap: 13px;">
+                <div style="width: 42px; height: 42px; border-radius: 11px; background: {{ a.tintBg }}; color: {{ a.tintFg }}; display: flex; align-items: center; justify-content: center; flex-shrink: 0;">{{ a.iconEl }}</div>
+                <div style="flex: 1;">
+                  <div style="display: flex; align-items: center; justify-content: space-between;">
+                    <div style="font-size: 14.5px; font-weight: 800;">{{ a.name }}</div>
+                    <span style="font-size: 10.5px; font-weight: 700; color: {{ a.tintFg }}; background: {{ a.tintBg }}; padding: 3px 9px; border-radius: 6px;">{{ a.cat }}</span>
+                  </div>
+                  <div style="font-size: 12px; color: #6b7079; font-weight: 600; margin-top: 2px;">{{ a.role }}</div>
+                  <div style="font-size: 12px; color: #9097a0; line-height: 1.5; margin-top: 8px;">{{ a.desc }}</div>
+                  <div style="display: flex; gap: 16px; margin-top: 12px; padding-top: 11px; border-top: 1px solid #f2f1ed;">
+                    <div><div style="font-size: 13px; font-weight: 800;">{{ a.hours }}</div><div style="font-size: 10.5px; color: #aab;">commitment</div></div>
+                    <div><div style="font-size: 13px; font-weight: 800;">{{ a.since }}</div><div style="font-size: 10.5px; color: #aab;">since</div></div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </sc-for>
+        </div>
+      </div>
+    </sc-if>
+
+    <!-- ===== ESSAYS ===== -->
+    <sc-if value="{{ is.essays }}" hint-placeholder-val="{{ false }}">
+      <div style="animation: pw-fade .3s ease; display: grid; grid-template-columns: 320px 1fr; gap: 18px;">
+        <div style="display: flex; flex-direction: column; gap: 11px;">
+          <sc-if value="{{ isPersonalized }}" hint-placeholder-val="{{ false }}">
+            <div style="background: linear-gradient(160deg,#f5f3ff,#eef0ff); border:1px solid #e7e3fb; border-radius:12px; padding:12px 13px;">
+              <div style="display:flex; align-items:center; gap:7px; font-size:12px; font-weight:800; color:#5b21b6;"><svg width="14" height="14" viewBox="0 0 24 24" fill="#7c3aed" stroke="none"><path d="M12 2l1.9 5.6L19.5 9l-4.4 3.5L16 18l-4-3.2L8 18l.9-5.5L4.5 9l5.6-1.4z"></path></svg>AI essay ideas for you</div>
+              <div style="font-size:11.5px; color:#6b6f7a; line-height:1.45; margin-top:4px;">Generated from your profile — tap one to start a draft.</div>
+            </div>
+          </sc-if>
+          <button style="border: 1px dashed #c8c4ec; background: #f6f5ff; color: #4f46e5; font-weight: 700; font-size: 13px; padding: 12px; border-radius: 12px; cursor: pointer; font-family: inherit; display: flex; align-items: center; justify-content: center; gap: 8px;"><svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="#4f46e5" stroke-width="2.4" stroke-linecap="round"><path d="M12 5v14M5 12h14"></path></svg>New essay</button>
+          <sc-for list="{{ essays }}" as="e" hint-placeholder-count="4">
+            <div onClick="{{ e.onClick }}" style="background: {{ e.cardBg }}; border: 1px solid {{ e.cardBorder }}; border-radius: 13px; padding: 14px 15px; cursor: pointer;">
+              <div style="display: flex; align-items: center; justify-content: space-between; gap: 8px;">
+                <div style="font-size: 13px; font-weight: 700; line-height: 1.3;">{{ e.title }}</div>
+                <span style="font-size: 10px; font-weight: 700; color: {{ e.statusFg }}; background: {{ e.statusBg }}; padding: 3px 8px; border-radius: 6px; white-space: nowrap;">{{ e.status }}</span>
+              </div>
+              <div style="height: 5px; background: #efeeea; border-radius: 3px; overflow: hidden; margin: 10px 0 6px;">
+                <div style="height: 100%; width: {{ e.pct }}%; background: {{ e.barColor }}; border-radius: 3px;"></div>
+              </div>
+              <div style="display: flex; justify-content: space-between; font-size: 11px; color: #9aa0ab;"><span>{{ e.words }}/{{ e.target }} words</span><span>{{ e.updated }}</span></div>
+            </div>
+          </sc-for>
+        </div>
+
+        <div style="display: grid; grid-template-columns: 1fr 300px; gap: 16px; align-items: start;">
+          <div style="background: #fff; border: 1px solid #ececea; border-radius: 16px; padding: 26px 30px; min-height: 460px;">
+            <div style="font-size: 12px; font-weight: 700; color: #9aa0ab; letter-spacing: .04em; text-transform: uppercase;">{{ activeEssay.status }} · {{ activeEssay.words }} words</div>
+            <div style="font-size: 21px; font-weight: 800; letter-spacing: -.02em; margin: 6px 0 4px;">{{ activeEssay.title }}</div>
+            <div style="font-size: 12.5px; color: #9097a0; font-style: italic; padding-bottom: 16px; border-bottom: 1px solid #f1f0ec; margin-bottom: 18px;">Prompt: {{ activeEssay.prompt }}</div>
+            <div style="font-size: 14.5px; line-height: 1.85; color: #2c313a; white-space: pre-wrap; font-family: 'Plus Jakarta Sans';">{{ activeEssay.body }}</div>
+          </div>
+          <div style="background: linear-gradient(170deg,#faf8ff,#f4f1ff); border: 1px solid #e9e3fb; border-radius: 16px; padding: 18px;">
+            <div style="display: flex; align-items: center; gap: 8px; margin-bottom: 14px;">
+              <div style="width: 26px; height: 26px; border-radius: 8px; background: linear-gradient(145deg,#7c3aed,#6d28d9); display: flex; align-items: center; justify-content: center;">
+                <svg width="14" height="14" viewBox="0 0 24 24" fill="#fff" stroke="none"><path d="M12 2l1.9 5.6L19.5 9l-4.4 3.5L16 18l-4-3.2L8 18l.9-5.5L4.5 9l5.6-1.4z"></path></svg>
+              </div>
+              <div style="font-size: 14px; font-weight: 800; color: #5b21b6;">Coach feedback</div>
+            </div>
+            <div style="display: flex; flex-direction: column; gap: 11px;">
+              <sc-for list="{{ activeEssay.feedback }}" as="f" hint-placeholder-count="4">
+                <div style="background: #fff; border: 1px solid #ede9f8; border-radius: 11px; padding: 11px 12px;">
+                  <div style="display: flex; align-items: center; gap: 6px; font-size: 11px; font-weight: 700; color: {{ f.tagFg }}; margin-bottom: 4px;">{{ f.tagEl }}{{ f.tag }}</div>
+                  <div style="font-size: 12px; line-height: 1.5; color: #4a4f59;">{{ f.text }}</div>
+                </div>
+              </sc-for>
+            </div>
+            <button style="margin-top: 14px; width: 100%; border: none; background: #6d28d9; color: #fff; font-weight: 700; font-size: 12.5px; padding: 10px; border-radius: 9px; cursor: pointer; font-family: inherit;">Get full review</button>
+          </div>
+        </div>
+      </div>
+    </sc-if>
+
+    <!-- ===== SCHOLARSHIPS ===== -->
+    <sc-if value="{{ is.scholarships }}" hint-placeholder-val="{{ false }}">
+      <div style="animation: pw-fade .3s ease;">
+        <div style="display: flex; align-items: center; gap: 8px; margin-bottom: 18px; flex-wrap: wrap;">
+          <sc-for list="{{ schFilters }}" as="f" hint-placeholder-count="6">
+            <button onClick="{{ f.onClick }}" style="border: 1px solid {{ f.border }}; background: {{ f.bg }}; color: {{ f.fg }}; font-weight: 700; font-size: 12.5px; padding: 8px 14px; border-radius: 20px; cursor: pointer; font-family: inherit;">{{ f.label }}</button>
+          </sc-for>
+          <div style="flex: 1;"></div>
+          <div style="font-size: 12.5px; color: #9aa0ab; font-weight: 600;">{{ schCount }} matches · $89k+ available</div>
+        </div>
+        <div style="display: grid; grid-template-columns: repeat(3, 1fr); gap: 14px;">
+          <sc-for list="{{ filteredScholarships }}" as="s" hint-placeholder-count="6">
+            <div style="background: #fff; border: 1px solid #ececea; border-radius: 14px; padding: 17px 18px; display: flex; flex-direction: column;">
+              <div style="display: flex; align-items: flex-start; justify-content: space-between;">
+                <div style="flex: 1;">
+                  <div style="font-size: 15px; font-weight: 800; line-height: 1.25;">{{ s.name }}</div>
+                  <div style="font-size: 19px; font-weight: 800; color: #059669; margin-top: 6px; letter-spacing: -.02em;">{{ s.amount }}</div>
+                </div>
+                <div style="flex-shrink: 0;">{{ s.ring }}</div>
+              </div>
+              <div style="display: flex; flex-wrap: wrap; gap: 5px; margin-top: 12px;">
+                <sc-for list="{{ s.tags }}" as="tg" hint-placeholder-count="2">
+                  <span style="font-size: 10.5px; font-weight: 600; color: #5b6068; background: #f3f2ee; padding: 3px 9px; border-radius: 6px;">{{ tg }}</span>
+                </sc-for>
+              </div>
+              <div style="display: flex; align-items: center; justify-content: space-between; margin-top: 14px; padding-top: 13px; border-top: 1px solid #f2f1ed;">
+                <div style="font-size: 11.5px; color: #9097a0;">Due <strong style="color: #3a3f48;">{{ s.deadline }}</strong></div>
+                <button style="border: 1px solid #e6e4e0; background: #fff; color: #4f46e5; font-weight: 700; font-size: 12px; padding: 7px 13px; border-radius: 8px; cursor: pointer; font-family: inherit;" style-hover="border-color: #c8c4ec; background: #f7f6ff;">Save</button>
+              </div>
+            </div>
+          </sc-for>
+        </div>
+      </div>
+    </sc-if>
+
+    <!-- ===== COLLEGES ===== -->
+    <sc-if value="{{ is.colleges }}" hint-placeholder-val="{{ false }}">
+      <div style="animation: pw-fade .3s ease;">
+        <div style="display: flex; align-items: center; gap: 8px; margin-bottom: 18px;">
+          <sc-for list="{{ collegeTabs }}" as="t" hint-placeholder-count="4">
+            <button onClick="{{ t.onClick }}" style="border: 1px solid {{ t.border }}; background: {{ t.bg }}; color: {{ t.fg }}; font-weight: 700; font-size: 12.5px; padding: 8px 14px; border-radius: 9px; cursor: pointer; font-family: inherit;">{{ t.label }}</button>
+          </sc-for>
+          <div style="flex: 1;"></div>
+          <div style="display: flex; align-items: center; gap: 8px; background: #f3eefe; border: 1px solid #e4d9fb; color: #6d28d9; padding: 8px 13px; border-radius: 9px; font-size: 12.5px; font-weight: 700;">
+            <svg width="14" height="14" viewBox="0 0 24 24" fill="#7c3aed" stroke="none"><path d="M12 2l1.9 5.6L19.5 9l-4.4 3.5L16 18l-4-3.2L8 18l.9-5.5L4.5 9l5.6-1.4z"></path></svg>AI Match enabled
+          </div>
+        </div>
+        <div style="display: grid; grid-template-columns: repeat(3, 1fr); gap: 14px;">
+          <sc-for list="{{ filteredColleges }}" as="c" hint-placeholder-count="7">
+            <div style="background: #fff; border: 1px solid #ececea; border-radius: 14px; padding: 17px 18px;">
+              <div style="display: flex; align-items: center; gap: 13px;">
+                <div style="width: 46px; height: 46px; border-radius: 12px; background: {{ c.logoBg }}; color: {{ c.logoFg }}; display: flex; align-items: center; justify-content: center; font-weight: 800; font-size: 15px; flex-shrink: 0;">{{ c.abbr }}</div>
+                <div style="flex: 1; min-width: 0;">
+                  <div style="font-size: 14.5px; font-weight: 800;">{{ c.name }}</div>
+                  <div style="font-size: 11.5px; color: #9097a0;">{{ c.loc }}</div>
+                </div>
+                <span style="font-size: 10.5px; font-weight: 700; color: {{ c.fitFg }}; background: {{ c.fitBg }}; padding: 3px 9px; border-radius: 6px;">{{ c.fit }}</span>
+              </div>
+              <div style="display: flex; align-items: center; gap: 12px; margin-top: 15px; padding-top: 13px; border-top: 1px solid #f2f1ed;">
+                <div style="flex-shrink: 0;">{{ c.ring }}</div>
+                <div style="flex: 1;">
+                  <div style="font-size: 12px; font-weight: 700;">Match strength</div>
+                  <div style="font-size: 11px; color: #9097a0; line-height: 1.4; margin-top: 2px;">{{ c.note }}</div>
+                </div>
+                <div style="text-align: right;"><div style="font-size: 13px; font-weight: 800;">{{ c.acc }}</div><div style="font-size: 10px; color: #aab;">accept</div></div>
+              </div>
+            </div>
+          </sc-for>
+        </div>
+      </div>
+    </sc-if>
+
+    <!-- ===== APPLICATIONS ===== -->
+    <sc-if value="{{ is.applications }}" hint-placeholder-val="{{ false }}">
+      <div style="animation: pw-fade .3s ease;">
+        <div style="font-size: 13px; color: #777c86; margin-bottom: 18px;">Your college list, organized. Early days — keep researching and shortlisting through grade 11.</div>
+        <div style="display: grid; grid-template-columns: repeat(3, 1fr); gap: 16px; align-items: start;">
+          <sc-for list="{{ appColumns }}" as="col" hint-placeholder-count="3">
+            <div style="background: #f5f4f1; border: 1px solid #ececea; border-radius: 14px; padding: 13px;">
+              <div style="display: flex; align-items: center; gap: 8px; padding: 4px 6px 12px;">
+                <span style="width: 9px; height: 9px; border-radius: 50%; background: {{ col.dot }};"></span>
+                <span style="font-size: 13px; font-weight: 800;">{{ col.name }}</span>
+                <span style="font-size: 11px; font-weight: 700; color: #9aa0ab; background: #fff; border: 1px solid #ececea; padding: 1px 8px; border-radius: 10px;">{{ col.count }}</span>
+              </div>
+              <div style="display: flex; flex-direction: column; gap: 9px;">
+                <sc-for list="{{ col.items }}" as="c" hint-placeholder-count="3">
+                  <div style="background: #fff; border: 1px solid #ececea; border-radius: 11px; padding: 12px 13px;">
+                    <div style="display: flex; align-items: center; gap: 10px;">
+                      <div style="width: 34px; height: 34px; border-radius: 9px; background: {{ c.logoBg }}; color: {{ c.logoFg }}; display: flex; align-items: center; justify-content: center; font-weight: 800; font-size: 12px;">{{ c.abbr }}</div>
+                      <div style="flex: 1; min-width: 0;"><div style="font-size: 12.5px; font-weight: 700;">{{ c.name }}</div><div style="font-size: 11px; color: #9097a0;">{{ c.fit }} · {{ c.acc }} accept</div></div>
+                    </div>
+                    <div style="display: flex; align-items: center; gap: 8px; margin-top: 11px;">
+                      <div style="flex: 1; height: 6px; background: #f1f0ec; border-radius: 3px; overflow: hidden;"><div style="height: 100%; width: {{ c.match }}%; background: {{ c.matchColor }}; border-radius: 3px;"></div></div>
+                      <span style="font-size: 11px; font-weight: 800; color: {{ c.matchColor }};">{{ c.match }}%</span>
+                    </div>
+                  </div>
+                </sc-for>
+              </div>
+            </div>
+          </sc-for>
+        </div>
+      </div>
+    </sc-if>
+
+    <!-- ===== RESUME ===== -->
+    <sc-if value="{{ is.resume }}" hint-placeholder-val="{{ false }}">
+      <div style="animation: pw-fade .3s ease; display: grid; grid-template-columns: 1fr 260px; gap: 18px; align-items: start;">
+        <div style="background: #fff; border: 1px solid #ececea; border-radius: 8px; padding: 48px 54px; box-shadow: 0 4px 24px -12px rgba(0,0,0,.12); min-height: 560px;">
+          <div style="text-align: center; border-bottom: 2px solid #1d2129; padding-bottom: 14px;">
+            <div style="font-size: 26px; font-weight: 800; letter-spacing: .01em;">{{ student.name }}</div>
+            <div style="font-size: 12.5px; color: #555; margin-top: 6px;">{{ student.email }} · {{ student.location }} · linkedin.com/in/mayachen</div>
+          </div>
+          <sc-for list="{{ resumeSections }}" as="sec" hint-placeholder-count="4">
+            <div style="margin-top: 20px;">
+              <div style="font-size: 13px; font-weight: 800; letter-spacing: .08em; text-transform: uppercase; color: #4f46e5; border-bottom: 1px solid #e4e2dd; padding-bottom: 4px; margin-bottom: 9px;">{{ sec.title }}</div>
+              <sc-for list="{{ sec.entries }}" as="en" hint-placeholder-count="3">
+                <div style="margin-bottom: 11px;">
+                  <div style="display: flex; justify-content: space-between; align-items: baseline;">
+                    <span style="font-size: 13.5px; font-weight: 700;">{{ en.head }}</span>
+                    <span style="font-size: 12px; color: #777;">{{ en.meta }}</span>
+                  </div>
+                  <div style="font-size: 12.5px; color: #444; line-height: 1.5; margin-top: 2px;">{{ en.body }}</div>
+                </div>
+              </sc-for>
+            </div>
+          </sc-for>
+        </div>
+        <div style="display: flex; flex-direction: column; gap: 13px; position: sticky; top: 0;">
+          <div style="background: #fff; border: 1px solid #ececea; border-radius: 14px; padding: 17px;">
+            <div style="font-size: 13.5px; font-weight: 800; margin-bottom: 4px;">Resume strength</div>
+            <div style="display: flex; align-items: center; gap: 13px; margin-top: 8px;">
+              <div style="flex-shrink: 0;">{{ resumeRing }}</div>
+              <div style="font-size: 12px; color: #777c86; line-height: 1.5;">Solid for grade 10. Add measurable outcomes & a research line to push higher.</div>
+            </div>
+          </div>
+          <sc-for list="{{ resumeTips }}" as="t" hint-placeholder-count="3">
+            <div style="background: #faf8ff; border: 1px solid #ece6fb; border-radius: 12px; padding: 13px 14px;">
+              <div style="font-size: 12px; font-weight: 700; color: #6d28d9;">{{ t.title }}</div>
+              <div style="font-size: 11.5px; color: #6b6f7a; line-height: 1.45; margin-top: 3px;">{{ t.text }}</div>
+            </div>
+          </sc-for>
+          <button style="border: none; background: #4f46e5; color: #fff; font-weight: 700; font-size: 13px; padding: 11px; border-radius: 10px; cursor: pointer; font-family: inherit;">Export PDF</button>
+        </div>
+      </div>
+    </sc-if>
+
+    <!-- ===== ACADEMICS ===== -->
+    <sc-if value="{{ is.academics }}" hint-placeholder-val="{{ false }}">
+      <div style="animation: pw-fade .3s ease;">
+        <div style="display: grid; grid-template-columns: repeat(4, 1fr); gap: 14px; margin-bottom: 16px;">
+          <sc-for list="{{ acadStats }}" as="s" hint-placeholder-count="4">
+            <div style="background: #fff; border: 1px solid #ececea; border-radius: 14px; padding: 16px 17px;">
+              <div style="font-size: 12px; color: #868c96;">{{ s.label }}</div>
+              <div style="font-size: 25px; font-weight: 800; letter-spacing: -.02em; margin-top: 6px;">{{ s.value }}</div>
+              <div style="font-size: 11px; color: {{ s.subColor }}; margin-top: 2px; font-weight: 600;">{{ s.sub }}</div>
+            </div>
+          </sc-for>
+        </div>
+        <div style="display: grid; grid-template-columns: repeat(4, 1fr); gap: 14px;">
+          <sc-for list="{{ coursePlan }}" as="y" hint-placeholder-count="4">
+            <div style="background: #fff; border: 1px solid #ececea; border-radius: 14px; padding: 15px 16px;">
+              <div style="display: flex; align-items: center; justify-content: space-between; margin-bottom: 12px;">
+                <span style="font-size: 13px; font-weight: 800;">{{ y.grade }}</span>
+                <span style="font-size: 10.5px; font-weight: 700; color: {{ y.statusFg }}; background: {{ y.statusBg }}; padding: 3px 8px; border-radius: 6px;">{{ y.status }}</span>
+              </div>
+              <div style="display: flex; flex-direction: column; gap: 7px;">
+                <sc-for list="{{ y.courses }}" as="co" hint-placeholder-count="5">
+                  <div style="display: flex; align-items: center; gap: 8px; padding: 8px 10px; background: #fbfaf8; border: 1px solid #f0efec; border-radius: 9px;">
+                    <span style="width: 6px; height: 6px; border-radius: 50%; background: {{ co.dot }}; flex-shrink: 0;"></span>
+                    <span style="flex: 1; font-size: 12px; font-weight: 600;">{{ co.name }}</span>
+                    <span style="font-size: 9.5px; font-weight: 700; color: {{ co.lvlFg }}; background: {{ co.lvlBg }}; padding: 2px 6px; border-radius: 4px;">{{ co.lvl }}</span>
+                  </div>
+                </sc-for>
+              </div>
+            </div>
+          </sc-for>
+        </div>
+      </div>
+    </sc-if>
+
+    <!-- ===== PROJECTS ===== -->
+    <sc-if value="{{ is.projects }}" hint-placeholder-val="{{ false }}">
+      <div style="animation: pw-fade .3s ease;">
+        <div style="background: linear-gradient(150deg,#0f172a,#1e293b); border-radius: 16px; padding: 22px 24px; color: #fff; margin-bottom: 18px; display: flex; align-items: center; gap: 18px;">
+          <div style="flex: 1;">
+            <div style="font-size: 17px; font-weight: 800;">Passion Project Builder</div>
+            <div style="font-size: 13px; opacity: .8; line-height: 1.55; margin-top: 6px; max-width: 560px;">A standout capstone is the single biggest differentiator for STEM admissions. Build something real, measurable, and tied to your interests — the AI Coach guides every milestone.</div>
+          </div>
+          <button onClick="{{ goCoach }}" style="border: none; background: #fff; color: #1e293b; font-weight: 800; font-size: 13px; padding: 11px 18px; border-radius: 10px; cursor: pointer; font-family: inherit;">Brainstorm ideas</button>
+        </div>
+        <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 16px;">
+          <sc-for list="{{ projects }}" as="p" hint-placeholder-count="2">
+            <div style="background: #fff; border: 1px solid #ececea; border-radius: 16px; padding: 19px 20px;">
+              <div style="display: flex; align-items: center; justify-content: space-between;">
+                <span style="font-size: 11px; font-weight: 700; color: {{ p.stageFg }}; background: {{ p.stageBg }}; padding: 4px 10px; border-radius: 6px;">{{ p.stage }}</span>
+                <span style="font-size: 12px; font-weight: 800; color: #4f46e5;">{{ p.progress }}%</span>
+              </div>
+              <div style="font-size: 16px; font-weight: 800; margin: 12px 0 4px;">{{ p.name }}</div>
+              <div style="font-size: 12.5px; color: #777c86; line-height: 1.55;">{{ p.desc }}</div>
+              <div style="height: 7px; background: #f1f0ec; border-radius: 4px; overflow: hidden; margin: 14px 0 16px;"><div style="height: 100%; width: {{ p.progress }}%; background: linear-gradient(90deg,#6366f1,#4f46e5); border-radius: 4px;"></div></div>
+              <div style="display: flex; flex-direction: column; gap: 8px;">
+                <sc-for list="{{ p.milestones }}" as="m" hint-placeholder-count="4">
+                  <div style="display: flex; align-items: center; gap: 9px;">
+                    <span style="width: 17px; height: 17px; border-radius: 5px; border: 1.7px solid {{ m.border }}; background: {{ m.bg }}; display: flex; align-items: center; justify-content: center; flex-shrink: 0;">{{ m.checkEl }}</span>
+                    <span style="font-size: 12.5px; color: {{ m.color }}; text-decoration: {{ m.strike }};">{{ m.text }}</span>
+                  </div>
+                </sc-for>
+              </div>
+            </div>
+          </sc-for>
+        </div>
+      </div>
+    </sc-if>
+
+    <!-- ===== PROFILE ===== -->
+    <sc-if value="{{ is.profile }}" hint-placeholder-val="{{ false }}">
+      <div style="animation: pw-fade .3s ease; display: grid; grid-template-columns: 320px 1fr; gap: 18px;">
+        <div style="background: #fff; border: 1px solid #ececea; border-radius: 16px; padding: 22px; text-align: center;">
+          <div style="width: 84px; height: 84px; border-radius: 22px; background: linear-gradient(145deg,#fb923c,#ea580c); color: #fff; display: flex; align-items: center; justify-content: center; font-weight: 800; font-size: 30px; margin: 0 auto;">{{ student.initials }}</div>
+          <div style="font-size: 19px; font-weight: 800; margin-top: 14px;">{{ student.name }}</div>
+          <div style="font-size: 12.5px; color: #9097a0;">{{ student.grade }} · {{ student.classOf }}</div>
+          <div style="font-size: 12.5px; color: #9097a0; margin-top: 2px;">{{ student.school }}</div>
+          <div style="display: inline-flex; align-items: center; gap: 7px; margin-top: 14px; background: #f3eefe; color: #6d28d9; padding: 7px 14px; border-radius: 20px; font-size: 12.5px; font-weight: 700;">Intended major: {{ student.major }}</div>
+          <div style="display: flex; flex-direction: column; gap: 7px; margin-top: 18px; text-align: left;">
+            <div style="font-size: 11px; font-weight: 700; letter-spacing: .06em; text-transform: uppercase; color: #aab;">Interests</div>
+            <div style="display: flex; flex-wrap: wrap; gap: 6px;">
+              <sc-for list="{{ interests }}" as="i" hint-placeholder-count="5">
+                <span style="font-size: 11.5px; font-weight: 600; color: #4a4f59; background: #f3f2ee; padding: 5px 11px; border-radius: 7px;">{{ i }}</span>
+              </sc-for>
+            </div>
+          </div>
+        </div>
+        <div style="display: flex; flex-direction: column; gap: 16px;">
+          <div style="display: grid; grid-template-columns: repeat(4, 1fr); gap: 14px;">
+            <sc-for list="{{ profileStats }}" as="s" hint-placeholder-count="4">
+              <div style="background: #fff; border: 1px solid #ececea; border-radius: 14px; padding: 16px;">
+                <div style="font-size: 24px; font-weight: 800; letter-spacing: -.02em;">{{ s.value }}</div>
+                <div style="font-size: 11.5px; color: #868c96; margin-top: 2px;">{{ s.label }}</div>
+              </div>
+            </sc-for>
+          </div>
+          <div style="background: #fff; border: 1px solid #ececea; border-radius: 16px; padding: 20px 22px;">
+            <div style="font-size: 15px; font-weight: 800; margin-bottom: 6px;">Your narrative</div>
+            <div style="font-size: 11.5px; color: #9aa0ab; margin-bottom: 12px;">AI-synthesized from your academics, activities & goals.</div>
+            <div style="font-size: 14px; line-height: 1.75; color: #2c313a; background: #fbfaf8; border-left: 3px solid #4f46e5; padding: 15px 17px; border-radius: 8px;">{{ narrative }}</div>
+            <div style="display: flex; gap: 8px; margin-top: 14px;">
+              <button onClick="{{ goEssays }}" style="border: 1px solid #e6e4e0; background: #fff; color: #2c313a; font-weight: 700; font-size: 12.5px; padding: 9px 14px; border-radius: 9px; cursor: pointer; font-family: inherit;">Open Essay Studio</button>
+              <button onClick="{{ goCoach }}" style="border: none; background: #4f46e5; color: #fff; font-weight: 700; font-size: 12.5px; padding: 9px 14px; border-radius: 9px; cursor: pointer; font-family: inherit;">Refine with Coach</button>
+            </div>
+          </div>
+        </div>
+      </div>
+    </sc-if>
+
+    <!-- ===== CALENDAR ===== -->
+    <sc-if value="{{ is.calendar }}" hint-placeholder-val="{{ false }}">
+      <div style="animation: pw-fade .3s ease; display: grid; grid-template-columns: 1fr 280px; gap: 18px; align-items: start;">
+        <div style="background: #fff; border: 1px solid #ececea; border-radius: 16px; padding: 20px 22px;">
+          <div style="display: flex; align-items: center; justify-content: space-between; margin-bottom: 16px;">
+            <div style="font-size: 17px; font-weight: 800;">June 2026</div>
+            <div style="display: flex; gap: 6px;">
+              <button style="width: 32px; height: 32px; border: 1px solid #e8e6e2; background: #fff; border-radius: 8px; cursor: pointer; color: #6b7079;">‹</button>
+              <button style="width: 32px; height: 32px; border: 1px solid #e8e6e2; background: #fff; border-radius: 8px; cursor: pointer; color: #6b7079;">›</button>
+            </div>
+          </div>
+          <div style="display: grid; grid-template-columns: repeat(7, 1fr); gap: 6px;">
+            <sc-for list="{{ weekdays }}" as="w" hint-placeholder-count="7">
+              <div style="text-align: center; font-size: 11px; font-weight: 700; color: #aab; padding-bottom: 4px;">{{ w }}</div>
+            </sc-for>
+            <sc-for list="{{ calendarDays }}" as="d" hint-placeholder-count="35">
+              <div style="aspect-ratio: 1; border: 1px solid {{ d.border }}; border-radius: 9px; padding: 6px 7px; background: {{ d.bg }}; display: flex; flex-direction: column; min-height: 58px;">
+                <span style="font-size: 12px; font-weight: {{ d.weight }}; color: {{ d.fg }};">{{ d.day }}</span>
+                <sc-if value="{{ d.event }}" hint-placeholder-val="">
+                  <span style="margin-top: auto; font-size: 9px; font-weight: 700; color: #fff; background: {{ d.eventColor }}; padding: 2px 5px; border-radius: 4px; line-height: 1.2; overflow: hidden;">{{ d.event }}</span>
+                </sc-if>
+              </div>
+            </sc-for>
+          </div>
+        </div>
+        <div style="background: #fff; border: 1px solid #ececea; border-radius: 16px; padding: 18px 19px;">
+          <div style="font-size: 14px; font-weight: 800; margin-bottom: 13px;">Next up</div>
+          <div style="display: flex; flex-direction: column; gap: 12px;">
+            <sc-for list="{{ deadlines }}" as="d" hint-placeholder-count="4">
+              <div style="display: flex; gap: 11px; align-items: center;">
+                <span style="width: 9px; height: 9px; border-radius: 50%; background: {{ d.dayFg }}; flex-shrink: 0;"></span>
+                <div style="flex: 1;"><div style="font-size: 12.5px; font-weight: 700;">{{ d.title }}</div><div style="font-size: 11px; color: #9aa0ab;">{{ d.mon }} {{ d.day }} · {{ d.in }}</div></div>
+              </div>
+            </sc-for>
+          </div>
+        </div>
+      </div>
+    </sc-if>
+
+    <!-- ===== SETTINGS ===== -->
+    <sc-if value="{{ is.settings }}" hint-placeholder-val="{{ false }}">
+      <div style="animation: pw-fade .3s ease; max-width: 760px;">
+        <div style="background: #fff; border: 1px solid #ececea; border-radius: 16px; padding: 22px 24px; margin-bottom: 16px;">
+          <div style="font-size: 15px; font-weight: 800; margin-bottom: 16px;">Connected portals</div>
+          <div style="display: flex; flex-direction: column; gap: 11px;">
+            <sc-for list="{{ portals }}" as="p" hint-placeholder-count="4">
+              <div style="display: flex; align-items: center; gap: 13px; padding: 13px 14px; border: 1px solid #f0efec; border-radius: 12px;">
+                <div style="width: 40px; height: 40px; border-radius: 11px; background: {{ p.tintBg }}; color: {{ p.tintFg }}; display: flex; align-items: center; justify-content: center;">{{ p.iconEl }}</div>
+                <div style="flex: 1;"><div style="font-size: 13.5px; font-weight: 700;">{{ p.name }}</div><div style="font-size: 11.5px; color: #9097a0;">{{ p.desc }}</div></div>
+                <span style="font-size: 11px; font-weight: 700; color: {{ p.statusFg }}; background: {{ p.statusBg }}; padding: 5px 11px; border-radius: 7px;">{{ p.status }}</span>
+              </div>
+            </sc-for>
+          </div>
+        </div>
+        <div style="background: #fff; border: 1px solid #ececea; border-radius: 16px; padding: 22px 24px;">
+          <div style="font-size: 15px; font-weight: 800; margin-bottom: 16px;">Account</div>
+          <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 14px;">
+            <sc-for list="{{ accountFields }}" as="f" hint-placeholder-count="4">
+              <div>
+                <div style="font-size: 11px; font-weight: 700; letter-spacing: .04em; text-transform: uppercase; color: #aab; margin-bottom: 5px;">{{ f.label }}</div>
+                <div style="font-size: 13px; font-weight: 600; padding: 10px 12px; background: #fbfaf8; border: 1px solid #f0efec; border-radius: 9px;">{{ f.value }}</div>
+              </div>
+            </sc-for>
+          </div>
+          <div style="display: flex; align-items: center; justify-content: space-between; margin-top: 18px; padding-top: 16px; border-top: 1px solid #f1f0ec;">
+            <div style="font-size: 12.5px; color: #9097a0;">Signed in as <strong style="color:#3a3f48;">{{ student.name }}</strong></div>
+            <button onClick="{{ logout }}" style="border: 1px solid #f3d3d3; background: #fff; color: #dc2626; font-weight: 700; font-size: 12.5px; padding: 8px 14px; border-radius: 9px; cursor: pointer; font-family: inherit;">Log out</button>
+          </div>
+        </div>
+      </div>
+    </sc-if>
+
+    <!-- ===== AI COACH ===== -->
+    <sc-if value="{{ is.coach }}" hint-placeholder-val="{{ false }}">
+      <div style="animation: pw-fade .3s ease; max-width: 860px; margin: 0 auto; display: flex; flex-direction: column; height: calc(100vh - 160px);">
+        <div style="flex: 1; overflow-y: auto; display: flex; flex-direction: column; gap: 16px; padding: 4px 4px 16px;">
+          <sc-for list="{{ chat }}" as="m" hint-placeholder-count="2">
+            <div style="display: flex; gap: 12px; flex-direction: {{ m.dir }}; align-items: flex-start;">
+              <div style="width: 34px; height: 34px; border-radius: 10px; background: {{ m.avBg }}; color: {{ m.avFg }}; display: flex; align-items: center; justify-content: center; font-weight: 800; font-size: 13px; flex-shrink: 0;">{{ m.avEl }}</div>
+              <div style="max-width: 76%; background: {{ m.bubbleBg }}; color: {{ m.bubbleFg }}; border: 1px solid {{ m.bubbleBorder }}; border-radius: 14px; padding: 13px 16px; font-size: 13.5px; line-height: 1.65; white-space: pre-wrap;">{{ m.text }}</div>
+            </div>
+          </sc-for>
+        </div>
+        <div style="flex-shrink: 0;">
+          <div style="display: flex; gap: 7px; flex-wrap: wrap; margin-bottom: 11px;">
+            <sc-for list="{{ suggestedPrompts }}" as="p" hint-placeholder-count="4">
+              <button onClick="{{ p.onClick }}" style="border: 1px solid #e6e4e0; background: #fff; color: #4a4f59; font-weight: 600; font-size: 12px; padding: 7px 13px; border-radius: 20px; cursor: pointer; font-family: inherit;" style-hover="border-color: #c8c4ec; color: #4f46e5;">{{ p.label }}</button>
+            </sc-for>
+          </div>
+          <div style="display: flex; gap: 10px; align-items: flex-end; background: #fff; border: 1px solid #e6e4e0; border-radius: 14px; padding: 10px 12px;">
+            <textarea value="{{ chatInput }}" onChange="{{ onChatInput }}" onKeyDown="{{ onChatKey }}" placeholder="Ask your Pathway Coach anything…" rows="1" style="flex: 1; border: none; resize: none; font-family: inherit; font-size: 13.5px; color: #1d2129; background: none; max-height: 120px; padding: 5px 0;"></textarea>
+            <button onClick="{{ sendChat }}" style="width: 38px; height: 38px; border: none; background: #4f46e5; color: #fff; border-radius: 10px; cursor: pointer; display: flex; align-items: center; justify-content: center; flex-shrink: 0;" style-hover="background: #4338ca;">
+              <svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14M13 6l6 6-6 6"></path></svg>
+            </button>
+          </div>
+        </div>
+      </div>
+    </sc-if>
+
+    </div>
+  </main>
+</div>
+</sc-if>
+
+<template id="__bundler_thumbnail">
+  <svg viewBox="0 0 100 100" xmlns="http://www.w3.org/2000/svg">
+    <rect width="100" height="100" rx="20" fill="#4f46e5"/>
+    <path d="M28 72c14-40 44-40 56-56" fill="none" stroke="#fff" stroke-width="6" stroke-linecap="round"/>
+    <path d="M84 16c0 16-8 28-24 32" fill="none" stroke="#c7d2fe" stroke-width="6" stroke-linecap="round"/>
+    <circle cx="31" cy="69" r="6" fill="#fff"/>
+  </svg>
+</template></x-dc>
+<script type="text/x-dc" data-dc-script data-props="{&quot;$preview&quot;: {&quot;width&quot;: 1440, &quot;height&quot;: 900}, &quot;pathwayGoal&quot;: {&quot;editor&quot;: &quot;int&quot;, &quot;default&quot;: 85, &quot;min&quot;: 60, &quot;max&quot;: 100, &quot;tsType&quot;: &quot;number&quot;}}">
+class Component extends DCLogic {
+  constructor(props) {
+    super(props);
+    this.state = {
+      view: 'home',
+      screen: 'login', step: 0, profile: null, genIdeas: null, genState: 'idle',
+      form: this.blankForm(),
+      activityTab: 'All',
+      schFilter: 'All',
+      collegeTab: 'All',
+      selectedEssay: 0,
+      chatInput: '',
+      tasks: [
+        { id: 1, text: 'Finish "Why CS" reflection in Essay Studio', done: false, tag: 'Essay' },
+        { id: 2, text: 'Email Ms. Alvarez about bio research', done: false, tag: 'Research' },
+        { id: 3, text: 'Pick junior-year courses in Planner', done: false, tag: 'Academic' },
+        { id: 4, text: 'Log April debate tournament result', done: true, tag: 'Activity' },
+        { id: 5, text: 'Add 3 reach schools to College Explorer', done: true, tag: 'College' }
+      ],
+      chat: [
+        { role: 'assistant', text: "Hi Maya — I'm your Pathway Coach. Your score is 72 and climbing nicely (+14 this semester). Your academics are strong; the highest-leverage move right now is landing a research experience this summer. Want a plan?" }
+      ]
+    };
+  }
+
+  // ---------- icon factory ----------
+  icon(id, size, color) {
+    const h = React.createElement;
+    const s = size || 18;
+    const c = color || 'currentColor';
+    const wrap = (children) => h('svg', { width: s, height: s, viewBox: '0 0 24 24', fill: 'none', stroke: c, strokeWidth: 1.85, strokeLinecap: 'round', strokeLinejoin: 'round' }, children);
+    const M = {
+      home: () => [h('path', { key: 1, d: 'M3 10.5 12 4l9 6.5' }), h('path', { key: 2, d: 'M5 9.5V20h14V9.5' }), h('path', { key: 3, d: 'M10 20v-5h4v5' })],
+      coach: () => [h('path', { key: 1, d: 'M21 11.5a8.4 8.4 0 0 1-9 8.3L4 21l1.2-3.6A8.4 8.4 0 1 1 21 11.5Z' }), h('circle', { key: 2, cx: 9, cy: 11.5, r: .8, fill: c }), h('circle', { key: 3, cx: 12.5, cy: 11.5, r: .8, fill: c }), h('circle', { key: 4, cx: 16, cy: 11.5, r: .8, fill: c })],
+      pathway: () => [h('circle', { key: 1, cx: 12, cy: 12, r: 9 }), h('circle', { key: 2, cx: 12, cy: 12, r: 5 }), h('circle', { key: 3, cx: 12, cy: 12, r: 1.4, fill: c, stroke: 'none' })],
+      profile: () => [h('circle', { key: 1, cx: 12, cy: 8, r: 4 }), h('path', { key: 2, d: 'M4 20c1.6-4.2 5-5.8 8-5.8s6.4 1.6 8 5.8' })],
+      roadmap: () => [h('circle', { key: 1, cx: 6, cy: 6, r: 2 }), h('circle', { key: 2, cx: 18, cy: 18, r: 2 }), h('path', { key: 3, d: 'M8 6h7a3 3 0 0 1 3 3v5M6 8v7a3 3 0 0 0 3 3h5' })],
+      academics: () => [h('path', { key: 1, d: 'M12 6c-1.6-1-4-1.6-6-1.6V18c2 0 4.4.6 6 1.6 1.6-1 4-1.6 6-1.6V4.4c-2 0-4.4.6-6 1.6Z' }), h('path', { key: 2, d: 'M12 6v13.6' })],
+      activities: () => [h('path', { key: 1, d: 'M13 3 4 14h6l-1 7 9-11h-6z' })],
+      projects: () => [h('path', { key: 1, d: 'M12 3 4 7.5v9L12 21l8-4.5v-9z' }), h('path', { key: 2, d: 'M4 7.5 12 12l8-4.5M12 12v9' })],
+      resume: () => [h('path', { key: 1, d: 'M14 3v4h4' }), h('path', { key: 2, d: 'M14 3H7a1 1 0 0 0-1 1v16a1 1 0 0 0 1 1h11a1 1 0 0 0 1-1V8z' }), h('path', { key: 3, d: 'M9 13h6M9 16.5h4' })],
+      essays: () => [h('path', { key: 1, d: 'M14.5 5.5l4 4M4 20l1-4L16 5a2.1 2.1 0 0 1 3 3L8 19z' })],
+      scholarships: () => [h('circle', { key: 1, cx: 12, cy: 9, r: 5 }), h('path', { key: 2, d: 'M9 13.4 7.5 21 12 18.4 16.5 21 15 13.4' })],
+      colleges: () => [h('path', { key: 1, d: 'M12 4 2 9l10 5 10-5z' }), h('path', { key: 2, d: 'M6 11.4V16c0 1.5 2.7 3 6 3s6-1.5 6-3v-4.6' })],
+      applications: () => [h('rect', { key: 1, x: 6, y: 4, width: 12, height: 17, rx: 2 }), h('path', { key: 2, d: 'M9 4h6v2.5H9z' }), h('path', { key: 3, d: 'M9 12.5l2 2 4-4' })],
+      calendar: () => [h('rect', { key: 1, x: 4, y: 5, width: 16, height: 16, rx: 2 }), h('path', { key: 2, d: 'M4 9.5h16M8 3v4M16 3v4' })],
+      settings: () => [h('path', { key: 1, d: 'M4 7h9M18 7h2M4 17h11M19 17h1' }), h('circle', { key: 2, cx: 15, cy: 7, r: 2 }), h('circle', { key: 3, cx: 9, cy: 17, r: 2 })],
+      bolt: () => [h('path', { key: 1, d: 'M13 3 4 14h6l-1 7 9-11h-6z' })],
+      target: () => [h('circle', { key: 1, cx: 12, cy: 12, r: 9 }), h('circle', { key: 2, cx: 12, cy: 12, r: 5 }), h('circle', { key: 3, cx: 12, cy: 12, r: 1.4, fill: c, stroke: 'none' })],
+      flask: () => [h('path', { key: 1, d: 'M9 3h6M10 3v6l-5 8a2 2 0 0 0 1.8 3h10.4A2 2 0 0 0 19 17l-5-8V3' }), h('path', { key: 2, d: 'M7.5 14h9' })],
+      book: () => [h('path', { key: 1, d: 'M12 6c-1.6-1-4-1.6-6-1.6V18c2 0 4.4.6 6 1.6 1.6-1 4-1.6 6-1.6V4.4c-2 0-4.4.6-6 1.6Z' })],
+      heart: () => [h('path', { key: 1, d: 'M12 20s-7-4.5-9-9a4.2 4.2 0 0 1 7.6-2.6L12 9l1.4-1.6A4.2 4.2 0 0 1 21 11c-2 4.5-9 9-9 9Z' })],
+      doc: () => [h('path', { key: 1, d: 'M14 3v4h4' }), h('path', { key: 2, d: 'M14 3H7a1 1 0 0 0-1 1v16a1 1 0 0 0 1 1h11a1 1 0 0 0 1-1V8z' })],
+      users: () => [h('circle', { key: 1, cx: 9, cy: 8, r: 3.2 }), h('path', { key: 2, d: 'M3.5 19c1-3 3.2-4.2 5.5-4.2S13.5 16 14.5 19' }), h('path', { key: 3, d: 'M16 5.2a3.2 3.2 0 0 1 0 6M18.5 19c-.3-1.8-1-3-2.2-3.8' })],
+      sparkle: () => [h('path', { key: 1, d: 'M12 3l1.6 5L19 9.5l-5.4 1.5L12 16l-1.6-5L5 9.5l5.4-1.5z', fill: c, stroke: 'none' })]
+    };
+    return wrap((M[id] || M.home)());
+  }
+
+  check(color) {
+    return React.createElement('svg', { width: 11, height: 11, viewBox: '0 0 24 24', fill: 'none', stroke: color || '#fff', strokeWidth: 3.4, strokeLinecap: 'round', strokeLinejoin: 'round' }, React.createElement('path', { d: 'M20 6 9 17l-5-5' }));
+  }
+
+  // ---------- charts ----------
+  ringMini(value, color, size) {
+    const h = React.createElement;
+    const s = size || 46, sw = 5, r = (s - sw) / 2, cx = s / 2, c = 2 * Math.PI * r;
+    return h('svg', { width: s, height: s, viewBox: `0 0 ${s} ${s}` }, [
+      h('circle', { key: 1, cx, cy: cx, r, fill: 'none', stroke: '#eeede9', strokeWidth: sw }),
+      h('circle', { key: 2, cx, cy: cx, r, fill: 'none', stroke: color, strokeWidth: sw, strokeLinecap: 'round', strokeDasharray: c, strokeDashoffset: c * (1 - value / 100), transform: `rotate(-90 ${cx} ${cx})` }),
+      h('text', { key: 3, x: cx, y: cx + 4, textAnchor: 'middle', fontSize: 13, fontWeight: 800, fill: '#2c313a', fontFamily: 'Plus Jakarta Sans' }, value)
+    ]);
+  }
+
+  heroRingEl(value, stroke, track, size) {
+    const h = React.createElement;
+    const s = size || 132, sw = stroke || 11, r = (s - sw) / 2, cx = s / 2, c = 2 * Math.PI * r;
+    return h('svg', { width: s, height: s, viewBox: `0 0 ${s} ${s}` }, [
+      h('circle', { key: 1, cx, cy: cx, r, fill: 'none', stroke: track, strokeWidth: sw }),
+      h('circle', { key: 2, cx, cy: cx, r, fill: 'none', stroke: '#ffffff', strokeWidth: sw, strokeLinecap: 'round', strokeDasharray: c, strokeDashoffset: c * (1 - value / 100), transform: `rotate(-90 ${cx} ${cx})` })
+    ]);
+  }
+
+  bigRingEl(value) {
+    const h = React.createElement;
+    const s = 200, sw = 16, r = (s - sw) / 2, cx = s / 2, c = 2 * Math.PI * r;
+    return h('svg', { width: s, height: s, viewBox: `0 0 ${s} ${s}` }, [
+      h('defs', { key: 0 }, h('linearGradient', { id: 'pwbig', x1: 0, y1: 0, x2: 1, y2: 1 }, [h('stop', { key: 1, offset: 0, stopColor: '#c7d2fe' }), h('stop', { key: 2, offset: 1, stopColor: '#ffffff' })])),
+      h('circle', { key: 1, cx, cy: cx, r, fill: 'none', stroke: 'rgba(255,255,255,.2)', strokeWidth: sw }),
+      h('circle', { key: 2, cx, cy: cx, r, fill: 'none', stroke: 'url(#pwbig)', strokeWidth: sw, strokeLinecap: 'round', strokeDasharray: c, strokeDashoffset: c * (1 - value / 100), transform: `rotate(-90 ${cx} ${cx})` })
+    ]);
+  }
+
+  radarEl(cats) {
+    const h = React.createElement;
+    const size = 260, cx = size / 2, cy = size / 2, R = 96, n = cats.length;
+    const pt = (i, rad) => {
+      const a = -Math.PI / 2 + i * 2 * Math.PI / n;
+      return [cx + Math.cos(a) * rad, cy + Math.sin(a) * rad];
+    };
+    const grids = [0.25, 0.5, 0.75, 1].map((g, gi) => {
+      const pts = cats.map((_, i) => pt(i, R * g).join(',')).join(' ');
+      return h('polygon', { key: 'g' + gi, points: pts, fill: 'none', stroke: '#eceaf6', strokeWidth: 1 });
+    });
+    const axes = cats.map((_, i) => {
+      const p = pt(i, R);
+      return h('line', { key: 'a' + i, x1: cx, y1: cy, x2: p[0], y2: p[1], stroke: '#f0eef8', strokeWidth: 1 });
+    });
+    const dataPts = cats.map((c, i) => pt(i, R * c.score / 100).join(',')).join(' ');
+    const dots = cats.map((c, i) => { const p = pt(i, R * c.score / 100); return h('circle', { key: 'd' + i, cx: p[0], cy: p[1], r: 2.6, fill: '#4f46e5' }); });
+    const labels = cats.map((c, i) => {
+      const p = pt(i, R + 16);
+      const a = -Math.PI / 2 + i * 2 * Math.PI / n;
+      const anchor = Math.abs(Math.cos(a)) < 0.3 ? 'middle' : (Math.cos(a) > 0 ? 'start' : 'end');
+      return h('text', { key: 'l' + i, x: p[0], y: p[1] + 3, textAnchor: anchor, fontSize: 9.5, fontWeight: 600, fill: '#9097a0', fontFamily: 'JetBrains Mono' }, c.short);
+    });
+    return h('svg', { width: size + 60, height: size + 20, viewBox: `-30 -10 ${size + 60} ${size + 20}` }, [
+      ...grids, ...axes,
+      h('polygon', { key: 'data', points: dataPts, fill: 'rgba(79,70,229,.14)', stroke: '#4f46e5', strokeWidth: 2, strokeLinejoin: 'round' }),
+      ...dots, ...labels
+    ]);
+  }
+
+  trendEl(hist, goal) {
+    const h = React.createElement;
+    const w = 330, ht = 150, pl = 8, pr = 8, pt = 14, pb = 26;
+    const iw = w - pl - pr, ih = ht - pt - pb, n = hist.length;
+    const x = i => pl + (i / (n - 1)) * iw;
+    const y = v => (ht - pb) - (v / 100) * ih;
+    const linePts = hist.map((d, i) => `${x(i)},${y(d.v)}`).join(' ');
+    const areaPath = `M ${x(0)},${ht - pb} ` + hist.map((d, i) => `L ${x(i)},${y(d.v)}`).join(' ') + ` L ${x(n - 1)},${ht - pb} Z`;
+    const gy = y(goal);
+    const dots = hist.map((d, i) => h('circle', { key: 'p' + i, cx: x(i), cy: y(d.v), r: i === n - 1 ? 4.5 : 3, fill: '#fff', stroke: '#4f46e5', strokeWidth: 2 }));
+    const labels = hist.map((d, i) => h('text', { key: 'm' + i, x: x(i), y: ht - 8, textAnchor: 'middle', fontSize: 9.5, fill: '#aab', fontFamily: 'JetBrains Mono' }, d.m));
+    return h('svg', { width: '100%', height: ht, viewBox: `0 0 ${w} ${ht}` }, [
+      h('defs', { key: 0 }, h('linearGradient', { id: 'pwtrend', x1: 0, y1: 0, x2: 0, y2: 1 }, [h('stop', { key: 1, offset: 0, stopColor: 'rgba(79,70,229,.18)' }), h('stop', { key: 2, offset: 1, stopColor: 'rgba(79,70,229,0)' })])),
+      h('line', { key: 'goal', x1: pl, y1: gy, x2: w - pr, y2: gy, stroke: '#f59e0b', strokeWidth: 1.4, strokeDasharray: '4 4' }),
+      h('text', { key: 'goalt', x: w - pr, y: gy - 5, textAnchor: 'end', fontSize: 9.5, fontWeight: 700, fill: '#d97706', fontFamily: 'JetBrains Mono' }, 'goal ' + goal),
+      h('path', { key: 'area', d: areaPath, fill: 'url(#pwtrend)' }),
+      h('polyline', { key: 'line', points: linePts, fill: 'none', stroke: '#4f46e5', strokeWidth: 2.6, strokeLinecap: 'round', strokeLinejoin: 'round' }),
+      ...dots, ...labels
+    ]);
+  }
+
+  // ---------- helpers ----------
+  catColor(s) { return s >= 75 ? '#059669' : (s >= 60 ? '#4f46e5' : '#e8943a'); }
+  chip(cat) {
+    const m = { Leadership: ['#fef0e7', '#c2410c'], STEM: ['#eaf1fe', '#2563bd'], Service: ['#eafaf1', '#1b9e5f'], Research: ['#f3eefe', '#7c3aed'], Academics: ['#eaf1fe', '#2563bd'] };
+    return m[cat] || ['#f3f2ee', '#5b6068'];
+  }
+  collegeLogo(abbr) {
+    const map = { MIT: ['#fbe9ea', '#a31621'], CMU: ['#fdf0e6', '#b3531d'], UCB: ['#e9eefb', '#1e3a8a'], GT: ['#f0eee6', '#8c6d1f'], UW: ['#f1ecf8', '#4b2e83'], PUR: ['#f5f0e2', '#9a7d1a'], UMA: ['#eaf3ee', '#1b5e3a'] };
+    return map[abbr] || ['#f3f2ee', '#5b6068'];
+  }
+
+  setView(v) { this.setState({ view: v }); }
+  toggleTask(id) { this.setState(s => ({ tasks: s.tasks.map(t => t.id === id ? { ...t, done: !t.done } : t) })); }
+
+  cannedReply(q) {
+    const t = q.toLowerCase();
+    if (t.includes('research') || t.includes('lab') || t.includes('bio'))
+      return "Great target. For a 10th grader in computational biology, here's a realistic summer research path:\n\n1. Email 5 professors at nearby universities with a 4-line, specific note (your Food Bank inventory app shows initiative — mention it).\n2. Apply to structured programs: MIT PRIMES, Garcia (Stony Brook), and your state flagship's high-school research track.\n3. If nothing lands, start an independent project with a mentor — a small ML model on open biology data counts.\n\nClosing this gap could move your Pathway Score +6. Want me to draft the outreach email?";
+    if (t.includes('score') || t.includes('raise') || t.includes('fast'))
+      return "Fastest wins for your profile (current score 72):\n\n• +6 — Land a research experience (your biggest gap at 45).\n• +4 — Convert a club membership into a leadership role.\n• +3 — Swap Honors Chem → AP Bio for junior year.\n\nDo the research outreach first — it's the hardest to start and the highest payoff. Want a week-by-week summer plan?";
+    if (t.includes('junior') || t.includes('plan') || t.includes('11'))
+      return "Junior-year plan to set up strong applications:\n\nFall — AP Bio + AP CS A, run for Coding Club VP, take the PSAT/NMSQT seriously.\nWinter — start SAT prep, register for Regeneron/ISEF-affiliated fair with your project.\nSpring — first SAT sitting, lock 2 teacher recommenders, draft your Common App essay.\n\nI've added these as milestones to your Roadmap. Want me to schedule the deadlines?";
+    if (t.includes('project') || t.includes('passion') || t.includes('idea'))
+      return "Three passion-project ideas tied to your comp-bio interest:\n\n1. BioSort — a CNN that classifies microscopy cells; release it open-source and present at your science fair.\n2. Extend your Food Bank app with a demand-forecasting model — measurable community impact.\n3. A teen-friendly explainer site on a public-health dataset (e.g. local air quality vs. asthma).\n\nPick one and I'll break it into milestones in the Project Builder.";
+    return "Here's how I'd think about it for your profile: you're academically strong (top 18% for your grade), so the leverage now is depth — one serious research experience and one leadership role tied to your comp-bio story. Tell me which area you want to push on (research, leadership, courses, or a project) and I'll build a concrete plan.";
+  }
+
+  onChatInput(e) { this.setState({ chatInput: e.target.value }); }
+  send(text) {
+    const q = (text != null ? text : this.state.chatInput).trim();
+    if (!q) return;
+    const reply = this.cannedReply(q);
+    this.setState(s => ({ chat: [...s.chat, { role: 'user', text: q }, { role: 'assistant', text: reply }], chatInput: '' }));
+  }
+  onChatKey(e) { if (e.key === 'Enter' && !e.shiftKey) { e.preventDefault(); this.send(); } }
+
+  blankForm() {
+    return { name: '', email: '', password: '', grade: '10', school: '', major: '', interests: [], interestDraft: '', gpa: 3.5, rigor: 'some', testing: 'notyet', activitiesText: '', leadership: 'member', serviceHours: 40, research: 'no', awards: 1, dreamSchools: '', helpWith: [] };
+  }
+  componentDidMount() {
+    try {
+      const raw = localStorage.getItem('pathway_profile_v1');
+      if (raw) { const d = JSON.parse(raw); if (d && d.profile) this.setState({ form: d.form || this.blankForm(), profile: d.profile, genIdeas: d.genIdeas || null, screen: 'app', genState: 'done' }); }
+    } catch (e) {}
+  }
+  setField(k, v) { this.setState(s => ({ form: { ...s.form, [k]: v } })); }
+  addInterest() { const d = (this.state.form.interestDraft || '').trim(); if (!d) return; this.setState(s => ({ form: { ...s.form, interests: [...s.form.interests, d], interestDraft: '' } })); }
+  removeInterest(i) { this.setState(s => ({ form: { ...s.form, interests: s.form.interests.filter((_, x) => x !== i) } })); }
+  toggleHelp(v) { this.setState(s => { const has = s.form.helpWith.includes(v); return { form: { ...s.form, helpWith: has ? s.form.helpWith.filter(x => x !== v) : [...s.form.helpWith, v] } }; }); }
+  nextStep() { this.setState(s => ({ step: Math.min(3, s.step + 1) })); }
+  prevStep() { this.setState(s => ({ step: Math.max(0, s.step - 1) })); }
+  login() { this.setState({ screen: 'app', view: 'home' }); }
+  gotoSignup() { this.setState({ screen: 'signup', step: 0 }); }
+  gotoLogin() { this.setState({ screen: 'login' }); }
+  logout() { try { localStorage.removeItem('pathway_profile_v1'); } catch (e) {} this.setState({ profile: null, genIdeas: null, screen: 'login', step: 0, view: 'home', form: this.blankForm() }); }
+  buildPathway() { const f = this.state.form; const profile = this.computeProfile(f); this.setState({ profile, screen: 'building', genState: 'loading' }); this.generateIdeas(f, profile); }
+
+  ideaPrompt(f) {
+    const acts = (f.activitiesText || '').split('\n').map(s => s.trim()).filter(Boolean).join('; ');
+    return 'You are an expert U.S. college admissions strategist. Profile of a grade ' + f.grade + ' student.\n'
+      + 'Name: ' + (f.name || 'Student') + '. Intended major: ' + (f.major || 'undecided') + '. Interests: ' + (f.interests.join(', ') || 'n/a') + '.\n'
+      + 'GPA: ' + f.gpa + '. Activities: ' + (acts || 'few') + '. Leadership: ' + f.leadership + '. Service hours: ' + f.serviceHours + '. Research: ' + f.research + '.\n'
+      + 'They want help with: ' + (f.helpWith.join(', ') || 'overall strategy') + '.\n'
+      + 'Respond with ONLY valid minified JSON, no markdown, exactly this shape: '
+      + '{"strategy":"2-3 sentence personalized strategy","essayIdeas":[{"title":"short title","angle":"one sentence angle"}],"passionProjects":[{"name":"short name","description":"one sentence","impact":"short measurable-impact phrase"}]} '
+      + 'Give exactly 3 essayIdeas and 3 passionProjects tailored to THIS student. Keep each field under 28 words.';
+  }
+  async generateIdeas(f, profile) {
+    let ideas = null;
+    try {
+      if (window.claude && window.claude.complete) {
+        const raw = await window.claude.complete({ messages: [{ role: 'user', content: this.ideaPrompt(f) }] });
+        const m = raw && raw.match(/\{[\s\S]*\}/);
+        if (m) { const j = JSON.parse(m[0]); if (j && Array.isArray(j.essayIdeas) && Array.isArray(j.passionProjects)) ideas = j; }
+      }
+    } catch (e) { ideas = null; }
+    if (!ideas) ideas = this.fallbackIdeas(f);
+    await new Promise(r => setTimeout(r, 700));
+    this.setState({ genIdeas: ideas, genState: 'done', screen: 'app', view: 'home' });
+    try { localStorage.setItem('pathway_profile_v1', JSON.stringify({ form: f, profile, genIdeas: ideas })); } catch (e) {}
+  }
+  fallbackIdeas(f) {
+    const major = f.major || 'your field';
+    const i0 = (f.interests && f.interests[0]) || major;
+    const i2 = (f.interests && f.interests.slice(0, 2).join(' and ')) || major;
+    return {
+      strategy: 'As a grade ' + f.grade + ' student aiming for ' + major + ', your edge is depth: pair your strongest interest with one research experience and one leadership role, then tell that story consistently across your application.',
+      essayIdeas: [
+        { title: 'The spark behind ' + major, angle: 'A specific moment that turned a casual interest in ' + i0 + ' into something you pursue seriously.' },
+        { title: "A problem you couldn't ignore", angle: 'A real problem in your community and how you tried to solve it \u2014 and what it revealed about how you think.' },
+        { title: 'Where your worlds meet', angle: 'Connect two interests (' + i2 + ') and what their intersection lets you notice that others miss.' }
+      ],
+      passionProjects: [
+        { name: major + ' for your community', description: 'A small, real project applying ' + major + ' to a local need you care about.', impact: 'a measurable benefit for a group you can reach' },
+        { name: 'An open build in ' + i0, description: 'Make something public \u2014 an app, dataset, site, or study \u2014 and share it openly.', impact: 'real users or an audience you can point to' },
+        { name: 'Teach what you love', description: 'Start a club or workshop that teaches ' + i0 + ' to younger students.', impact: 'students reached and skills taught' }
+      ]
+    };
+  }
+  computeProfile(f) {
+    const clamp = (n) => Math.max(10, Math.min(99, Math.round(n)));
+    const gradeNum = parseInt(f.grade, 10) || 10;
+    const acts = (f.activitiesText || '').split('\n').map(s => s.trim()).filter(Boolean);
+    const actCount = acts.length;
+    const acad = clamp((f.gpa - 2) / 2 * 100);
+    const rigor = ({ none: 42, some: 68, many: 88 })[f.rigor] || 60;
+    const testing = ({ notyet: 46, psat: 66, taken: 85 })[f.testing] || 50;
+    const leadership = ({ none: 42, member: 60, leader: 84 })[f.leadership] || 55;
+    const activitiesS = clamp(40 + actCount * 9);
+    const service = clamp(40 + (Number(f.serviceHours) || 0) / 3);
+    const research = f.research === 'yes' ? 84 : 42;
+    const awards = clamp(44 + (Number(f.awards) || 0) * 12);
+    const narrativeS = clamp(54 + (f.major ? 10 : 0) + (f.interests.length >= 3 ? 8 : 0));
+    const cats = [
+      { name: 'Academic Performance', short: 'Academics', score: acad, note: 'GPA ' + f.gpa },
+      { name: 'Course Rigor', short: 'Rigor', score: rigor, note: ({ none: 'standard load', some: 'some honors', many: 'honors/AP' })[f.rigor] || '' },
+      { name: 'Standardized Testing', short: 'Testing', score: testing, note: ({ notyet: 'not yet', psat: 'PSAT done', taken: 'SAT/ACT' })[f.testing] || '' },
+      { name: 'Leadership', short: 'Leadership', score: leadership, note: ({ none: 'none yet', member: 'member', leader: 'a role' })[f.leadership] || '' },
+      { name: 'Extracurricular Depth', short: 'Activities', score: activitiesS, note: actCount + ' activities' },
+      { name: 'Community Impact', short: 'Service', score: service, note: (Number(f.serviceHours) || 0) + ' hrs' },
+      { name: 'Research', short: 'Research', score: research, note: f.research === 'yes' ? 'yes' : 'none yet' },
+      { name: 'Awards & Honors', short: 'Awards', score: awards, note: (Number(f.awards) || 0) + ' awards' },
+      { name: 'Personal Narrative', short: 'Narrative', score: narrativeS, note: 'developing' }
+    ];
+    const weights = { Academics: .18, Rigor: .12, Testing: .1, Leadership: .1, Activities: .12, Service: .1, Research: .12, Awards: .08, Narrative: .08 };
+    const overall = clamp(cats.reduce((a, c) => a + c.score * weights[c.short], 0));
+    const tier = overall < 50 ? 'Getting started' : overall < 65 ? 'Building foundation' : overall < 75 ? 'Building momentum' : overall < 85 ? 'Highly competitive' : 'Elite tier';
+    const percentile = Math.max(2, Math.min(60, Math.round((100 - overall) * 0.8)));
+    const sorted = [...cats].sort((a, b) => b.score - a.score);
+    const sMap = { Academics: 'Strong academic performance anchors your profile', Rigor: 'A challenging course load shows you push yourself', Testing: 'Solid standardized-testing progress', Leadership: 'Real leadership experience stands out', Activities: 'Good extracurricular breadth and commitment', Service: 'Meaningful community-service contribution', Research: 'Research experience \u2014 rare and valuable for applicants', Awards: 'Recognition that strengthens your profile', Narrative: 'A clear, developing personal story' };
+    const major = f.major || 'your field';
+    const iMap = { Academics: 'Keep your GPA trending up \u2014 it anchors everything', Rigor: 'Add honors/AP courses, especially in ' + major, Testing: 'Build a testing plan: PSAT \u2192 SAT/ACT', Leadership: 'Turn membership into a real leadership role', Activities: 'Add 1\u20132 activities tied to ' + major, Service: 'Grow consistent community-service hours', Research: 'Pursue a research experience \u2014 your highest-leverage gap', Awards: 'Enter competitions to earn recognition', Narrative: 'Develop your personal narrative in Essay Studio' };
+    const strengths = sorted.slice(0, 3).map(c => sMap[c.short]);
+    const bottom = sorted.slice(-3).reverse();
+    const improvements = bottom.map(c => iMap[c.short]);
+    const recIcon = { Research: 'flask', Leadership: 'bolt', Activities: 'bolt', Service: 'heart', Academics: 'book', Rigor: 'book', Testing: 'book', Awards: 'scholarships', Narrative: 'essays' };
+    const impacts = ['+6', '+4', '+3'];
+    const recommendations = bottom.map((c, i) => ({ title: iMap[c.short], why: 'Your ' + c.short + ' score is ' + c.score + ' \u2014 the biggest opportunity to grow.', impact: impacts[i] || '+2', icon: recIcon[c.short] || 'target' }));
+    const guessCat = (n) => { const l = n.toLowerCase(); if (/debate|model un|president|captain|founder|council|lead/.test(l)) return 'Leadership'; if (/volunteer|service|food|habitat|tutor|hospital|charity|clean|shelter/.test(l)) return 'Service'; return 'STEM'; };
+    const activities = actCount ? acts.map(n => ({ name: n, role: 'Member', cat: guessCat(n), hours: '\u2014', since: '2024', desc: 'Added during onboarding \u2014 open it to log hours, your role and highlights.' })) : [{ name: 'No activities yet', role: 'Add your first activity', cat: 'STEM', hours: '\u2014', since: '\u2014', desc: 'Logging extracurriculars raises your Activities and Leadership scores.' }];
+    const grad = 2026 + Math.max(0, 12 - gradeNum);
+    const firstName = (f.name || 'You').split(' ')[0];
+    const narrative = firstName + ' is a grade ' + f.grade + ' student drawn to ' + major + (f.interests.length ? (', with interests in ' + f.interests.slice(0, 3).join(', ')) : '') + '. The strongest next move is ' + bottom[0].short.toLowerCase() + ' \u2014 that is where this profile can grow the most.';
+    const profileStats = [{ value: String(overall), label: 'Pathway Score' }, { value: String(f.gpa), label: 'Weighted GPA' }, { value: String(actCount), label: 'Activities' }, { value: String(Number(f.serviceHours) || 0), label: 'Service hours' }];
+    const startScore = clamp(overall - 12);
+    const history = [0, 1, 2, 3, 4, 5].map(i => ({ m: i === 5 ? 'Now' : '-' + (5 - i), v: clamp(startScore + (overall - startScore) * i / 5) }));
+    return {
+      name: f.name || 'Student', major: f.major || 'Undecided', gradeLabel: 'Grade ' + f.grade, gradeNum, classOf: 'Class of ' + grad, school: f.school || 'My School', email: f.email || 'student@email.com', location: 'United States',
+      gpa: String(f.gpa), score: overall, tier, percentile, categories: cats, strengths, improvements, history, recommendations, activities, interests: f.interests.length ? f.interests : [major], profileStats, narrative
+    };
+  }
+  activeProfile() {
+    if (this.state.profile) {
+      const p = this.state.profile;
+      const ideas = this.state.genIdeas || this.fallbackIdeas(this.state.form);
+      const essays = (ideas.essayIdeas || []).map(e => ({ title: e.title, status: 'Idea', words: 0, target: 650, updated: 'AI suggested', prompt: e.angle, body: 'Start drafting here\u2026\n\nWhy this works: ' + e.angle, feedback: [['Idea', '#7c3aed', e.angle]] }));
+      const projectsRaw = (ideas.passionProjects || []).map(pr => ({ name: pr.name, stage: 'Idea', progress: 0, desc: pr.description + (pr.impact ? ('  \u00b7  Impact: ' + pr.impact) : ''), milestones: [['Define scope & a clear goal', false], ['Build a first working version', false], ['Get feedback from real users', false], ['Measure impact & present it', false]] }));
+      return Object.assign({}, p, { narrative: (ideas.strategy || p.narrative), essays, projectsRaw });
+    }
+    return {
+      name: 'Maya Chen', major: 'Computational Biology', gradeLabel: 'Grade 10', gradeNum: 10, classOf: 'Class of 2028', school: 'Riverside High School', email: 'maya.chen@email.com', location: 'Austin, TX',
+      gpa: '3.92', score: 72, tier: 'Building momentum', percentile: 18,
+      categories: [
+        { name: 'Academic Performance', short: 'Academics', score: 84, note: 'GPA 3.92' },
+        { name: 'Course Rigor', short: 'Rigor', score: 70, note: '2 Honors' },
+        { name: 'Standardized Testing', short: 'Testing', score: 62, note: 'PSAT 1280' },
+        { name: 'Leadership', short: 'Leadership', score: 58, note: '1 role' },
+        { name: 'Extracurricular Depth', short: 'Activities', score: 76, note: '5 active' },
+        { name: 'Community Impact', short: 'Service', score: 80, note: '120 hrs' },
+        { name: 'Research', short: 'Research', score: 45, note: 'none yet' },
+        { name: 'Awards & Honors', short: 'Awards', score: 52, note: '2 regional' },
+        { name: 'Personal Narrative', short: 'Narrative', score: 66, note: 'drafting' }
+      ],
+      strengths: ['Strong, upward GPA trend in STEM coursework', 'Consistent community service \u2014 120+ logged hours', 'Clear, authentic computational-biology interest thread'],
+      improvements: ['No research experience yet \u2014 highest-leverage gap for STEM', 'Course rigor: add AP Bio & AP CS for junior year', 'Leadership depth \u2014 convert membership into a real role'],
+      history: [{ m: 'Jan', v: 58 }, { m: 'Feb', v: 61 }, { m: 'Mar', v: 63 }, { m: 'Apr', v: 66 }, { m: 'May', v: 69 }, { m: 'Jun', v: 72 }],
+      recommendations: [
+        { title: 'Apply to a summer research program', why: 'Closes your biggest gap (Research, 45) and fits comp-bio.', impact: '+6', icon: 'flask' },
+        { title: 'Run for VP of Coding Club', why: 'Turns membership into the leadership role admissions look for.', impact: '+4', icon: 'bolt' },
+        { title: 'Swap Honors Chem \u2192 AP Bio next year', why: 'Raises course rigor and aligns with your major.', impact: '+3', icon: 'book' }
+      ],
+      activities: [
+        { name: 'Varsity Debate', role: 'Member \u00b7 aiming for captain', cat: 'Leadership', hours: '4 hr/wk', since: '2023', desc: 'Lincoln-Douglas debate; reached two regional finals this year.' },
+        { name: 'Coding Club', role: 'Member', cat: 'STEM', hours: '2 hr/wk', since: '2024', desc: 'Built the club website; teaching an intro-to-Python workshop series.' },
+        { name: 'City Food Bank', role: 'Volunteer', cat: 'Service', hours: '120 hrs', since: '2022', desc: 'Weekend logistics; prototyping an inventory app to cut food waste.' },
+        { name: 'Science Olympiad', role: 'Anatomy & Physiology event', cat: 'STEM', hours: '3 hr/wk', since: '2023', desc: 'Regional bronze medal; deep dive into human anatomy.' },
+        { name: 'Hospital Volunteer', role: 'Junior volunteer', cat: 'Service', hours: '60 hrs', since: '2024', desc: 'Patient transport and shadowing; exploring biomedical interests.' }
+      ],
+      essays: [
+        { title: 'Common App \u2014 Personal Statement', status: 'Drafting', words: 412, target: 650, updated: '2d ago', prompt: 'Share an essay on any topic of your choice about your background, identity, interest, or talent.', body: "The inventory spreadsheet at the City Food Bank had 1,400 rows and no logic. Every Saturday I watched volunteers guess which shelves were overstocked while bread quietly expired in the back.\n\nI'm not sure when curiosity turned into responsibility. Somewhere between sorting cans and learning Python, I started seeing the pantry as a system \u2014 inputs, outputs, waste I could measure. So I built a small app that flagged items nearing expiration...", feedback: [['Strong', '#059669', 'Vivid, specific opening \u2014 the 1,400 rows make it real.'], ['Develop', '#d97706', 'Connect the app back to who you are, not just what you did.'], ['Watch', '#dc2626', "You're at 412/650 \u2014 the reflection section needs the most room."]] },
+        { title: '"Why Computer Science" reflection', status: 'In review', words: 280, target: 300, updated: '5h ago', prompt: 'Why do you want to study Computer Science?', body: "For me, code is the shortest path between caring about a problem and actually fixing it...", feedback: [['Strong', '#059669', 'Clear throughline from problem to discipline.'], ['Develop', '#d97706', 'Name a specific CS idea that excites you (e.g. ML for biology).']] },
+        { title: 'Community impact \u2014 Food Bank', status: 'Outline', words: 90, target: 500, updated: '1w ago', prompt: 'Describe a community you belong to and your impact.', body: "Outline:\n\u2022 The Saturday crew\n\u2022 The waste problem\n\u2022 Building the tool\n\u2022 What changed\n\u2022 What I learned about people, not just systems", feedback: [['Tip', '#7c3aed', 'Good bones \u2014 now write the messy human moments between the bullets.']] },
+        { title: 'Activity description \u2014 Debate', status: 'Done', words: 148, target: 150, updated: '3w ago', prompt: 'Describe one activity (150 words).', body: "Lincoln-Douglas debate taught me to argue both sides before I believe one...", feedback: [['Strong', '#059669', 'Tight and within the word limit. Ready to submit.']] }
+      ],
+      projectsRaw: [
+        { name: 'BioSort \u2014 ML for cell imaging', stage: 'Building', progress: 45, desc: 'A CNN that classifies microscopy cell images, aimed at a science-fair entry and an open-source release.', milestones: [['Define problem & dataset', true], ['Build baseline model', true], ['Improve accuracy past 90%', false], ['Write up & present at fair', false]] },
+        { name: 'Food Bank Inventory App', stage: 'Planning', progress: 20, desc: 'A React + Sheets tool to forecast demand and cut waste, piloting with the City Food Bank.', milestones: [['Interview the volunteer team', true], ['Sketch the data model', false], ['Build MVP', false], ['Measure waste reduction', false]] }
+      ],
+      interests: ['Computational biology', 'Machine learning', 'Public health', 'Debate', 'Open-source', 'Volunteering'],
+      profileStats: [{ value: '72', label: 'Pathway Score' }, { value: '3.92', label: 'Weighted GPA' }, { value: '5', label: 'Activities' }, { value: '120', label: 'Service hours' }],
+      narrative: '"A systems-thinker who turns curiosity into tools that help people." Maya pairs strong STEM academics with hands-on service \u2014 building software to solve problems she encounters firsthand, from food-bank waste to biology. Her thread from community impact to computational biology is authentic and admissions-ready; the next chapter is research that proves it at scale.'
+    };
+  }
+
+  renderVals() {
+    const view = this.state.view;
+    const accent = '#4f46e5';
+    const P = this.activeProfile();
+    const name = P.name;
+    const major = P.major;
+    const goal = this.props.pathwayGoal || 85;
+    const initials = name.split(' ').map(w => w[0]).slice(0, 2).join('').toUpperCase();
+    const pathwayScore = P.score;
+
+    // nav
+    const navDef = [
+      { label: 'Overview', items: [['home', 'Dashboard'], ['coach', 'AI Coach', 'AI']] },
+      { label: 'Discover', items: [['pathway', 'Pathway Score'], ['profile', 'My Profile'], ['roadmap', 'Roadmap']] },
+      { label: 'Build', items: [['academics', 'Academic Planner'], ['activities', 'Activities'], ['projects', 'Passion Projects'], ['resume', 'Resume']] },
+      { label: 'Apply', items: [['essays', 'Essay Studio'], ['scholarships', 'Scholarships'], ['colleges', 'College Explorer'], ['applications', 'Applications']] },
+      { label: 'Manage', items: [['calendar', 'Calendar'], ['settings', 'Settings']] }
+    ];
+    const navGroups = navDef.map(g => ({
+      label: g.label,
+      items: g.items.map(it => {
+        const active = view === it[0];
+        return {
+          name: it[1], badge: it[2] || '', onClick: () => this.setView(it[0]),
+          bg: active ? '#eef0fc' : 'transparent', fg: active ? '#4338ca' : '#454a54',
+          weight: active ? 700 : 500, iconColor: active ? '#4f46e5' : '#8a909a',
+          iconEl: this.icon(it[0], 18, active ? '#4f46e5' : '#8a909a')
+        };
+      })
+    }));
+
+    const titles = { home: ['Dashboard', "Tuesday, June 23 · let's make progress"], coach: ['AI Coach', 'Your personal admissions strategist'], pathway: ['Pathway Score', 'Your competitiveness, measured'], profile: ['My Profile', 'Who you are as an applicant'], roadmap: ['Roadmap', 'Grades 9–12, planned'], academics: ['Academic Planner', 'Courses, rigor & GPA'], activities: ['Activities', 'Extracurriculars & leadership'], projects: ['Passion Projects', 'Build something that matters'], resume: ['Resume', 'Your one-page story'], essays: ['Essay Studio', 'Write, review, refine'], scholarships: ['Scholarships', 'Funding matched to you'], colleges: ['College Explorer', 'Find and match your list'], applications: ['Applications', 'Your college pipeline'], calendar: ['Calendar', 'Deadlines & milestones'], settings: ['Settings', 'Account & portals'] };
+    const vt = titles[view] || titles.home;
+
+    const is = {};
+    ['home', 'coach', 'pathway', 'profile', 'roadmap', 'academics', 'activities', 'projects', 'resume', 'essays', 'scholarships', 'colleges', 'applications', 'calendar', 'settings'].forEach(k => is[k] = view === k);
+
+    // dashboard data
+    const quickActions = [
+      { label: 'Ask Coach', icon: 'coach', view: 'coach' },
+      { label: 'Add activity', icon: 'activities', view: 'activities' },
+      { label: 'Find scholarships', icon: 'scholarships', view: 'scholarships' }
+    ].map(q => ({ label: q.label, onClick: () => this.setView(q.view), iconEl: this.icon(q.icon, 14, '#6b7079') }));
+
+    const heroStats = [{ val: P.profileStats[1].value, label: 'Weighted GPA' }, { val: P.profileStats[2].value, label: 'Activities' }, { val: P.profileStats[3].value, label: 'Service hrs' }];
+
+    const overviewCards = [
+      { icon: 'academics', value: P.profileStats[1].value, label: 'Weighted GPA', delta: '', dc: '#059669', tb: '#eaf1fe', tf: '#2563bd' },
+      { icon: 'activities', value: P.profileStats[2].value, label: 'Active commitments', delta: '', dc: '#059669', tb: '#fef0e7', tf: '#c2410c' },
+      { icon: 'scholarships', value: '$89k', label: 'Scholarships matched', delta: 'new', dc: '#7c3aed', tb: '#f3eefe', tf: '#7c3aed' },
+      { icon: 'colleges', value: '12', label: 'Colleges on list', delta: '+3', dc: '#059669', tb: '#eafaf1', tf: '#1b9e5f' }
+    ].map(c => ({ value: c.value, label: c.label, delta: c.delta, deltaColor: c.dc, tintBg: c.tb, tintFg: c.tf, iconEl: this.icon(c.icon, 17, c.tf) }));
+
+    const recIconMap = { flask: ['#f3eefe', '#7c3aed'], bolt: ['#fef0e7', '#c2410c'], book: ['#eaf1fe', '#2563bd'], heart: ['#eafaf1', '#1b9e5f'], scholarships: ['#f3eefe', '#7c3aed'], essays: ['#eef0fc', '#4f46e5'], target: ['#eef0fc', '#4f46e5'] };
+    const recommendations = P.recommendations.map(r => { const ci = recIconMap[r.icon] || recIconMap.target; return { title: r.title, why: r.why, impact: r.impact, tintBg: ci[0], tintFg: ci[1], iconEl: this.icon(r.icon, 18, ci[1]) }; });
+    const recommendationsDemo = [
+      { title: 'Apply to a summer research program', why: 'Closes your biggest gap (Research, 45) and fits comp-bio.', impact: '+6', icon: 'flask', tb: '#f3eefe', tf: '#7c3aed' },
+      { title: 'Run for VP of Coding Club', why: 'Turns membership into the leadership role admissions look for.', impact: '+4', icon: 'bolt', tb: '#fef0e7', tf: '#c2410c' },
+      { title: 'Swap Honors Chem → AP Bio next year', why: 'Raises course rigor and aligns with your major.', impact: '+3', icon: 'book', tb: '#eaf1fe', tf: '#2563bd' }
+    ].map(r => ({ ...r, tintBg: r.tb, tintFg: r.tf, iconEl: this.icon(r.icon, 18, r.tf) }));
+
+    const tasks = this.state.tasks.map(t => {
+      const cc = this.chip(t.tag);
+      return { ...t, onToggle: () => this.toggleTask(t.id), checkBorder: t.done ? '#4f46e5' : '#d4d2cc', checkBg: t.done ? '#4f46e5' : '#fff', checkEl: t.done ? this.check('#fff') : '', textColor: t.done ? '#aab' : '#2c313a', strike: t.done ? 'line-through' : 'none', tagBg: cc[0], tagFg: cc[1] };
+    });
+    const tasksDone = this.state.tasks.filter(t => t.done).length;
+    const tasksTotal = this.state.tasks.length;
+
+    const dl = [
+      { mon: 'Jun', day: '28', title: 'AP Bio summer prep signup', org: 'School', in: 'in 5 days', u: true },
+      { mon: 'Jul', day: '03', title: 'Coding for Good — application', org: 'Summer Program', in: 'in 10 days' },
+      { mon: 'Jul', day: '15', title: 'Regeneron registration opens', org: 'Competition', in: 'in 22 days' },
+      { mon: 'Aug', day: '01', title: 'Bank of America scholarship', org: 'Scholarship', in: 'in 39 days' }
+    ];
+    const deadlines = dl.map(d => ({ ...d, dateBg: d.u ? '#fef2f2' : '#f7f6f3', dateBorder: d.u ? '#fbd5d5' : '#efeee9', dateFg: d.u ? '#dc2626' : '#9aa0ab', dayFg: d.u ? '#dc2626' : '#3a3f48' }));
+
+    const ra = [
+      { who: 'You', what: 'logged 8 service hours at the Food Bank', when: '2h ago', dot: '#10b981' },
+      { who: 'Coach', what: 'added 2 summer programs to your roadmap', when: 'Yesterday', dot: '#7c3aed' },
+      { who: 'You', what: 'completed Story Mapping in Narrative Builder', when: '2d ago', dot: '#4f46e5' },
+      { who: 'Pathway', what: 'your score rose +3 to 72', when: '3d ago', dot: '#f59e0b' }
+    ];
+    const recentActivity = ra.map(a => ({ ...a, dotRing: a.dot + '22' }));
+
+    const schRaw = [
+      { name: 'Coca-Cola Scholars', amount: '$20,000', deadline: 'Oct 31', match: 92, tags: ['Leadership', 'National'] },
+      { name: 'Regeneron STEM', amount: '$5,000', deadline: 'Nov 1', match: 88, tags: ['Research', 'STEM'] },
+      { name: 'Gates Scholarship', amount: 'Full ride', deadline: 'Sep 15', match: 78, tags: ['Need-based', 'STEM'] },
+      { name: 'Burger King Scholars', amount: '$1k–$50k', deadline: 'Dec 15', match: 84, tags: ['Service', 'National'] },
+      { name: 'AXA Achievement', amount: '$10,000', deadline: 'Dec 15', match: 70, tags: ['Achievement'] },
+      { name: 'Rotary STEM Award', amount: '$2,500', deadline: 'Mar 1', match: 95, tags: ['Local', 'STEM'] }
+    ];
+    const scholarshipsMini = schRaw.slice(0, 3).map(s => ({ ...s, ring: this.ringMini(s.match, this.catColor(s.match), 44) }));
+
+    // pathway data
+    const catRaw = [
+      { name: 'Academic Performance', short: 'Academics', score: 84, note: 'GPA 3.92' },
+      { name: 'Course Rigor', short: 'Rigor', score: 70, note: '2 Honors' },
+      { name: 'Standardized Testing', short: 'Testing', score: 62, note: 'PSAT 1280' },
+      { name: 'Leadership', short: 'Leadership', score: 58, note: '1 role' },
+      { name: 'Extracurricular Depth', short: 'Activities', score: 76, note: '5 active' },
+      { name: 'Community Impact', short: 'Service', score: 80, note: '120 hrs' },
+      { name: 'Research', short: 'Research', score: 45, note: 'none yet' },
+      { name: 'Awards & Honors', short: 'Awards', score: 52, note: '2 regional' },
+      { name: 'Personal Narrative', short: 'Narrative', score: 66, note: 'drafting' }
+    ];
+    const categories = P.categories.map(c => ({ ...c, color: this.catColor(c.score) }));
+    const strengths = P.strengths;
+    const improvements = P.improvements;
+    const history = P.history;
+
+    // roadmap
+    const rmYears = [
+      { grade: 'Grade 9', label: 'Foundation', status: 'Done', state: 'done', items: [
+        { term: 'Year', title: 'Build strong GPA habits', detail: 'Finished 3.9 UW; honors track', st: 'done' },
+        { term: 'Fall', title: 'Join 2 clubs', detail: 'Debate + Science Olympiad', st: 'done' },
+        { term: 'Spring', title: 'Start volunteering', detail: 'City Food Bank weekends', st: 'done' }
+      ] },
+      { grade: 'Grade 10', label: 'Current year', status: 'In progress', state: 'current', items: [
+        { term: 'Fall', title: 'Take PSAT', detail: 'Scored 1280 — baseline set', st: 'done' },
+        { term: 'Spring', title: 'Land a leadership role', detail: 'Run for Coding Club VP', st: 'doing' },
+        { term: 'Summer', title: 'Research or summer program', detail: 'Apply to 3 — highest priority', st: 'doing' }
+      ] },
+      { grade: 'Grade 11', label: 'Peak year', status: 'Planned', state: 'upcoming', items: [
+        { term: 'Fall', title: 'AP Bio + AP CS A', detail: 'Raise rigor for major fit', st: 'todo' },
+        { term: 'Winter', title: 'First SAT + prep', detail: 'Target 1450+', st: 'todo' },
+        { term: 'Spring', title: 'Enter Regeneron / ISEF', detail: 'Present passion project', st: 'todo' }
+      ] },
+      { grade: 'Grade 12', label: 'Apply', status: 'Planned', state: 'upcoming', items: [
+        { term: 'Fall', title: 'Submit applications', detail: 'EA/ED + 12 schools', st: 'todo' },
+        { term: 'Fall', title: 'Recommendation letters', detail: '2 teachers + counselor', st: 'todo' },
+        { term: 'Winter', title: 'Scholarships & aid', detail: 'FAFSA + 8 scholarships', st: 'todo' }
+      ] }
+    ];
+    const stColor = { done: ['#059669', '#eafaf1'], doing: ['#4f46e5', '#eef0fc'], todo: ['#9aa0ab', '#f3f2ee'] };
+    const stIcon = (st) => st === 'done' ? React.createElement('span', { style: { width: 16, height: 16, borderRadius: 5, background: '#10b981', display: 'flex', alignItems: 'center', justifyContent: 'center' } }, this.check('#fff')) : (st === 'doing' ? React.createElement('span', { style: { width: 16, height: 16, borderRadius: 5, border: '2px solid #4f46e5', display: 'block' } }) : React.createElement('span', { style: { width: 16, height: 16, borderRadius: 5, border: '2px solid #d4d2cc', display: 'block' } }));
+    const headTint = { done: ['#f0fdf4', '#d3f0dd', '#047857'], current: ['#eef0fc', '#dbdef6', '#4338ca'], upcoming: ['#fbfaf8', '#efeee9', '#5b6068'] };
+    const stPill = { done: ['#047857', '#dcfce7'], current: ['#4338ca', '#e0e7ff'], upcoming: ['#9aa0ab', '#f3f2ee'] };
+    const roadmapYears = rmYears.map(y => ({
+      grade: y.grade, label: y.label, status: y.status,
+      headBg: headTint[y.state][0], headBorder: headTint[y.state][1], headFg: headTint[y.state][2],
+      statusFg: stPill[y.state][0], statusBg: stPill[y.state][1],
+      items: y.items.map(m => ({ term: m.term, title: m.title, detail: m.detail, accent: m.st === 'done' ? '#10b981' : (m.st === 'doing' ? '#4f46e5' : '#d4d2cc'), statusEl: stIcon(m.st) }))
+    }));
+
+    // activities
+    const actRaw = [
+      { name: 'Varsity Debate', role: 'Member · aiming for captain', cat: 'Leadership', hours: '4 hr/wk', since: '2023', desc: 'Lincoln-Douglas debate; reached two regional finals this year.' },
+      { name: 'Coding Club', role: 'Member', cat: 'STEM', hours: '2 hr/wk', since: '2024', desc: 'Built the club website; teaching an intro-to-Python workshop series.' },
+      { name: 'City Food Bank', role: 'Volunteer', cat: 'Service', hours: '120 hrs', since: '2022', desc: 'Weekend logistics; prototyping an inventory app to cut food waste.' },
+      { name: 'Science Olympiad', role: 'Anatomy & Physiology event', cat: 'STEM', hours: '3 hr/wk', since: '2023', desc: 'Regional bronze medal; deep dive into human anatomy.' },
+      { name: 'Hospital Volunteer', role: 'Junior volunteer', cat: 'Service', hours: '60 hrs', since: '2024', desc: 'Patient transport and shadowing; exploring biomedical interests.' }
+    ];
+    const actTabs = ['All', 'Leadership', 'STEM', 'Service'];
+    const filteredActivities = P.activities.filter(a => this.state.activityTab === 'All' || a.cat === this.state.activityTab).map(a => {
+      const cc = this.chip(a.cat);
+      return { ...a, tintBg: cc[0], tintFg: cc[1], iconEl: this.icon(a.cat === 'Service' ? 'heart' : (a.cat === 'Leadership' ? 'bolt' : 'flask'), 19, cc[1]) };
+    });
+    const activityTabs = actTabs.map(t => { const on = this.state.activityTab === t; return { label: t, onClick: () => this.setState({ activityTab: t }), border: on ? '#4f46e5' : '#e6e4e0', bg: on ? '#4f46e5' : '#fff', fg: on ? '#fff' : '#4a4f59' }; });
+
+    // essays
+    const essRaw = [
+      { title: 'Common App — Personal Statement', status: 'Drafting', words: 412, target: 650, updated: '2d ago', prompt: 'Share an essay on any topic of your choice about your background, identity, interest, or talent.', body: "The inventory spreadsheet at the City Food Bank had 1,400 rows and no logic. Every Saturday I watched volunteers guess which shelves were overstocked while bread quietly expired in the back.\n\nI'm not sure when curiosity turned into responsibility. Somewhere between sorting cans and learning Python, I started seeing the pantry as a system — inputs, outputs, waste I could measure. So I built a small app that flagged items nearing expiration...", feedback: [['Strong', '#059669', 'Vivid, specific opening — the 1,400 rows make it real.'], ['Develop', '#d97706', 'Connect the app back to who you are, not just what you did.'], ['Watch', '#dc2626', 'You\'re at 412/650 — the reflection section needs the most room.']] },
+      { title: '"Why Computer Science" reflection', status: 'In review', words: 280, target: 300, updated: '5h ago', prompt: 'Why do you want to study Computer Science?', body: "For me, code is the shortest path between caring about a problem and actually fixing it...", feedback: [['Strong', '#059669', 'Clear throughline from problem to discipline.'], ['Develop', '#d97706', 'Name a specific CS idea that excites you (e.g. ML for biology).']] },
+      { title: 'Community impact — Food Bank', status: 'Outline', words: 90, target: 500, updated: '1w ago', prompt: 'Describe a community you belong to and your impact.', body: "Outline:\n• The Saturday crew\n• The waste problem\n• Building the tool\n• What changed\n• What I learned about people, not just systems", feedback: [['Tip', '#7c3aed', 'Good bones — now write the messy human moments between the bullets.']] },
+      { title: 'Activity description — Debate', status: 'Done', words: 148, target: 150, updated: '3w ago', prompt: 'Describe one activity (150 words).', body: "Lincoln-Douglas debate taught me to argue both sides before I believe one...", feedback: [['Strong', '#059669', 'Tight and within the word limit. Ready to submit.']] }
+    ];
+    const essStatusColor = { Drafting: ['#c2410c', '#fef0e7'], 'In review': ['#7c3aed', '#f3eefe'], Outline: ['#9aa0ab', '#f3f2ee'], Done: ['#059669', '#eafaf1'], Idea: ['#6d28d9', '#f3eefe'] };
+    const essays = P.essays.map((e, i) => { const sc = essStatusColor[e.status]; const pct = Math.min(100, Math.round(e.words / e.target * 100)); const on = this.state.selectedEssay === i; return { title: e.title, status: e.status, words: e.words, target: e.target, updated: e.updated, pct, barColor: pct >= 95 ? '#059669' : '#4f46e5', statusFg: sc[0], statusBg: sc[1], cardBg: on ? '#f6f5ff' : '#fff', cardBorder: on ? '#c8c4ec' : '#ececea', onClick: () => this.setState({ selectedEssay: i }) }; });
+    const ae = P.essays[this.state.selectedEssay] || P.essays[0];
+    const activeEssay = { title: ae.title, status: ae.status, words: ae.words, prompt: ae.prompt, body: ae.body, feedback: ae.feedback.map(f => ({ tag: f[0], tagFg: f[1], text: f[2], tagEl: React.createElement('span', { style: { width: 7, height: 7, borderRadius: '50%', background: f[1], display: 'inline-block' } }) })) };
+
+    // scholarships
+    const schTags = ['All', 'STEM', 'Service', 'Leadership', 'National', 'Local'];
+    const filteredScholarships = schRaw.filter(s => this.state.schFilter === 'All' || s.tags.includes(this.state.schFilter)).map(s => ({ ...s, ring: this.ringMini(s.match, this.catColor(s.match), 50) }));
+    const schFilters = schTags.map(t => { const on = this.state.schFilter === t; return { label: t, onClick: () => this.setState({ schFilter: t }), border: on ? '#4f46e5' : '#e6e4e0', bg: on ? '#4f46e5' : '#fff', fg: on ? '#fff' : '#4a4f59' }; });
+    const schCount = filteredScholarships.length;
+
+    // colleges
+    const colRaw = [
+      { name: 'MIT', abbr: 'MIT', loc: 'Cambridge, MA', match: 71, fit: 'Reach', acc: '4%', note: 'Add a research project to lift match' },
+      { name: 'Carnegie Mellon', abbr: 'CMU', loc: 'Pittsburgh, PA', match: 74, fit: 'Reach', acc: '11%', note: 'Strong CS fit; rigor matters' },
+      { name: 'UC Berkeley', abbr: 'UCB', loc: 'Berkeley, CA', match: 80, fit: 'Target', acc: '11%', note: 'Comp-bio + EECS aligns well' },
+      { name: 'Georgia Tech', abbr: 'GT', loc: 'Atlanta, GA', match: 86, fit: 'Target', acc: '16%', note: 'Excellent CS, achievable with current trend' },
+      { name: 'UW Seattle', abbr: 'UW', loc: 'Seattle, WA', match: 90, fit: 'Target', acc: '48%', note: 'Top CS, strong likelihood' },
+      { name: 'Purdue', abbr: 'PUR', loc: 'West Lafayette, IN', match: 93, fit: 'Safety', acc: '53%', note: 'Solid match across the board' },
+      { name: 'UMass Amherst', abbr: 'UMA', loc: 'Amherst, MA', match: 95, fit: 'Safety', acc: '58%', note: 'In-region, very strong profile fit' }
+    ];
+    const colTabs = ['All', 'Reach', 'Target', 'Safety'];
+    const fitColor = { Reach: ['#c2410c', '#fef0e7'], Target: ['#4338ca', '#e0e7ff'], Safety: ['#047857', '#dcfce7'] };
+    const filteredColleges = colRaw.filter(c => this.state.collegeTab === 'All' || c.fit === this.state.collegeTab).map(c => { const lg = this.collegeLogo(c.abbr); const fc = fitColor[c.fit]; return { ...c, logoBg: lg[0], logoFg: lg[1], fitFg: fc[0], fitBg: fc[1], ring: this.ringMini(c.match, this.catColor(c.match), 46) }; });
+    const collegeTabs = colTabs.map(t => { const on = this.state.collegeTab === t; return { label: t, onClick: () => this.setState({ collegeTab: t }), border: on ? '#4f46e5' : '#e6e4e0', bg: on ? '#4f46e5' : '#fff', fg: on ? '#fff' : '#4a4f59' }; });
+
+    // applications kanban
+    const mkCol = (names) => names.map(ab => { const c = colRaw.find(x => x.abbr === ab); const lg = this.collegeLogo(ab); return { name: c.name, abbr: ab, fit: c.fit, acc: c.acc, match: c.match, logoBg: lg[0], logoFg: lg[1], matchColor: this.catColor(c.match) }; });
+    const appColumns = [
+      { name: 'Researching', dot: '#9aa0ab', items: mkCol(['MIT', 'CMU']) },
+      { name: 'Shortlisted', dot: '#4f46e5', items: mkCol(['UCB', 'GT', 'UW']) },
+      { name: 'Strong fit', dot: '#10b981', items: mkCol(['PUR', 'UMA']) }
+    ].map(c => ({ ...c, count: c.items.length }));
+
+    // resume
+    const resumeSections = [
+      { title: 'Education', entries: [{ head: 'Riverside High School', meta: 'Class of 2028 · GPA 3.92', body: 'Honors track · relevant coursework: Honors Biology, Honors Algebra II, AP Computer Science Principles.' }] },
+      { title: 'Experience & Leadership', entries: [
+        { head: 'Volunteer & App Developer — City Food Bank', meta: '2022 – present', body: 'Logged 120+ service hours; prototyping an inventory app projected to reduce weekly food waste by ~15%.' },
+        { head: 'Member — Varsity Debate (Lincoln-Douglas)', meta: '2023 – present', body: 'Two regional final appearances; mentoring two novice debaters.' }
+      ] },
+      { title: 'Projects', entries: [
+        { head: 'BioSort — ML cell-image classifier', meta: 'in progress', body: 'Training a CNN to classify microscopy images; targeting a regional science fair and open-source release.' }
+      ] },
+      { title: 'Awards', entries: [
+        { head: 'Science Olympiad — Regional Bronze (Anatomy)', meta: '2024', body: '' },
+        { head: 'National Honor Roll', meta: '2023, 2024', body: '' }
+      ] }
+    ];
+    const resumeTips = [
+      { title: 'Add measurable outcomes', text: 'Quantify the Food Bank impact — numbers make experience credible.' },
+      { title: 'Lead with strong verbs', text: 'Built, led, launched — start each bullet with action.' },
+      { title: 'Add a research line', text: 'A single research entry would raise this resume the most.' }
+    ];
+
+    // academics
+    const acadStats = [
+      { label: 'Weighted GPA', value: P.gpa, sub: 'self-reported', subColor: '#9097a0' },
+      { label: 'Class rank', value: 'Top 8%', sub: 'of 412 students', subColor: '#9097a0' },
+      { label: 'Rigor index', value: '70', sub: 'add AP for +', subColor: '#d97706' },
+      { label: 'AP / Honors', value: '3', sub: '5 planned junior yr', subColor: '#9097a0' }
+    ];
+    const lvlColor = { AP: ['#7c3aed', '#f3eefe'], Honors: ['#2563bd', '#eaf1fe'], Reg: ['#5b6068', '#f3f2ee'], Dual: ['#c2410c', '#fef0e7'] };
+    const mkCourses = (arr) => arr.map(c => { const lc = lvlColor[c[1]]; return { name: c[0], lvl: c[1], lvlFg: lc[0], lvlBg: lc[1], dot: lc[0] }; });
+    const coursePlan = [
+      { grade: 'Grade 9', status: 'Done', statusFg: '#047857', statusBg: '#dcfce7', courses: mkCourses([['Honors Biology', 'Honors'], ['Honors Algebra II', 'Honors'], ['English I', 'Reg'], ['World History', 'Reg']]) },
+      { grade: 'Grade 10', status: 'Current', statusFg: '#4338ca', statusBg: '#e0e7ff', courses: mkCourses([['Honors Chemistry', 'Honors'], ['Honors Pre-Calc', 'Honors'], ['AP CS Principles', 'AP'], ['English II', 'Reg']]) },
+      { grade: 'Grade 11', status: 'Planned', statusFg: '#9aa0ab', statusBg: '#f3f2ee', courses: mkCourses([['AP Biology', 'AP'], ['AP CS A', 'AP'], ['AP Calculus AB', 'AP'], ['English III', 'Reg']]) },
+      { grade: 'Grade 12', status: 'Planned', statusFg: '#9aa0ab', statusBg: '#f3f2ee', courses: mkCourses([['AP Statistics', 'AP'], ['Multivar (Dual)', 'Dual'], ['AP English Lit', 'AP'], ['Bioinformatics', 'Dual']]) }
+    ];
+
+    // projects
+    const mkMiles = (arr) => arr.map(m => ({ text: m[0], done: m[1], border: m[1] ? '#4f46e5' : '#d4d2cc', bg: m[1] ? '#4f46e5' : '#fff', checkEl: m[1] ? this.check('#fff') : '', color: m[1] ? '#aab' : '#3a3f48', strike: m[1] ? 'line-through' : 'none' }));
+    const stageColors = { Building: ['#4338ca', '#e0e7ff'], Planning: ['#c2410c', '#fef0e7'], Idea: ['#6d28d9', '#f3eefe'], Launched: ['#047857', '#dcfce7'] };
+    const projects = P.projectsRaw.map(p => { const sc = stageColors[p.stage] || stageColors.Idea; return { name: p.name, stage: p.stage, stageFg: sc[0], stageBg: sc[1], progress: p.progress, desc: p.desc, milestones: mkMiles(p.milestones) }; });
+    const projectsDemo = [
+      { name: 'BioSort — ML for cell imaging', stage: 'Building', stageFg: '#4338ca', stageBg: '#e0e7ff', progress: 45, desc: 'A CNN that classifies microscopy cell images, aimed at a science-fair entry and an open-source release.', milestones: mkMiles([['Define problem & dataset', true], ['Build baseline model', true], ['Improve accuracy past 90%', false], ['Write up & present at fair', false]]) },
+      { name: 'Food Bank Inventory App', stage: 'Planning', stageFg: '#c2410c', stageBg: '#fef0e7', progress: 20, desc: 'A React + Sheets tool to forecast demand and cut waste, piloting with the City Food Bank.', milestones: mkMiles([['Interview the volunteer team', true], ['Sketch the data model', false], ['Build MVP', false], ['Measure waste reduction', false]]) }
+    ];
+
+    // profile
+    const interests = P.interests;
+    const profileStats = P.profileStats;
+    const narrative = P.narrative;
+
+    // calendar (June 2026 — starts Monday)
+    const weekdays = ['S', 'M', 'T', 'W', 'T', 'F', 'S'];
+    const evMap = { 23: ['Today', '#4f46e5'], 28: ['AP Bio signup', '#dc2626'] };
+    const calendarDays = [];
+    for (let i = 0; i < 1; i++) calendarDays.push({ day: '', bg: 'transparent', border: 'transparent', fg: '#aab', weight: 400, event: '' });
+    for (let d = 1; d <= 30; d++) {
+      const ev = evMap[d];
+      const today = d === 23;
+      calendarDays.push({ day: String(d), bg: today ? '#eef0fc' : '#fff', border: today ? '#c8c4ec' : '#f0efec', fg: today ? '#4338ca' : '#3a3f48', weight: today ? 800 : 500, event: ev ? ev[0] : '', eventColor: ev ? ev[1] : '#4f46e5' });
+    }
+
+    // settings
+    const portals = [
+      { name: 'Parent Portal', desc: 'Share progress with a parent or guardian', status: 'Connected', sf: '#047857', sb: '#dcfce7', icon: 'users', tb: '#eafaf1', tf: '#1b9e5f' },
+      { name: 'Counselor Portal', desc: 'Let your school counselor view your plan', status: 'Pending', sf: '#c2410c', sb: '#fef0e7', icon: 'users', tb: '#eaf1fe', tf: '#2563bd' },
+      { name: 'Mentor Portal', desc: 'Invite a mentor for guidance & reviews', status: 'Invite', sf: '#6d28d9', sb: '#f3eefe', icon: 'users', tb: '#f3eefe', tf: '#7c3aed' },
+      { name: 'Administrator', desc: 'School-wide oversight (staff only)', status: 'Off', sf: '#9aa0ab', sb: '#f3f2ee', icon: 'settings', tb: '#f3f2ee', tf: '#5b6068' }
+    ].map(p => ({ name: p.name, desc: p.desc, status: p.status, statusFg: p.sf, statusBg: p.sb, tintBg: p.tb, tintFg: p.tf, iconEl: this.icon(p.icon, 19, p.tf) }));
+    const accountFields = [
+      { label: 'Full name', value: name }, { label: 'Grade', value: P.gradeLabel + ' · ' + P.classOf },
+      { label: 'School', value: P.school }, { label: 'Intended major', value: major }
+    ];
+
+    // chat
+    const chat = this.state.chat.map(m => {
+      const user = m.role === 'user';
+      return { text: m.text, dir: user ? 'row-reverse' : 'row',
+        avBg: user ? 'linear-gradient(145deg,#fb923c,#ea580c)' : 'linear-gradient(145deg,#7c3aed,#6d28d9)',
+        avFg: '#fff', avEl: user ? initials : this.icon('sparkle', 17, '#fff'),
+        bubbleBg: user ? '#4f46e5' : '#fff', bubbleFg: user ? '#fff' : '#2c313a',
+        bubbleBorder: user ? '#4f46e5' : '#ececea' };
+    });
+    const suggestedPrompts = ['How do I raise my Pathway Score fastest?', 'Find summer research for biology', 'Plan my junior year', 'Suggest a passion project'].map(p => ({ label: p, onClick: () => this.send(p) }));
+
+    const f = this.state.form;
+    const optBtn = (active) => ({ bg: active ? '#4f46e5' : '#fff', fg: active ? '#fff' : '#4a4f59', border: active ? '#4f46e5' : '#e2e0db' });
+    const gradeOptions = ['6', '7', '8', '9', '10', '11', '12'].map(g => ({ label: g, onClick: () => this.setField('grade', g), ...optBtn(f.grade === g) }));
+    const rigorOptions = [['none', 'None'], ['some', 'A few'], ['many', 'Many']].map(o => ({ label: o[1], onClick: () => this.setField('rigor', o[0]), ...optBtn(f.rigor === o[0]) }));
+    const testingOptions = [['notyet', 'Not yet'], ['psat', 'PSAT/PreACT'], ['taken', 'SAT/ACT taken']].map(o => ({ label: o[1], onClick: () => this.setField('testing', o[0]), ...optBtn(f.testing === o[0]) }));
+    const leadershipOptions = [['none', 'Not yet'], ['member', 'Member'], ['leader', 'Leadership role']].map(o => ({ label: o[1], onClick: () => this.setField('leadership', o[0]), ...optBtn(f.leadership === o[0]) }));
+    const researchOptions = [['no', 'Not yet'], ['yes', 'Yes']].map(o => ({ label: o[1], onClick: () => this.setField('research', o[0]), ...optBtn(f.research === o[0]) }));
+    const helpOptions = ['Essays', 'Passion projects', 'Course planning', 'Scholarships', 'Leadership', 'Research'].map(h => ({ label: h, onClick: () => this.toggleHelp(h), ...optBtn(f.helpWith.includes(h)) }));
+    const interestChips = f.interests.map((t, i) => ({ label: t, onRemove: () => this.removeInterest(i) }));
+    const authFeatures = [{ title: 'Your Pathway Score', sub: 'See how competitive you are', icon: 'pathway' }, { title: 'AI College Coach', sub: 'Personalized strategy, anytime', icon: 'coach' }, { title: 'A multi-year roadmap', sub: 'Every step from grade 6 to 12', icon: 'roadmap' }].map(a => ({ ...a, iconEl: this.icon(a.icon, 18, '#fff') }));
+    const buildSteps = [{ label: 'Analyzing your profile' }, { label: 'Scoring 9 categories' }, { label: 'Generating essay ideas' }, { label: 'Designing passion projects' }];
+    const stp = this.state.step;
+    return {
+      student: { name, initials, grade: P.gradeLabel, classOf: P.classOf, major, school: P.school, email: P.email, location: P.location },
+      navGroups, viewTitle: vt[0], viewSub: vt[1], is,
+      greeting: 'Good afternoon, ' + name.split(' ')[0],
+      pathwayScore, pathwayTier: P.tier, pathwayGoal: goal, percentile: P.percentile,
+      heroRing: this.heroRingEl(pathwayScore, 11, 'rgba(255,255,255,.2)', 132),
+      bigRing: this.bigRingEl(pathwayScore),
+      heroStats, overviewCards, recommendations, tasks, tasksDone, tasksTotal,
+      tasksPct: Math.round(tasksDone / tasksTotal * 100),
+      deadlines, recentActivity, scholarshipsMini, quickActions,
+      categories, strengths, improvements,
+      radarChart: this.radarEl(categories), trendChart: this.trendEl(history, goal),
+      roadmapYears, filteredActivities, activityTabs,
+      essays, activeEssay, filteredScholarships, schFilters, schCount,
+      filteredColleges, collegeTabs, appColumns,
+      resumeSections, resumeTips, resumeRing: this.ringMini(68, '#4f46e5', 54),
+      acadStats, coursePlan, projects,
+      interests, profileStats, narrative,
+      weekdays, calendarDays, portals, accountFields,
+      chat, suggestedPrompts, chatInput: this.state.chatInput,
+      onChatInput: (e) => this.onChatInput(e), onChatKey: (e) => this.onChatKey(e), sendChat: () => this.send(),
+      goPathway: () => this.setView('pathway'), goCoach: () => this.setView('coach'),
+      goScholarships: () => this.setView('scholarships'), goEssays: () => this.setView('essays'),
+      showApp: this.state.screen === 'app', showLogin: this.state.screen === 'login', showSignup: this.state.screen === 'signup', showAuth: this.state.screen === 'login' || this.state.screen === 'signup', showBuilding: this.state.screen === 'building',
+      isPersonalized: !!this.state.profile,
+      form: f, stepNum: stp + 1, stepPct: ((stp + 1) / 4) * 100, s0: stp === 0, s1: stp === 1, s2: stp === 2, s3: stp === 3, showBack: stp > 0, showNext: stp < 3, showBuild: stp === 3,
+      gradeOptions, rigorOptions, testingOptions, leadershipOptions, researchOptions, helpOptions, interestChips, authFeatures, buildSteps,
+      onName: (e) => this.setField('name', e.target.value), onEmail: (e) => this.setField('email', e.target.value), onPassword: (e) => this.setField('password', e.target.value), onSchool: (e) => this.setField('school', e.target.value), onMajor: (e) => this.setField('major', e.target.value), onActs: (e) => this.setField('activitiesText', e.target.value), onDream: (e) => this.setField('dreamSchools', e.target.value), onGpa: (e) => this.setField('gpa', parseFloat(e.target.value)), onServiceHours: (e) => this.setField('serviceHours', e.target.value), onAwards: (e) => this.setField('awards', e.target.value), onInterestDraft: (e) => this.setField('interestDraft', e.target.value), onInterestKey: (e) => { if (e.key === 'Enter') { e.preventDefault(); this.addInterest(); } },
+      addInterest: () => this.addInterest(), nextStep: () => this.nextStep(), prevStep: () => this.prevStep(), buildPathway: () => this.buildPathway(), login: () => this.login(), gotoSignup: () => this.gotoSignup(), gotoLogin: () => this.gotoLogin(), logout: () => this.logout()
+    };
+  }
+}
+</script>
+</body>
+</html>
