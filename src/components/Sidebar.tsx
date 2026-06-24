@@ -41,14 +41,14 @@ const NAV: NavGroup[] = [
     items: [
       { icon: "academics", label: "Academic Planner" },
       { icon: "activities", label: "Activities" },
-      { icon: "projects", label: "Passion Projects" },
+      { icon: "projects", label: "Passion Projects", href: "/projects", ready: true },
       { icon: "resume", label: "Resume" },
     ],
   },
   {
     label: "Apply",
     items: [
-      { icon: "essays", label: "Essay Studio" },
+      { icon: "essays", label: "Essay Studio", href: "/essays", ready: true },
       { icon: "scholarships", label: "Scholarships" },
       { icon: "colleges", label: "College Explorer" },
       { icon: "applications", label: "Applications" },

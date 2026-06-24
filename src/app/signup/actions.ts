@@ -6,6 +6,8 @@ import {
   guessCat,
   type StudentInputs,
 } from "@/lib/pathway-score";
+import { generateIdeas } from "@/lib/ai/ideas";
+import { persistIdeas } from "@/lib/ai/persist";
 import type { LeadershipLevel, RigorLevel, TestingState } from "@/lib/types";
 
 export interface OnboardingForm {
@@ -188,6 +190,22 @@ export async function completeOnboarding(
       STARTER_ROADMAP.map((m) => ({ student_id: user.id, ...m })),
     );
   }
+
+  // 6) AI ideas (§4a): essay ideas + passion projects + narrative strategy.
+  // Always resolves (deterministic fallback) so onboarding never dead-ends.
+  const ideas = await generateIdeas({
+    name: firstName,
+    grade: gradeNum,
+    major: form.major,
+    interests: form.interests,
+    gpa: Number(form.gpa),
+    activities: activityNames,
+    leadership: form.leadership,
+    serviceHours: Number(form.serviceHours) || 0,
+    research: form.research === "yes",
+    helpWith: form.helpWith,
+  });
+  await persistIdeas(supabase, user.id, ideas);
 
   return { ok: true };
 }

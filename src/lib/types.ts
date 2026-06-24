@@ -124,6 +124,15 @@ export type Essay = {
   created_at: string;
 }
 
+export type EssayFeedback = {
+  id: string;
+  essay_id: string;
+  tag: string;
+  color: string;
+  body: string;
+  created_at: string;
+}
+
 export type Project = {
   id: string;
   student_id: string;
@@ -199,6 +208,7 @@ export type Database = {
       tasks: Table<Task>;
       deadlines: Table<Deadline>;
       essays: Table<Essay>;
+      essay_feedback: Table<EssayFeedback>;
       projects: Table<Project>;
       project_milestones: Table<ProjectMilestone>;
       scholarships: Table<Scholarship>;
