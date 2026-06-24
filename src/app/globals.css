@@ -1,0 +1,74 @@
+@import url("https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&family=JetBrains+Mono:wght@400;500;600&display=swap");
+
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+:root {
+  --font-jakarta: "Plus Jakarta Sans";
+  --font-mono: "JetBrains Mono";
+}
+
+* {
+  box-sizing: border-box;
+}
+
+html,
+body {
+  margin: 0;
+  padding: 0;
+}
+
+body {
+  font-family: "Plus Jakarta Sans", system-ui, sans-serif;
+  background: #faf9f7;
+  color: #1d2129;
+  -webkit-font-smoothing: antialiased;
+}
+
+::-webkit-scrollbar {
+  width: 10px;
+  height: 10px;
+}
+::-webkit-scrollbar-thumb {
+  background: #e2e0db;
+  border-radius: 8px;
+  border: 3px solid #faf9f7;
+}
+::-webkit-scrollbar-thumb:hover {
+  background: #d2cfc8;
+}
+
+input:focus,
+textarea:focus,
+select:focus {
+  outline: none;
+}
+
+@layer components {
+  .input {
+    @apply w-full rounded-input border border-border-input2 bg-surface px-[13px] py-[11px] text-[14px] text-ink placeholder:text-ink-placeholder transition focus:border-accent;
+  }
+  .btn-primary {
+    @apply w-full rounded-btn bg-accent py-[11px] text-center text-[14px] font-semibold text-white transition hover:bg-accent-hover disabled:opacity-60;
+  }
+  .card {
+    @apply rounded-card border border-border bg-surface shadow-card;
+  }
+}
+
+/* numeric/display helpers from the design tokens */
+.font-mono {
+  font-family: "JetBrains Mono", monospace;
+}
+.display-number {
+  font-weight: 800;
+  letter-spacing: -0.03em;
+}
+.eyebrow {
+  font-size: 10.5px;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.1em;
+  color: #9aa0ab;
+}
