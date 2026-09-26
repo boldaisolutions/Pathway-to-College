@@ -39,18 +39,18 @@ export default async function ResumePage() {
         name={profile.full_name || "Student"}
         initials={initials}
       />
-      <div className="animate-pw-fade px-[28px] py-[22px]">
-        <div className="mb-4 flex justify-end">
+      <div className="animate-pw-fade px-[28px] py-[22px] print:p-0">
+        <div className="no-print mb-4 flex justify-end">
           <PrintButton />
         </div>
 
         {/* Work experience manager (not printed) */}
-        <div className="mx-auto max-w-[760px]">
+        <div className="no-print mx-auto max-w-[760px]">
           <WorkExperienceEditor items={workItems} />
         </div>
 
         {/* Paper document */}
-        <div className="mx-auto max-w-[760px] rounded-card border border-border bg-white p-10 shadow-card">
+        <div className="resume-document mx-auto max-w-[760px] rounded-card border border-border bg-white p-10 shadow-card">
           <div className="border-b border-ink/10 pb-4 text-center">
             <h1 className="text-[26px] font-extrabold tracking-[-.02em]">{profile.full_name || "Your Name"}</h1>
             <p className="mt-1 text-[13px] text-ink-muted">

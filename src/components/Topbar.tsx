@@ -15,7 +15,7 @@ export function Topbar({
   status?: string;
 }) {
   return (
-    <header className="sticky top-0 z-10 flex items-center gap-4 border-b border-border bg-app/80 px-[28px] py-[15px] backdrop-blur">
+    <header className="no-print sticky top-0 z-10 flex items-center gap-4 border-b border-border bg-app/80 px-[28px] py-[15px] backdrop-blur">
       <div className="min-w-0">
         <h1 className="truncate text-[19px] font-extrabold tracking-[-.02em]">{title}</h1>
         <p className="truncate text-[12.5px] text-ink-muted">{subtitle}</p>
