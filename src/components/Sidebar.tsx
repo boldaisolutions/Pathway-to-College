@@ -34,6 +34,7 @@ const NAV: NavGroup[] = [
     items: [
       { icon: "pathway", label: "Pathway Score", href: "/pathway", ready: true },
       { icon: "profile", label: "My Profile", href: "/profile", ready: true },
+      { icon: "academics", label: "Academic Record", href: "/academic-record", ready: true },
       { icon: "roadmap", label: "Roadmap", href: "/roadmap", ready: true },
     ],
   },
