@@ -1,14 +1,17 @@
 "use client";
 
 import { useState, useTransition } from "react";
+import { useRouter } from "next/navigation";
 import { Check } from "@/components/Icon";
 import { chipColors } from "@/lib/ui";
-import { toggleTask } from "@/app/(app)/actions";
+import { toggleTask, addTask } from "@/app/(app)/actions";
 import type { Task } from "@/lib/types";
 
 /** "This Week" checklist with optimistic toggles + progress bar. */
 export function TaskList({ initial }: { initial: Task[] }) {
+  const router = useRouter();
   const [tasks, setTasks] = useState(initial);
+  const [draft, setDraft] = useState("");
   const [, startTransition] = useTransition();
 
   const done = tasks.filter((t) => t.done).length;
@@ -19,6 +22,16 @@ export function TaskList({ initial }: { initial: Task[] }) {
     const next = !tasks.find((t) => t.id === id)?.done;
     startTransition(() => {
       toggleTask(id, next);
+    });
+  }
+
+  function add() {
+    const body = draft.trim();
+    if (!body) return;
+    setDraft("");
+    startTransition(async () => {
+      await addTask(body, "");
+      router.refresh();
     });
   }
 
@@ -71,6 +84,27 @@ export function TaskList({ initial }: { initial: Task[] }) {
             </button>
           );
         })}
+      </div>
+
+      <div className="mt-3 flex gap-2">
+        <input
+          value={draft}
+          onChange={(e) => setDraft(e.target.value)}
+          onKeyDown={(e) => {
+            if (e.key === "Enter") {
+              e.preventDefault();
+              add();
+            }
+          }}
+          placeholder="Add a task…"
+          className="input flex-1 text-[13px]"
+        />
+        <button
+          onClick={add}
+          className="rounded-btn border border-border-input2 bg-surface px-3 text-[13px] font-semibold text-ink-3 transition hover:bg-app"
+        >
+          Add
+        </button>
       </div>
     </div>
   );

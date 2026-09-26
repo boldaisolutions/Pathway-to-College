@@ -1,4 +1,5 @@
 import { Topbar } from "@/components/Topbar";
+import { StageSelect } from "@/components/StageSelect";
 import { getSession } from "@/lib/queries";
 import { createClient } from "@/lib/supabase/server";
 import type { College, CollegeListRow, PipelineStage } from "@/lib/types";
@@ -68,6 +69,7 @@ export default async function ApplicationsPage() {
                             <span className="font-mono text-[11px] text-ink-muted">{r.match}</span>
                           </div>
                         )}
+                        <StageSelect collegeId={r.college_id} stage={r.stage} />
                       </div>
                     );
                   })}
