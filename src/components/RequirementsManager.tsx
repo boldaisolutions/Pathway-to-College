@@ -7,9 +7,8 @@ import {
   addCollegeChecklist,
   updateRequirementStatus,
   deleteRequirement,
-  REQUIREMENT_CATEGORIES,
-  REQUIREMENT_STATUSES,
 } from "@/app/(app)/app-requirements/actions";
+import { REQUIREMENT_CATEGORIES, REQUIREMENT_STATUSES } from "@/lib/options";
 import type { AppRequirement } from "@/lib/types";
 import { formatDeadline } from "@/lib/ui";
 

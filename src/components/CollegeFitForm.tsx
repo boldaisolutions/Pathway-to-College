@@ -2,15 +2,15 @@
 
 import { useState, useTransition } from "react";
 import { useRouter } from "next/navigation";
+import { saveCollegeFit } from "@/app/(app)/college-fit/actions";
 import {
-  saveCollegeFit,
   SIZE_OPTIONS,
   SETTING_OPTIONS,
   DISTANCE_OPTIONS,
   COST_OPTIONS,
   SELECTIVITY_OPTIONS,
   REGION_OPTIONS,
-} from "@/app/(app)/college-fit/actions";
+} from "@/lib/options";
 import type { CollegeFitProfile } from "@/lib/types";
 
 export function CollegeFitForm({ fit }: { fit: CollegeFitProfile | null }) {

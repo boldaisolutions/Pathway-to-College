@@ -3,22 +3,6 @@
 import { revalidatePath } from "next/cache";
 import { createClient } from "@/lib/supabase/server";
 
-export const ACHIEVEMENT_CATEGORIES = [
-  "Award",
-  "Competition",
-  "Certification",
-  "Research",
-  "Project",
-  "Leadership",
-  "Volunteer",
-  "Job",
-  "Internship",
-  "Presentation",
-  "Publication",
-  "Media",
-  "Community",
-] as const;
-
 export interface AchievementInput {
   category: string;
   title: string;

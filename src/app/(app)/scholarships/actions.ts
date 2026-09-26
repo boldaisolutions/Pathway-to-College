@@ -3,8 +3,6 @@
 import { revalidatePath } from "next/cache";
 import { createClient } from "@/lib/supabase/server";
 
-export const SAVED_STATUSES = ["Saved", "Applying", "Submitted", "Awarded", "Not selected"];
-
 /** Move a saved scholarship through the application pipeline. */
 export async function updateSavedStatus(scholarshipId: string, status: string) {
   const supabase = await createClient();

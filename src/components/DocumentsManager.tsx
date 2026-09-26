@@ -3,7 +3,8 @@
 import { useState, useTransition } from "react";
 import { useRouter } from "next/navigation";
 import { Icon } from "@/components/Icon";
-import { addDocument, deleteDocument, DOCUMENT_CATEGORIES } from "@/app/(app)/documents/actions";
+import { addDocument, deleteDocument } from "@/app/(app)/documents/actions";
+import { DOCUMENT_CATEGORIES } from "@/lib/options";
 import type { VaultDocument } from "@/lib/types";
 
 const CAT_COLOR: Record<string, [string, string]> = {

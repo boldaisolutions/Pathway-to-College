@@ -3,13 +3,6 @@
 import { revalidatePath } from "next/cache";
 import { createClient } from "@/lib/supabase/server";
 
-export const SIZE_OPTIONS = ["No preference", "Small (< 5k)", "Medium (5k–15k)", "Large (15k+)"] as const;
-export const SETTING_OPTIONS = ["No preference", "Urban", "Suburban", "Rural / college town"] as const;
-export const DISTANCE_OPTIONS = ["No preference", "Close to home (< 3 hrs)", "In-region", "Anywhere in the U.S."] as const;
-export const COST_OPTIONS = ["No preference", "Lowest net price", "Strong merit aid", "Best value / ROI"] as const;
-export const SELECTIVITY_OPTIONS = ["Balanced list", "Reach-heavy", "Match-heavy", "Safety-heavy"] as const;
-export const REGION_OPTIONS = ["Northeast", "Mid-Atlantic", "South", "Midwest", "Southwest", "West", "Pacific Northwest"] as const;
-
 export interface FitInput {
   size: string;
   setting: string;

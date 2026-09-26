@@ -3,7 +3,8 @@
 import { useState, useTransition } from "react";
 import { useRouter } from "next/navigation";
 import { Icon } from "@/components/Icon";
-import { addAchievement, deleteAchievement, ACHIEVEMENT_CATEGORIES } from "@/app/(app)/achievements/actions";
+import { addAchievement, deleteAchievement } from "@/app/(app)/achievements/actions";
+import { ACHIEVEMENT_CATEGORIES } from "@/lib/options";
 import type { Achievement } from "@/lib/types";
 
 const CAT_COLOR: Record<string, [string, string]> = {

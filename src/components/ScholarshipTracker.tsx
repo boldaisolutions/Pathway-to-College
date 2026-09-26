@@ -2,7 +2,8 @@
 
 import { useTransition } from "react";
 import { useRouter } from "next/navigation";
-import { updateSavedStatus, SAVED_STATUSES } from "@/app/(app)/scholarships/actions";
+import { updateSavedStatus } from "@/app/(app)/scholarships/actions";
+import { SAVED_STATUSES } from "@/lib/options";
 import { formatDeadline } from "@/lib/ui";
 
 export interface TrackedScholarship {

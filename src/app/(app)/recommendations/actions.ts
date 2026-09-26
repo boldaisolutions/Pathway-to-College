@@ -3,23 +3,6 @@
 import { revalidatePath } from "next/cache";
 import { createClient } from "@/lib/supabase/server";
 
-export const RECOMMENDER_ROLES = [
-  "Teacher",
-  "Counselor",
-  "Coach",
-  "Mentor",
-  "Employer",
-  "Other",
-] as const;
-
-export const RECOMMENDER_STATUSES = [
-  "To ask",
-  "Requested",
-  "Confirmed",
-  "Submitted",
-  "Thank-you sent",
-] as const;
-
 export interface RecommenderInput {
   name: string;
   role: string;
