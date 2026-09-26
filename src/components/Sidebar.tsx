@@ -25,6 +25,7 @@ const NAV: NavGroup[] = [
     label: "Overview",
     items: [
       { icon: "home", label: "Dashboard", href: "/dashboard", ready: true },
+      { icon: "calendar", label: "Deadlines", href: "/deadlines", ready: true },
       { icon: "coach", label: "AI Coach", href: "/coach", badge: "AI", ready: true },
     ],
   },
@@ -40,6 +41,7 @@ const NAV: NavGroup[] = [
     label: "Build",
     items: [
       { icon: "academics", label: "Academic Planner", href: "/academics", ready: true },
+      { icon: "book", label: "Testing Center", href: "/testing", ready: true },
       { icon: "activities", label: "Activities", href: "/activities", ready: true },
       { icon: "scholarships", label: "Achievement Bank", href: "/achievements", ready: true },
       { icon: "projects", label: "Passion Projects", href: "/projects", ready: true },
@@ -51,6 +53,7 @@ const NAV: NavGroup[] = [
     items: [
       { icon: "essays", label: "Essay Studio", href: "/essays", ready: true },
       { icon: "scholarships", label: "Scholarships", href: "/scholarships", ready: true },
+      { icon: "applications", label: "Scholarship Tracker", href: "/scholarship-tracker", ready: true },
       { icon: "colleges", label: "College Explorer", href: "/colleges", ready: true },
       { icon: "applications", label: "Applications", href: "/applications", ready: true },
     ],

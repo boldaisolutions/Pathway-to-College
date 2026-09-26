@@ -245,6 +245,16 @@ export type Achievement = {
   created_at: string;
 }
 
+export type Test = {
+  id: string;
+  student_id: string;
+  kind: string;
+  label: string;
+  score: string;
+  test_date: string | null;
+  status: string;
+}
+
 /**
  * Minimal Database shape for @supabase/ssr generics. We keep Row/Insert/Update
  * loose (Partial) where the trigger/defaults fill columns.
@@ -280,6 +290,7 @@ export type Database = {
       colleges: Table<College>;
       college_list: Table<CollegeListRow>;
       courses: Table<Course>;
+      tests: Table<Test>;
       work_experience: Table<WorkExperience>;
       achievements: Table<Achievement>;
       roadmap_milestones: Table<RoadmapMilestone>;
