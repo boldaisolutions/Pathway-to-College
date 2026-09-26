@@ -30,7 +30,7 @@ export async function saveCollegeFit(f: FitInput) {
   } = await supabase.auth.getUser();
   if (!user) return { ok: false as const, error: "Not signed in." };
 
-  const { error } = await supabase.from("college_fit").upsert(
+  const { error } = await supabase.from("college_fit_profile").upsert(
     {
       student_id: user.id,
       size: f.size,

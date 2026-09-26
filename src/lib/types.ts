@@ -378,7 +378,7 @@ export type Database = {
       recommenders: Table<Recommender>;
       aid_awards: Table<AidAward>;
       documents: Table<VaultDocument>;
-      college_fit: Table<CollegeFitProfile>;
+      college_fit_profile: Table<CollegeFitProfile>;
       roadmap_milestones: Table<RoadmapMilestone>;
       coach_messages: Table<CoachMessage>;
     };

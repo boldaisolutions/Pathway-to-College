@@ -8,7 +8,7 @@ export default async function CollegeFitPage() {
   const { profile } = await getSession();
   const supabase = await createClient();
   const { data } = await supabase
-    .from("college_fit")
+    .from("college_fit_profile")
     .select("*")
     .eq("student_id", profile.id)
     .maybeSingle();
