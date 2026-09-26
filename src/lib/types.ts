@@ -181,6 +181,42 @@ export type RoadmapMilestone = {
   position: number;
 }
 
+export type CoachMessage = {
+  id: string;
+  student_id: string;
+  role: "user" | "assistant";
+  content: string;
+  created_at: string;
+}
+
+export type SavedScholarship = {
+  student_id: string;
+  scholarship_id: string;
+  match: number | null;
+  status: string;
+  created_at: string;
+}
+
+export type CollegeListRow = {
+  student_id: string;
+  college_id: string;
+  fit: CollegeFit | null;
+  match: number | null;
+  stage: PipelineStage;
+  notes: string;
+  created_at: string;
+}
+
+export type Course = {
+  id: string;
+  student_id: string;
+  grade: number;
+  name: string;
+  level: CourseLevel;
+  term: string;
+  planned: boolean;
+}
+
 /**
  * Minimal Database shape for @supabase/ssr generics. We keep Row/Insert/Update
  * loose (Partial) where the trigger/defaults fill columns.
@@ -212,8 +248,12 @@ export type Database = {
       projects: Table<Project>;
       project_milestones: Table<ProjectMilestone>;
       scholarships: Table<Scholarship>;
+      saved_scholarships: Table<SavedScholarship>;
       colleges: Table<College>;
+      college_list: Table<CollegeListRow>;
+      courses: Table<Course>;
       roadmap_milestones: Table<RoadmapMilestone>;
+      coach_messages: Table<CoachMessage>;
     };
     Views: Record<string, never>;
     Functions: Record<string, never>;

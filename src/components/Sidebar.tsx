@@ -25,7 +25,7 @@ const NAV: NavGroup[] = [
     label: "Overview",
     items: [
       { icon: "home", label: "Dashboard", href: "/dashboard", ready: true },
-      { icon: "coach", label: "AI Coach", badge: "AI" },
+      { icon: "coach", label: "AI Coach", href: "/coach", badge: "AI", ready: true },
     ],
   },
   {
@@ -33,32 +33,32 @@ const NAV: NavGroup[] = [
     items: [
       { icon: "pathway", label: "Pathway Score", href: "/pathway", ready: true },
       { icon: "profile", label: "My Profile", href: "/profile", ready: true },
-      { icon: "roadmap", label: "Roadmap" },
+      { icon: "roadmap", label: "Roadmap", href: "/roadmap", ready: true },
     ],
   },
   {
     label: "Build",
     items: [
-      { icon: "academics", label: "Academic Planner" },
-      { icon: "activities", label: "Activities" },
+      { icon: "academics", label: "Academic Planner", href: "/academics", ready: true },
+      { icon: "activities", label: "Activities", href: "/activities", ready: true },
       { icon: "projects", label: "Passion Projects", href: "/projects", ready: true },
-      { icon: "resume", label: "Resume" },
+      { icon: "resume", label: "Resume", href: "/resume", ready: true },
     ],
   },
   {
     label: "Apply",
     items: [
       { icon: "essays", label: "Essay Studio", href: "/essays", ready: true },
-      { icon: "scholarships", label: "Scholarships" },
-      { icon: "colleges", label: "College Explorer" },
-      { icon: "applications", label: "Applications" },
+      { icon: "scholarships", label: "Scholarships", href: "/scholarships", ready: true },
+      { icon: "colleges", label: "College Explorer", href: "/colleges", ready: true },
+      { icon: "applications", label: "Applications", href: "/applications", ready: true },
     ],
   },
   {
     label: "Manage",
     items: [
-      { icon: "calendar", label: "Calendar" },
-      { icon: "settings", label: "Settings" },
+      { icon: "calendar", label: "Calendar", href: "/calendar", ready: true },
+      { icon: "settings", label: "Settings", href: "/settings", ready: true },
     ],
   },
 ];
