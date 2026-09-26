@@ -1,5 +1,6 @@
 import { Topbar } from "@/components/Topbar";
 import { ScholarshipsList, type ScholarshipCard } from "@/components/ScholarshipsList";
+import { RefreshScholarships } from "@/components/RefreshScholarships";
 import { getSession } from "@/lib/queries";
 import { createClient } from "@/lib/supabase/server";
 
@@ -39,6 +40,12 @@ export default async function ScholarshipsPage() {
         initials={initials}
       />
       <div className="animate-pw-fade px-[28px] py-[22px]">
+        <div className="mb-4 flex flex-wrap items-center justify-between gap-3">
+          <p className="text-[13px] text-ink-muted">
+            {items.length} scholarships · match reflects your interests & major
+          </p>
+          <RefreshScholarships />
+        </div>
         {items.length === 0 ? (
           <div className="card p-8 text-center text-[14px] text-ink-muted">
             Run <code>seed.sql</code> to load the scholarship catalog.
