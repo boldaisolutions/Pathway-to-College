@@ -90,3 +90,43 @@ export async function persistIdeas(
     }
   }
 }
+
+/** Persist ONLY the passion projects (used by "Regenerate projects"). Leaves
+ *  essays and narrative untouched. */
+export async function persistProjectsOnly(
+  supabase: SupabaseClient<Database>,
+  studentId: string,
+  ideas: Ideas,
+) {
+  await supabase
+    .from("projects")
+    .delete()
+    .eq("student_id", studentId)
+    .eq("ai_origin", true);
+
+  for (const p of ideas.passionProjects) {
+    const { data: project } = await supabase
+      .from("projects")
+      .insert({
+        student_id: studentId,
+        name: p.name,
+        stage: "Idea",
+        progress: 0,
+        description: p.description + (p.impact ? `  ·  Impact: ${p.impact}` : ""),
+        impact: p.impact,
+        ai_origin: true,
+      })
+      .select("id")
+      .single();
+    if (project) {
+      await supabase.from("project_milestones").insert(
+        DEFAULT_MILESTONES.map((body, position) => ({
+          project_id: project.id,
+          body,
+          done: false,
+          position,
+        })),
+      );
+    }
+  }
+}

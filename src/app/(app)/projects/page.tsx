@@ -2,6 +2,7 @@ import { Topbar } from "@/components/Topbar";
 import { Icon } from "@/components/Icon";
 import { ProjectCard, type ProjectWithMilestones } from "@/components/ProjectCard";
 import { NewProjectButton } from "@/components/NewProjectButton";
+import { RegenerateProjects } from "@/components/RegenerateProjects";
 import { getSession } from "@/lib/queries";
 import { createClient } from "@/lib/supabase/server";
 
@@ -59,6 +60,7 @@ export default async function ProjectsPage() {
                 measurable impact.
               </p>
             </div>
+            <RegenerateProjects />
           </div>
         </div>
 
