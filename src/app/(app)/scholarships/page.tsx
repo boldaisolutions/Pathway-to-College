@@ -4,6 +4,13 @@ import { RefreshScholarships } from "@/components/RefreshScholarships";
 import { getSession } from "@/lib/queries";
 import { createClient } from "@/lib/supabase/server";
 
+// Eligibility filter: hide scholarships restricted to groups this student is
+// not part of (a male U.S. citizen), so they never appear as cards or filters.
+const EXCLUDED_TAGS = ["women", "lgbtq", "undocumented"];
+function eligible(tags: string[]): boolean {
+  return !tags.some((t) => EXCLUDED_TAGS.includes(t.toLowerCase()));
+}
+
 /** Simple deterministic match: overlap of tags with the student's interests/help. */
 function matchFor(tags: string[], signals: string[]): number {
   const s = signals.map((x) => x.toLowerCase());
@@ -21,12 +28,13 @@ export default async function ScholarshipsPage() {
 
   const savedIds = new Set((saved ?? []).map((r) => r.scholarship_id));
   const signals = [...(student?.interests ?? []), ...(student?.help_with ?? []), student?.intended_major ?? ""];
-  const items: ScholarshipCard[] = (scholarships ?? []).map((s) => ({
+  const pool = (scholarships ?? []).filter((s) => eligible(s.tags));
+  const items: ScholarshipCard[] = pool.map((s) => ({
     ...s,
     match: matchFor(s.tags, signals),
     saved: savedIds.has(s.id),
   }));
-  const filters = Array.from(new Set((scholarships ?? []).flatMap((s) => s.tags))).sort();
+  const filters = Array.from(new Set(pool.flatMap((s) => s.tags))).sort();
 
   const initials =
     profile.full_name.split(" ").map((w) => w[0]).slice(0, 2).join("").toUpperCase() || "S";

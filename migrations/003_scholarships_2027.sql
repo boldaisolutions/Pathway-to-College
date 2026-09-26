@@ -2,6 +2,9 @@ delete from scholarships s
 where s.name in ('Coca-Cola Scholars', 'Gates Scholarship', 'Burger King Scholars', 'Elks MVS Scholarship')
   and not exists (select 1 from saved_scholarships ss where ss.scholarship_id = s.id);
 
+delete from scholarships
+where tags && array['Women','LGBTQ','Undocumented'];
+
 insert into scholarships (name, amount, deadline, tags, url)
 select * from (values
   ('Coca-Cola Scholars Program',                            '$20,000',                 date '2026-09-30', array['Leadership','National','Any-major'],    'https://www.coca-colascholarsfoundation.org'),
@@ -10,7 +13,6 @@ select * from (values
   ('Elks Most Valuable Student Scholarship',                '$1,000-$7,500/year',      date '2026-11-12', array['Leadership','Need-based'],             'https://www.elks.org/scholars'),
   ('Burger King Scholars',                                  '$1,000-$60,000',          date '2026-12-15', array['Service','National','Any-major'],      'https://www.bkmclamorefoundation.org'),
   ('BigFuture Scholarships',                                'Up to $40,000',           date '2026-10-31', array['Any-major','National','Multi-step'],    'https://bigfuture.collegeboard.org/scholarships'),
-  ('Science Ambassador Scholarship',                        '$20,000',                 date '2026-12-14', array['STEM','Women','Research'],             'https://www.scienceambassadorscholarship.org'),
   ('FOSSI Scholarship',                                     '$40,000 total',           date '2027-01-15', array['STEM','Engineering','Chemistry'],      ''),
   ('AAMI Foundation Michael J. Miller HTM Scholarship',     '$3,000',                  date '2027-01-15', array['Biomedical','Health-tech'],           ''),
   ('AIAA Roger W. Kahn Scholarship',                        '$10,000',                 date '2027-01-10', array['Engineering','Aerospace','STEM'],      ''),
@@ -33,12 +35,9 @@ select * from (values
   ('SVCF On Your Own Scholarship',                          '$16,000',                 date '2027-02-28', array['Need-based'],                          ''),
   ('SVCF Leo and Trinidad Sanchez Scholarship',            '$4,500',                  date '2027-02-28', array['Need-based','Local'],                  ''),
   ('The Rezvan Foundation for Excellence Scholarship',      '$100,000',                date '2027-02-28', array['Academic','Any-major'],                ''),
-  ('TheDream.US National Scholarship',                      'Up to $33,000',           date '2027-02-28', array['Need-based','Undocumented'],           ''),
   ('UMSA Foundation Scholarship',                           '$3,000',                  date '2027-02-28', array['Any-major'],                           ''),
   ('Willard G. Plentl Sr. Aviation Scholarship',           '$12,000',                 date '2027-02-28', array['Aviation','Engineering'],              ''),
-  ('Women in Construction Scholarship',                     '$2,000',                  date '2027-02-28', array['Women','Engineering','Trade'],         ''),
   ('AFSA National High School Essay Contest',               '$2,500',                  date '2027-03-01', array['Essay'],                               ''),
-  ('Zonta Young Women in Public Affairs Award',             '$5,000',                  date '2027-03-22', array['Women','Public-affairs','Leadership'], ''),
   ('Zeta Phi Beta EPZ Academic Scholarship',                '$1,000',                  date '2026-12-31', array['Academic'],                            ''),
   ('5 Strong Scholarship Foundation',                       'Full tuition',            date '2026-12-31', array['Need-based'],                          ''),
   ('My Story Matters Scholarship',                          '$1,000',                  date '2026-09-25', array['Essay'],                               ''),
@@ -46,7 +45,6 @@ select * from (values
   ('Ethical Torch Essay Scholarship',                       '$1,500',                  date '2026-09-27', array['Essay'],                               ''),
   ('$2,000 No Essay Scholarship by Sallie',                 '$2,000',                  date '2026-09-30', array['No-essay','Any-major'],                ''),
   ('$25,000 Be Bold No-Essay Scholarship',                  '$25,000',                 date '2026-09-30', array['No-essay','Any-major'],                ''),
-  ('Acorn Equality Fund Scholarships',                      '$4,000',                  date '2026-09-25', array['LGBTQ','Local'],                       ''),
   ('ACF Davis-Kozoll Scholarship',                          '$5,000',                  date '2027-04-01', array['Any-major'],                           ''),
   ('ACF James Ledwith Memorial Scholarship',                '$2,000',                  date '2027-04-01', array['Any-major'],                           ''),
   ('ACF Kiwanis Club of Albuquerque Scholarship',           '$1,000',                  date '2027-04-01', array['Local','Any-major'],                   '')
