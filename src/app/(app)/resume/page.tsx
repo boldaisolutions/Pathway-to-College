@@ -1,5 +1,6 @@
 import { Topbar } from "@/components/Topbar";
 import { PrintButton } from "@/components/PrintButton";
+import { GenerateSummaryButton } from "@/components/GenerateSummaryButton";
 import { getSession, getLatestScore } from "@/lib/queries";
 import { buildResumeSummary } from "@/lib/resume";
 import { createClient } from "@/lib/supabase/server";
@@ -13,12 +14,15 @@ export default async function ResumePage() {
     getLatestScore(profile.id),
   ]);
 
-  const summary = student
-    ? buildResumeSummary(student, {
-        tier: score?.tier,
-        activityCount: (activities ?? []).length,
-      })
-    : "";
+  // Prefer the saved AI summary; fall back to the deterministic résumé-voice one.
+  const summary =
+    student?.resume_summary?.trim() ||
+    (student
+      ? buildResumeSummary(student, {
+          tier: score?.tier,
+          activityCount: (activities ?? []).length,
+        })
+      : "");
 
   const initials =
     profile.full_name.split(" ").map((w) => w[0]).slice(0, 2).join("").toUpperCase() || "S";
@@ -49,9 +53,13 @@ export default async function ResumePage() {
           </div>
 
           {summary && (
-            <Section title="Summary">
+            <div className="mt-6">
+              <div className="mb-2 flex items-center justify-between">
+                <h2 className="text-[11px] font-bold uppercase tracking-[.12em] text-accent">Summary</h2>
+                <GenerateSummaryButton />
+              </div>
               <p className="text-[13.5px] leading-relaxed text-ink-2">{summary}</p>
-            </Section>
+            </div>
           )}
 
           <Section title="Activities & Leadership">

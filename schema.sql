@@ -50,6 +50,7 @@ create table students (
   interests       text[]       not null default '{}',
   help_with       text[]       not null default '{}',
   narrative       text,                 -- AI-synthesized story / strategy
+  resume_summary  text,                 -- AI-generated résumé summary
   created_at      timestamptz  not null default now(),
   updated_at      timestamptz  not null default now()
 );

@@ -51,6 +51,7 @@ export type Student = {
   interests: string[];
   help_with: string[];
   narrative: string | null;
+  resume_summary: string | null;
   created_at: string;
   updated_at: string;
 }
