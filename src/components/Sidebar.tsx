@@ -140,20 +140,6 @@ export function Sidebar() {
         ))}
       </nav>
 
-      {/* Pathway Pro upsell */}
-      <div className="mx-3 mb-3 rounded-card bg-gradient-to-br from-accent to-accent-deeper p-4 text-white">
-        <div className="flex items-center gap-2">
-          <Icon id="sparkle" size={15} color="#fff" />
-          <span className="text-[13px] font-bold">Pathway Pro</span>
-        </div>
-        <p className="mt-1 text-[11.5px] leading-snug text-white/75">
-          Unlock unlimited AI coaching and deep college matching.
-        </p>
-        <button className="mt-3 w-full rounded-btn bg-white py-[7px] text-[12.5px] font-bold text-accent-deep">
-          Upgrade
-        </button>
-      </div>
-
       <button
         onClick={logout}
         className="mx-3 mb-4 rounded-nav px-3 py-[9px] text-left text-[13px] font-semibold text-ink-muted transition hover:bg-app"
