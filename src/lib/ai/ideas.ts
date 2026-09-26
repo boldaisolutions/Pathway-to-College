@@ -68,7 +68,11 @@ export function ideaPrompt(f: IdeaInputs): string {
     ".\n" +
     "Respond with ONLY valid minified JSON, no markdown, exactly this shape: " +
     '{"strategy":"2-3 sentence personalized strategy","essayIdeas":[{"title":"short title","angle":"one sentence angle"}],"passionProjects":[{"name":"short name","description":"one sentence","impact":"short measurable-impact phrase"}]} ' +
-    "Give exactly 3 essayIdeas and 3 passionProjects tailored to THIS student. Keep each field under 28 words."
+    "Give exactly 3 essayIdeas and 3 passionProjects tailored to THIS student. Keep each field under 28 words. " +
+    "For passionProjects: propose specific, ambitious, ORIGINAL projects that directly advance this student's stated interests and intended major. " +
+    "Favor real research, inventions, prototypes, novel experiments, or open builds over generic clubs, tutoring, or awareness campaigns. " +
+    "Name concrete techniques, tools, materials, or sub-fields where possible (e.g. a specific method, dataset, device, or study). " +
+    "Each must be something a driven high-schooler could realistically start yet that demonstrates genuine innovation in their field."
   );
 }
 

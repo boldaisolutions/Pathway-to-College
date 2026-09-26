@@ -3,6 +3,46 @@
 import { revalidatePath } from "next/cache";
 import { createClient } from "@/lib/supabase/server";
 import type { ProjectStage } from "@/lib/types";
+import { generateIdeas } from "@/lib/ai/ideas";
+import { persistProjectsOnly } from "@/lib/ai/persist";
+
+/** Regenerate AI passion projects from the student's current profile. Only
+ *  replaces AI-suggested projects; your own projects and essays are kept. */
+export async function regenerateProjects() {
+  const supabase = await createClient();
+  const {
+    data: { user },
+  } = await supabase.auth.getUser();
+  if (!user) return { ok: false as const, error: "Not signed in." };
+
+  const [{ data: student }, { data: profile }, { data: acts }] = await Promise.all([
+    supabase.from("students").select("*").eq("id", user.id).single(),
+    supabase.from("profiles").select("full_name").eq("id", user.id).single(),
+    supabase.from("activities").select("name").eq("student_id", user.id),
+  ]);
+  if (!student) return { ok: false as const, error: "No student profile." };
+
+  const leadershipText = { none: "Not yet", member: "Member", leader: "Leadership role" }[
+    student.leadership
+  ];
+
+  const ideas = await generateIdeas({
+    name: (profile?.full_name || "Student").split(" ")[0],
+    grade: student.grade,
+    major: student.intended_major,
+    interests: student.interests,
+    gpa: student.gpa,
+    activities: (acts ?? []).map((a) => a.name),
+    leadership: leadershipText,
+    serviceHours: student.service_hours,
+    research: student.research,
+    helpWith: student.help_with,
+  });
+  await persistProjectsOnly(supabase, user.id, ideas);
+  revalidatePath("/projects");
+  return { ok: true as const };
+}
+
 
 const DEFAULT_MILESTONES = [
   "Define scope & a clear goal",
