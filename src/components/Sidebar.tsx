@@ -46,6 +46,7 @@ const NAV: NavGroup[] = [
       { icon: "academics", label: "Academic Planner", href: "/academics", ready: true },
       { icon: "book", label: "Testing Center", href: "/testing", ready: true },
       { icon: "activities", label: "Activities", href: "/activities", ready: true },
+      { icon: "bolt", label: "Experience Builder", href: "/experience", badge: "AI", ready: true },
       { icon: "scholarships", label: "Achievement Bank", href: "/achievements", ready: true },
       { icon: "projects", label: "Passion Projects", href: "/projects", ready: true },
       { icon: "resume", label: "Resume", href: "/resume", ready: true },
