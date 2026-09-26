@@ -47,8 +47,8 @@ export default async function DashboardPage() {
 
   const quickActions: { label: string; icon: IconId; href: string }[] = [
     { label: "View score", icon: "pathway", href: "/pathway" },
-    { label: "Add activity", icon: "activities", href: "/dashboard" },
-    { label: "Find scholarships", icon: "scholarships", href: "/dashboard" },
+    { label: "Edit profile / GPA", icon: "profile", href: "/profile" },
+    { label: "Essay Studio", icon: "essays", href: "/essays" },
   ];
 
   const overviewCards = [
