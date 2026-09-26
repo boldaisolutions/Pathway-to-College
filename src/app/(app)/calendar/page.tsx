@@ -1,14 +1,23 @@
 import { Topbar } from "@/components/Topbar";
 import { AddDeadline } from "@/components/AddDeadline";
-import { getSession, getDeadlines } from "@/lib/queries";
+import { DeleteDeadlineButton } from "@/components/DeleteDeadlineButton";
+import { getSession } from "@/lib/queries";
+import { createClient } from "@/lib/supabase/server";
 import { formatDeadline } from "@/lib/ui";
+import type { Deadline } from "@/lib/types";
 
 const DOW = ["S", "M", "T", "W", "T", "F", "S"];
 const MONTHS = ["January", "February", "March", "April", "May", "June", "July", "August", "September", "October", "November", "December"];
 
 export default async function CalendarPage() {
   const { profile } = await getSession();
-  const deadlines = await getDeadlines(profile.id);
+  const supabase = await createClient();
+  const { data: deadlineData } = await supabase
+    .from("deadlines")
+    .select("*")
+    .or(`student_id.eq.${profile.id},student_id.is.null`)
+    .order("due_date", { ascending: true });
+  const deadlines = (deadlineData ?? []) as Deadline[];
 
   const today = new Date();
   const year = today.getFullYear();
@@ -86,7 +95,7 @@ export default async function CalendarPage() {
             {deadlines.map((d) => {
               const f = formatDeadline(d.due_date);
               return (
-                <div key={d.id} className="flex items-center gap-3">
+                <div key={d.id} className="group flex items-center gap-3">
                   <div
                     className="flex h-11 w-11 shrink-0 flex-col items-center justify-center rounded-[10px]"
                     style={{ background: d.urgent ? "#fef0e7" : "#f3f2ee" }}
@@ -96,8 +105,9 @@ export default async function CalendarPage() {
                   </div>
                   <div className="flex-1">
                     <div className="text-[13.5px] font-semibold text-ink-2">{d.title}</div>
-                    <div className="text-[12px] text-ink-muted">{d.org} · {f.in}</div>
+                    <div className="text-[12px] text-ink-muted">{[d.org, f.in].filter(Boolean).join(" · ")}</div>
                   </div>
+                  <DeleteDeadlineButton id={d.id} />
                 </div>
               );
             })}

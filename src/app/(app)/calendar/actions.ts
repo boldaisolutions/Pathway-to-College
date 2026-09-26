@@ -24,3 +24,23 @@ export async function addDeadline(title: string, dueDate: string, kind: string) 
   revalidatePath("/dashboard");
   return { ok: true as const };
 }
+
+/** Remove one of the student's own calendar events. */
+export async function deleteDeadline(id: string) {
+  const supabase = await createClient();
+  const {
+    data: { user },
+  } = await supabase.auth.getUser();
+  if (!user) return { ok: false as const, error: "Not signed in." };
+
+  const { error } = await supabase
+    .from("deadlines")
+    .delete()
+    .eq("id", id)
+    .eq("student_id", user.id);
+  if (error) return { ok: false as const, error: error.message };
+  revalidatePath("/calendar");
+  revalidatePath("/dashboard");
+  revalidatePath("/deadlines");
+  return { ok: true as const };
+}
