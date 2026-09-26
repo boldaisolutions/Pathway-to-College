@@ -1,8 +1,9 @@
 "use client";
 
 import { useState, useTransition } from "react";
+import { useRouter } from "next/navigation";
 import { Icon } from "@/components/Icon";
-import { saveEssay, requestReview, regenerateIdeas } from "@/app/(app)/essays/actions";
+import { saveEssay, requestReview, regenerateIdeas, createEssay } from "@/app/(app)/essays/actions";
 import type { Essay, EssayStatus } from "@/lib/types";
 
 interface FeedbackNote {
@@ -28,6 +29,7 @@ const STATUS_COLOR: Record<string, [string, string]> = {
 const wordCount = (s: string) => s.trim().split(/\s+/).filter(Boolean).length;
 
 export function EssayStudio({ essays }: { essays: EssayWithFeedback[] }) {
+  const router = useRouter();
   const [selectedId, setSelectedId] = useState(essays[0]?.id ?? "");
   const [drafts, setDrafts] = useState<Record<string, { body: string; prompt: string; status: EssayStatus }>>(
     Object.fromEntries(essays.map((e) => [e.id, { body: e.body, prompt: e.prompt, status: e.status }])),
@@ -63,9 +65,17 @@ export function EssayStudio({ essays }: { essays: EssayWithFeedback[] }) {
     return (
       <div className="card p-8 text-center">
         <p className="text-[14px] text-ink-muted">
-          No essays yet. Generate AI essay ideas to get started.
+          No essays yet. Generate AI essay ideas or start one from scratch.
         </p>
-        <RegenButton />
+        <div className="mt-4 flex items-center justify-center gap-2">
+          <button
+            onClick={() => createEssay().then(() => router.refresh())}
+            className="rounded-btn bg-accent px-4 py-2 text-[13px] font-semibold text-white transition hover:bg-accent-hover"
+          >
+            + New essay
+          </button>
+          <RegenButton />
+        </div>
       </div>
     );
   }
@@ -88,6 +98,12 @@ export function EssayStudio({ essays }: { essays: EssayWithFeedback[] }) {
       <div className="grid grid-cols-1 gap-[18px] lg:grid-cols-[260px_1fr_280px]">
         {/* Essay list */}
         <div className="flex flex-col gap-2">
+          <button
+            onClick={() => createEssay().then(() => router.refresh())}
+            className="rounded-card border border-dashed border-accent/40 bg-surface py-2.5 text-[13px] font-semibold text-accent transition hover:bg-indigo-tint"
+          >
+            + New essay
+          </button>
           {essays.map((e) => {
             const [bg, fg] = STATUS_COLOR[e.status] ?? ["#f3f2ee", "#5b6068"];
             const words = wordCount(drafts[e.id]?.body ?? e.body);

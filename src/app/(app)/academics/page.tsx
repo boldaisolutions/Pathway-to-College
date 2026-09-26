@@ -1,5 +1,6 @@
 import { Topbar } from "@/components/Topbar";
 import { Icon, type IconId } from "@/components/Icon";
+import { AddCourseForm } from "@/components/AddCourseForm";
 import { getSession } from "@/lib/queries";
 import { createClient } from "@/lib/supabase/server";
 import type { Course } from "@/lib/types";
@@ -24,8 +25,9 @@ export default async function AcademicsPage() {
     .order("grade", { ascending: true });
 
   const courses = (data ?? []) as Course[];
-  const grades = Array.from(new Set(courses.map((c) => c.grade))).sort((a, b) => a - b);
   const advanced = courses.filter((c) => ["AP", "Honors", "IB", "Dual"].includes(c.level)).length;
+  // Always show a planning column for grades 9–12.
+  const grades = [9, 10, 11, 12];
 
   const stats: { icon: IconId; value: string; label: string; tint: [string, string] }[] = [
     { icon: "academics", value: student ? student.gpa.toFixed(2) : "—", label: "Weighted GPA", tint: ["#eaf1fe", "#2563bd"] },
@@ -58,11 +60,7 @@ export default async function AcademicsPage() {
           ))}
         </div>
 
-        {grades.length === 0 ? (
-          <div className="card p-8 text-center text-[14px] text-ink-muted">
-            No courses added yet. Your course-by-grade plan will appear here.
-          </div>
-        ) : (
+        {grades.length === 0 ? null : (
           <div className="grid grid-cols-1 gap-[18px] sm:grid-cols-2 xl:grid-cols-4">
             {grades.map((g) => (
               <div key={g} className="flex flex-col gap-2">
@@ -78,6 +76,7 @@ export default async function AcademicsPage() {
                       </div>
                     );
                   })}
+                <AddCourseForm grade={g} />
               </div>
             ))}
           </div>

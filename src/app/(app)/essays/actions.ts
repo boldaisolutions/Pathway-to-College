@@ -15,6 +15,24 @@ async function requireUser() {
   return { supabase, user };
 }
 
+/** Create a blank essay the student can start drafting. */
+export async function createEssay() {
+  const { supabase, user } = await requireUser();
+  if (!user) return { ok: false as const, error: "Not signed in." };
+  const { error } = await supabase.from("essays").insert({
+    student_id: user.id,
+    title: "Untitled essay",
+    status: "Outline",
+    prompt: "",
+    body: "",
+    word_target: 650,
+    ai_origin: false,
+  });
+  if (error) return { ok: false as const, error: error.message };
+  revalidatePath("/essays");
+  return { ok: true as const };
+}
+
 /** Save the editor's prompt/body/title/status for one essay. */
 export async function saveEssay(
   id: string,

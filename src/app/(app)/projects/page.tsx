@@ -1,6 +1,7 @@
 import { Topbar } from "@/components/Topbar";
 import { Icon } from "@/components/Icon";
 import { ProjectCard, type ProjectWithMilestones } from "@/components/ProjectCard";
+import { NewProjectButton } from "@/components/NewProjectButton";
 import { getSession } from "@/lib/queries";
 import { createClient } from "@/lib/supabase/server";
 
@@ -62,15 +63,25 @@ export default async function ProjectsPage() {
         </div>
 
         {list.length === 0 ? (
-          <div className="card p-8 text-center text-[14px] text-ink-muted">
-            No projects yet — finish onboarding to get AI-suggested passion projects.
+          <div className="card p-8 text-center">
+            <p className="text-[14px] text-ink-muted">
+              No projects yet — start one, or finish onboarding for AI-suggested ideas.
+            </p>
+            <div className="mt-4 flex justify-center">
+              <NewProjectButton />
+            </div>
           </div>
         ) : (
-          <div className="grid grid-cols-1 gap-[18px] md:grid-cols-2 xl:grid-cols-3">
-            {list.map((p) => (
-              <ProjectCard key={p.id} project={p} />
-            ))}
-          </div>
+          <>
+            <div className="flex justify-end">
+              <NewProjectButton />
+            </div>
+            <div className="grid grid-cols-1 gap-[18px] md:grid-cols-2 xl:grid-cols-3">
+              {list.map((p) => (
+                <ProjectCard key={p.id} project={p} />
+              ))}
+            </div>
+          </>
         )}
       </div>
     </>
