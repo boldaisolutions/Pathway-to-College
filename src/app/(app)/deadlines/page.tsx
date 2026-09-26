@@ -17,11 +17,14 @@ export default async function DeadlinesPage() {
   const { profile } = await getSession();
   const supabase = await createClient();
 
-  const [{ data: deadlines }, { data: tasks }, { data: tests }, { data: saved }] = await Promise.all([
+  const [{ data: deadlines }, { data: tasks }, { data: tests }, { data: saved }, { data: opps }, { data: reqs }, { data: recs }] = await Promise.all([
     supabase.from("deadlines").select("*").or(`student_id.eq.${profile.id},student_id.is.null`),
     supabase.from("tasks").select("*").eq("student_id", profile.id).eq("done", false),
     supabase.from("tests").select("*").eq("student_id", profile.id).neq("status", "taken"),
     supabase.from("saved_scholarships").select("scholarship_id, status").eq("student_id", profile.id),
+    supabase.from("opportunities").select("*").eq("student_id", profile.id).neq("status", "Declined"),
+    supabase.from("app_requirements").select("*").eq("student_id", profile.id),
+    supabase.from("recommenders").select("*").eq("student_id", profile.id).neq("status", "Submitted").neq("status", "Thank-you sent"),
   ]);
 
   const savedIds = (saved ?? []).map((r) => r.scholarship_id);
@@ -41,6 +44,20 @@ export default async function DeadlinesPage() {
   }
   for (const s of schs ?? []) {
     if (s.deadline) items.push({ date: s.deadline, title: s.name, sub: `Scholarship · ${s.amount}`, type: "Scholarship", icon: "scholarships", tint: ["#f3eefe", "#7c3aed"] });
+  }
+  const isoDate = (v: string | null | undefined) => (v && /^\d{4}-\d{2}-\d{2}/.test(v) ? v : null);
+  for (const o of opps ?? []) {
+    const d = isoDate(o.deadline);
+    if (d) items.push({ date: d, title: o.title, sub: `${o.type}${o.org ? ` · ${o.org}` : ""}`, type: "Opportunity", icon: "target", tint: ["#eafaf1", "#1b9e5f"] });
+  }
+  for (const r of reqs ?? []) {
+    if (r.status === "Done" || r.status === "Waived") continue;
+    const d = isoDate(r.due_date);
+    if (d) items.push({ date: d, title: r.requirement, sub: `${r.college_name || "Application"} · ${r.category}`, type: "Requirement", icon: "doc", tint: ["#eef0fc", "#4338ca"] });
+  }
+  for (const r of recs ?? []) {
+    const d = isoDate(r.due_date);
+    if (d) items.push({ date: d, title: `Rec letter — ${r.name}`, sub: `${r.role}${r.for_colleges ? ` · ${r.for_colleges}` : ""}`, type: "Recommendation", icon: "users", tint: ["#fef0e7", "#c2410c"] });
   }
 
   const withDays = items

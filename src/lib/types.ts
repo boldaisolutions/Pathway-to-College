@@ -255,6 +255,48 @@ export type Test = {
   status: string;
 }
 
+export type Opportunity = {
+  id: string;
+  student_id: string;
+  title: string;
+  type: string;
+  org: string;
+  location: string;
+  url: string;
+  deadline: string;
+  cost: string;
+  status: string;
+  notes: string;
+  created_at: string;
+}
+
+export type AppRequirement = {
+  id: string;
+  student_id: string;
+  college_name: string;
+  requirement: string;
+  category: string;
+  status: string;
+  due_date: string;
+  notes: string;
+  created_at: string;
+}
+
+export type Recommender = {
+  id: string;
+  student_id: string;
+  name: string;
+  role: string;
+  relationship: string;
+  email: string;
+  status: string;
+  request_date: string;
+  due_date: string;
+  for_colleges: string;
+  notes: string;
+  created_at: string;
+}
+
 /**
  * Minimal Database shape for @supabase/ssr generics. We keep Row/Insert/Update
  * loose (Partial) where the trigger/defaults fill columns.
@@ -293,6 +335,9 @@ export type Database = {
       tests: Table<Test>;
       work_experience: Table<WorkExperience>;
       achievements: Table<Achievement>;
+      opportunities: Table<Opportunity>;
+      app_requirements: Table<AppRequirement>;
+      recommenders: Table<Recommender>;
       roadmap_milestones: Table<RoadmapMilestone>;
       coach_messages: Table<CoachMessage>;
     };
