@@ -284,6 +284,14 @@ returns boolean language sql security definer stable as $$
     );
 $$;
 
+-- table privileges: RLS gates rows, but the anon/authenticated roles still
+-- need base table grants (Supabase does not always apply these automatically).
+grant usage on schema public to anon, authenticated;
+grant select, insert, update, delete on all tables in schema public to anon, authenticated;
+grant usage, select on all sequences in schema public to anon, authenticated;
+alter default privileges in schema public
+  grant select, insert, update, delete on tables to anon, authenticated;
+
 -- enable RLS everywhere
 alter table profiles            enable row level security;
 alter table students            enable row level security;
@@ -380,16 +388,16 @@ create policy col_read on colleges     for select using (auth.role() = 'authenti
 -- Trigger: create profile + student rows on signup
 -- =============================================================================
 create or replace function handle_new_user()
-returns trigger language plpgsql security definer as $$
+returns trigger language plpgsql security definer set search_path = public as $$
 begin
-  insert into profiles (id, role, full_name, email)
+  insert into public.profiles (id, role, full_name, email)
   values (new.id,
-          coalesce((new.raw_user_meta_data->>'role')::user_role, 'student'),
+          coalesce((new.raw_user_meta_data->>'role')::public.user_role, 'student'),
           coalesce(new.raw_user_meta_data->>'full_name',''),
           coalesce(new.email,''));
   -- only seed a students row for student accounts
   if coalesce((new.raw_user_meta_data->>'role'),'student') = 'student' then
-    insert into students (id) values (new.id);
+    insert into public.students (id) values (new.id);
   end if;
   return new;
 end;

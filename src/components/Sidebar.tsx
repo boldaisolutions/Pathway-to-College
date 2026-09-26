@@ -32,7 +32,7 @@ const NAV: NavGroup[] = [
     label: "Discover",
     items: [
       { icon: "pathway", label: "Pathway Score", href: "/pathway", ready: true },
-      { icon: "profile", label: "My Profile" },
+      { icon: "profile", label: "My Profile", href: "/profile", ready: true },
       { icon: "roadmap", label: "Roadmap" },
     ],
   },
