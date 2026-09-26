@@ -1,5 +1,6 @@
 import { Topbar } from "@/components/Topbar";
 import { CollegesList, type CollegeCard } from "@/components/CollegesList";
+import { AddCollege } from "@/components/AddCollege";
 import { getSession, getLatestScore } from "@/lib/queries";
 import { createClient } from "@/lib/supabase/server";
 import type { CollegeFit } from "@/lib/types";
@@ -46,6 +47,10 @@ export default async function CollegesPage() {
         initials={initials}
       />
       <div className="animate-pw-fade px-[28px] py-[22px]">
+        <div className="mb-4 flex flex-wrap items-center justify-between gap-3">
+          <p className="text-[13px] text-ink-muted">{items.length} colleges · fit is estimated from acceptance rate vs your score</p>
+          <AddCollege />
+        </div>
         {items.length === 0 ? (
           <div className="card p-8 text-center text-[14px] text-ink-muted">
             Run <code>seed.sql</code> to load the college catalog.
