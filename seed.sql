@@ -41,6 +41,58 @@ select * from (values
 ) as v(name, abbr, location, acceptance_rate)
 where not exists (select 1 from colleges c where c.name = v.name);
 
+-- ---------- Colleges (expanded catalog) --------------------------------------
+insert into colleges (name, abbr, location, acceptance_rate)
+select * from (values
+  ('Harvard University','HARV','Cambridge, MA','3%'),
+  ('Yale University','YALE','New Haven, CT','5%'),
+  ('Princeton University','PRIN','Princeton, NJ','4%'),
+  ('Columbia University','COLU','New York, NY','4%'),
+  ('Brown University','BROWN','Providence, RI','5%'),
+  ('Dartmouth College','DART','Hanover, NH','6%'),
+  ('University of Pennsylvania','PENN','Philadelphia, PA','6%'),
+  ('California Institute of Technology','CALT','Pasadena, CA','3%'),
+  ('Duke University','DUKE','Durham, NC','6%'),
+  ('Northwestern University','NW','Evanston, IL','7%'),
+  ('Johns Hopkins University','JHU','Baltimore, MD','7%'),
+  ('Vanderbilt University','VAND','Nashville, TN','7%'),
+  ('Rice University','RICE','Houston, TX','8%'),
+  ('University of Notre Dame','ND','Notre Dame, IN','12%'),
+  ('Emory University','EMRY','Atlanta, GA','13%'),
+  ('Washington University in St. Louis','WUSTL','St. Louis, MO','12%'),
+  ('Georgetown University','GTWN','Washington, DC','12%'),
+  ('University of Southern California','USC','Los Angeles, CA','12%'),
+  ('New York University','NYU','New York, NY','12%'),
+  ('University of California, Los Angeles','UCLA','Los Angeles, CA','9%'),
+  ('University of Virginia','UVA','Charlottesville, VA','19%'),
+  ('University of North Carolina at Chapel Hill','UNC','Chapel Hill, NC','17%'),
+  ('Tufts University','TUFTS','Medford, MA','10%'),
+  ('Boston College','BC','Chestnut Hill, MA','15%'),
+  ('Boston University','BU','Boston, MA','14%'),
+  ('Northeastern University','NEU','Boston, MA','6%'),
+  ('Wake Forest University','WFU','Winston-Salem, NC','21%'),
+  ('University of California, San Diego','UCSD','La Jolla, CA','24%'),
+  ('University of California, Irvine','UCI','Irvine, CA','21%'),
+  ('University of California, Davis','UCD','Davis, CA','37%'),
+  ('University of Florida','UF','Gainesville, FL','23%'),
+  ('University of Wisconsin-Madison','UWM','Madison, WI','49%'),
+  ('The Ohio State University','OSU','Columbus, OH','53%'),
+  ('Pennsylvania State University','PSU','University Park, PA','55%'),
+  ('University of Maryland','UMD','College Park, MD','45%'),
+  ('Rutgers University','RUT','New Brunswick, NJ','66%'),
+  ('Michigan State University','MSU','East Lansing, MI','83%'),
+  ('University of Minnesota','UMN','Minneapolis, MN','75%'),
+  ('Indiana University Bloomington','IU','Bloomington, IN','80%'),
+  ('University of Arizona','UARIZ','Tucson, AZ','87%'),
+  ('Arizona State University','ASU','Tempe, AZ','88%'),
+  ('University of Colorado Boulder','CUB','Boulder, CO','80%'),
+  ('University of Oregon','UO','Eugene, OR','82%'),
+  ('San Diego State University','SDSU','San Diego, CA','34%'),
+  ('Virginia Tech','VT','Blacksburg, VA','56%'),
+  ('University of Pittsburgh','PITT','Pittsburgh, PA','49%')
+) as v(name, abbr, location, acceptance_rate)
+where not exists (select 1 from colleges c where c.name = v.name);
+
 -- =============================================================================
 -- OPTIONAL: per-student starter content (roadmap, deadlines) you may want to
 -- generate at signup instead of seeding globally. Below is an example you can
