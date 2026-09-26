@@ -96,6 +96,21 @@ create table courses (
 );
 create index on courses (student_id, grade);
 
+-- ---------- work experience --------------------------------------------------
+create table work_experience (
+  id          uuid primary key default gen_random_uuid(),
+  student_id  uuid not null references students(id) on delete cascade,
+  title       text not null default '',
+  employer    text default '',
+  location    text default '',
+  start_date  text default '',
+  end_date    text default '',
+  description text default '',
+  position    int not null default 0,
+  created_at  timestamptz not null default now()
+);
+create index on work_experience (student_id);
+
 -- ---------- standardized tests -----------------------------------------------
 create table tests (
   id          uuid primary key default gen_random_uuid(),
@@ -299,6 +314,7 @@ alter table students            enable row level security;
 alter table pathway_scores      enable row level security;
 alter table activities          enable row level security;
 alter table courses             enable row level security;
+alter table work_experience     enable row level security;
 alter table tests               enable row level security;
 alter table essays              enable row level security;
 alter table essay_feedback      enable row level security;
@@ -336,6 +352,9 @@ create policy act_write  on activities        for all using (student_id = auth.u
 
 create policy crs_select on courses           for select using (can_view_student(student_id));
 create policy crs_write  on courses           for all using (student_id = auth.uid()) with check (student_id = auth.uid());
+
+create policy we_select on work_experience    for select using (can_view_student(student_id));
+create policy we_write  on work_experience    for all using (student_id = auth.uid()) with check (student_id = auth.uid());
 
 create policy tst_select on tests             for select using (can_view_student(student_id));
 create policy tst_write  on tests             for all using (student_id = auth.uid()) with check (student_id = auth.uid());
