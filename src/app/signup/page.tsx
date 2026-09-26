@@ -116,48 +116,54 @@ export default function SignupPage() {
     setError(null);
     const supabase = createClient();
 
-    // 1) Create the account if needed (trigger seeds profiles + students).
-    if (!hasAccount) {
-      const { data, error: signErr } = await supabase.auth.signUp({
-        email: form.email,
-        password: form.password,
-        options: { data: { full_name: form.name, role: "student" } },
-      });
-      if (signErr) {
-        setError(signErr.message);
-        return;
+    try {
+      // 1) Create the account if needed (trigger seeds profiles + students).
+      if (!hasAccount) {
+        const { data, error: signErr } = await supabase.auth.signUp({
+          email: form.email,
+          password: form.password,
+          options: { data: { full_name: form.name, role: "student" } },
+        });
+        if (signErr) {
+          setError(`Sign-up failed: ${signErr.message}`);
+          return;
+        }
+        if (!data.session) {
+          // Email confirmation is enabled on this Supabase project.
+          setPhase("confirm");
+          return;
+        }
       }
-      if (!data.session) {
-        // Email confirmation is enabled on this Supabase project.
-        setPhase("confirm");
-        return;
-      }
-    }
 
-    // 2) Run scoring + persist (show the building screen meanwhile).
-    setPhase("building");
-    setBuildDone(false);
-    const result = await completeOnboarding({
-      grade: form.grade,
-      school: form.school,
-      major: form.major,
-      interests: form.interests,
-      gpa: form.gpa,
-      rigor: form.rigor,
-      testing: form.testing,
-      activitiesText: form.activitiesText,
-      leadership: form.leadership,
-      serviceHours: form.serviceHours,
-      research: form.research,
-      awards: form.awards,
-      helpWith: form.helpWith,
-    });
-    if (!result.ok) {
-      setError(result.error ?? "Something went wrong.");
+      // 2) Run scoring + persist (show the building screen meanwhile).
+      setPhase("building");
+      setBuildDone(false);
+      const result = await completeOnboarding({
+        grade: form.grade,
+        school: form.school,
+        major: form.major,
+        interests: form.interests,
+        gpa: form.gpa,
+        rigor: form.rigor,
+        testing: form.testing,
+        activitiesText: form.activitiesText,
+        leadership: form.leadership,
+        serviceHours: form.serviceHours,
+        research: form.research,
+        awards: form.awards,
+        helpWith: form.helpWith,
+      });
+      if (!result.ok) {
+        setError(result.error || "Something went wrong while building your Pathway.");
+        setPhase("wizard");
+        return;
+      }
+      setBuildDone(true);
+    } catch (e) {
+      const msg = e instanceof Error ? e.message : JSON.stringify(e);
+      setError(`Unexpected error: ${msg || "unknown"}`);
       setPhase("wizard");
-      return;
     }
-    setBuildDone(true);
   }
 
   if (phase === "building") {

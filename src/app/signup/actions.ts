@@ -59,6 +59,16 @@ const STARTER_ROADMAP = [
 export async function completeOnboarding(
   form: OnboardingForm,
 ): Promise<OnboardingResult> {
+  try {
+    return await runOnboarding(form);
+  } catch (e) {
+    const msg = e instanceof Error ? e.message : JSON.stringify(e);
+    console.error("completeOnboarding failed:", e);
+    return { ok: false, error: `Server error: ${msg || "unknown"}` };
+  }
+}
+
+async function runOnboarding(form: OnboardingForm): Promise<OnboardingResult> {
   const supabase = await createClient();
   const {
     data: { user },
