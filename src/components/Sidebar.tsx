@@ -36,6 +36,7 @@ const NAV: NavGroup[] = [
       { icon: "profile", label: "My Profile", href: "/profile", ready: true },
       { icon: "academics", label: "Academic Record", href: "/academic-record", ready: true },
       { icon: "target", label: "Opportunity Center", href: "/opportunities", ready: true },
+      { icon: "heart", label: "College Fit Profile", href: "/college-fit", ready: true },
       { icon: "roadmap", label: "Roadmap", href: "/roadmap", ready: true },
     ],
   },
@@ -60,11 +61,13 @@ const NAV: NavGroup[] = [
       { icon: "applications", label: "Applications", href: "/applications", ready: true },
       { icon: "doc", label: "App Requirements", href: "/app-requirements", ready: true },
       { icon: "users", label: "Recommendations", href: "/recommendations", ready: true },
+      { icon: "scholarships", label: "Financial Aid", href: "/financial-aid", ready: true },
     ],
   },
   {
     label: "Manage",
     items: [
+      { icon: "doc", label: "Document Vault", href: "/documents", ready: true },
       { icon: "calendar", label: "Calendar", href: "/calendar", ready: true },
       { icon: "settings", label: "Settings", href: "/settings", ready: true },
     ],
