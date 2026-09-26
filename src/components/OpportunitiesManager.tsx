@@ -7,9 +7,8 @@ import {
   addOpportunity,
   deleteOpportunity,
   updateOpportunityStatus,
-  OPPORTUNITY_TYPES,
-  OPPORTUNITY_STATUSES,
 } from "@/app/(app)/opportunities/actions";
+import { OPPORTUNITY_TYPES, OPPORTUNITY_STATUSES } from "@/lib/options";
 import type { Opportunity } from "@/lib/types";
 import { formatDeadline } from "@/lib/ui";
 

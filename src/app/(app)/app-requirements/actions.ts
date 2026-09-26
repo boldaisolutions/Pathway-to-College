@@ -3,20 +3,6 @@
 import { revalidatePath } from "next/cache";
 import { createClient } from "@/lib/supabase/server";
 
-export const REQUIREMENT_CATEGORIES = [
-  "Essay",
-  "Recommendation",
-  "Transcript",
-  "Testing",
-  "Form",
-  "Fee",
-  "Portfolio",
-  "Interview",
-  "Other",
-] as const;
-
-export const REQUIREMENT_STATUSES = ["Not started", "In progress", "Done", "Waived"] as const;
-
 // A starter checklist applied when a student adds a new college.
 const COMMON_APP_STARTER: { requirement: string; category: string }[] = [
   { requirement: "Common/Coalition application", category: "Form" },

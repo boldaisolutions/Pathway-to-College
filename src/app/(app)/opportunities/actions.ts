@@ -3,26 +3,6 @@
 import { revalidatePath } from "next/cache";
 import { createClient } from "@/lib/supabase/server";
 
-export const OPPORTUNITY_TYPES = [
-  "Internship",
-  "Summer Program",
-  "Competition",
-  "Research",
-  "Job",
-  "Volunteer",
-  "Fellowship",
-  "Course",
-  "Other",
-] as const;
-
-export const OPPORTUNITY_STATUSES = [
-  "Interested",
-  "Applying",
-  "Applied",
-  "Accepted",
-  "Declined",
-] as const;
-
 export interface OpportunityInput {
   title: string;
   type: string;

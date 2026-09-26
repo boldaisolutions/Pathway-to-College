@@ -3,18 +3,6 @@
 import { revalidatePath } from "next/cache";
 import { createClient } from "@/lib/supabase/server";
 
-export const DOCUMENT_CATEGORIES = [
-  "Transcript",
-  "Test Score Report",
-  "Essay",
-  "Resume",
-  "Recommendation",
-  "Financial (FAFSA/Tax)",
-  "ID / Certificate",
-  "Portfolio",
-  "Other",
-] as const;
-
 export interface DocumentInput {
   name: string;
   category: string;

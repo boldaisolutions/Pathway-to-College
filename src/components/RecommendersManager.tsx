@@ -6,9 +6,8 @@ import {
   addRecommender,
   updateRecommenderStatus,
   deleteRecommender,
-  RECOMMENDER_ROLES,
-  RECOMMENDER_STATUSES,
 } from "@/app/(app)/recommendations/actions";
+import { RECOMMENDER_ROLES, RECOMMENDER_STATUSES } from "@/lib/options";
 import type { Recommender } from "@/lib/types";
 import { formatDeadline } from "@/lib/ui";
 
