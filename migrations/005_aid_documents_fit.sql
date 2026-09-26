@@ -23,7 +23,7 @@ create table if not exists documents (
 );
 create index if not exists documents_student_idx on documents (student_id);
 
-create table if not exists college_fit (
+create table if not exists college_fit_profile (
   student_id    uuid primary key references students(id) on delete cascade,
   size          text default '',
   setting       text default '',
@@ -38,11 +38,11 @@ create table if not exists college_fit (
   updated_at    timestamptz not null default now()
 );
 
-grant select, insert, update, delete on aid_awards, documents, college_fit to anon, authenticated;
+grant select, insert, update, delete on aid_awards, documents, college_fit_profile to anon, authenticated;
 
-alter table aid_awards  enable row level security;
-alter table documents   enable row level security;
-alter table college_fit enable row level security;
+alter table aid_awards           enable row level security;
+alter table documents            enable row level security;
+alter table college_fit_profile  enable row level security;
 
 drop policy if exists aid_select on aid_awards;
 drop policy if exists aid_write  on aid_awards;
@@ -54,7 +54,7 @@ drop policy if exists doc_write  on documents;
 create policy doc_select on documents   for select using (can_view_student(student_id));
 create policy doc_write  on documents   for all using (student_id = auth.uid()) with check (student_id = auth.uid());
 
-drop policy if exists fit_select on college_fit;
-drop policy if exists fit_write  on college_fit;
-create policy fit_select on college_fit for select using (can_view_student(student_id));
-create policy fit_write  on college_fit for all using (student_id = auth.uid()) with check (student_id = auth.uid());
+drop policy if exists fit_select on college_fit_profile;
+drop policy if exists fit_write  on college_fit_profile;
+create policy fit_select on college_fit_profile for select using (can_view_student(student_id));
+create policy fit_write  on college_fit_profile for all using (student_id = auth.uid()) with check (student_id = auth.uid());
