@@ -111,6 +111,22 @@ create table work_experience (
 );
 create index on work_experience (student_id);
 
+-- ---------- achievement bank -------------------------------------------------
+create table achievements (
+  id           uuid primary key default gen_random_uuid(),
+  student_id   uuid not null references students(id) on delete cascade,
+  category     text not null default 'Award',   -- Award|Competition|Research|Project|Leadership|Volunteer|Job|Internship|...
+  title        text not null,
+  organization text default '',
+  role         text default '',
+  result       text default '',
+  date         text default '',
+  skills       text[] not null default '{}',
+  evidence_url text default '',
+  created_at   timestamptz not null default now()
+);
+create index on achievements (student_id);
+
 -- ---------- standardized tests -----------------------------------------------
 create table tests (
   id          uuid primary key default gen_random_uuid(),
@@ -315,6 +331,7 @@ alter table pathway_scores      enable row level security;
 alter table activities          enable row level security;
 alter table courses             enable row level security;
 alter table work_experience     enable row level security;
+alter table achievements        enable row level security;
 alter table tests               enable row level security;
 alter table essays              enable row level security;
 alter table essay_feedback      enable row level security;
@@ -355,6 +372,9 @@ create policy crs_write  on courses           for all using (student_id = auth.u
 
 create policy we_select on work_experience    for select using (can_view_student(student_id));
 create policy we_write  on work_experience    for all using (student_id = auth.uid()) with check (student_id = auth.uid());
+
+create policy ach_select on achievements      for select using (can_view_student(student_id));
+create policy ach_write  on achievements      for all using (student_id = auth.uid()) with check (student_id = auth.uid());
 
 create policy tst_select on tests             for select using (can_view_student(student_id));
 create policy tst_write  on tests             for all using (student_id = auth.uid()) with check (student_id = auth.uid());
