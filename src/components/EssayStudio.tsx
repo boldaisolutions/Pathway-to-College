@@ -3,7 +3,7 @@
 import { useState, useTransition } from "react";
 import { useRouter } from "next/navigation";
 import { Icon } from "@/components/Icon";
-import { saveEssay, requestReview, regenerateIdeas, createEssay } from "@/app/(app)/essays/actions";
+import { saveEssay, requestReview, regenerateIdeas, createEssay, deleteEssay } from "@/app/(app)/essays/actions";
 import type { Essay, EssayStatus } from "@/lib/types";
 
 interface FeedbackNote {
@@ -140,15 +140,29 @@ export function EssayStudio({ essays }: { essays: EssayWithFeedback[] }) {
           <div className="card flex flex-col p-5">
             <div className="flex items-center justify-between gap-2">
               <h3 className="text-[16px] font-extrabold tracking-[-.01em]">{active.title}</h3>
-              <select
-                value={draft.status}
-                onChange={(e) => patchDraft(active.id, { status: e.target.value as EssayStatus })}
-                className="rounded-input border border-border-input2 bg-surface px-2 py-1 text-[12.5px] font-semibold text-ink-3"
-              >
-                {STATUS_OPTIONS.map((s) => (
-                  <option key={s} value={s}>{s}</option>
-                ))}
-              </select>
+              <div className="flex items-center gap-2">
+                <select
+                  value={draft.status}
+                  onChange={(e) => patchDraft(active.id, { status: e.target.value as EssayStatus })}
+                  className="rounded-input border border-border-input2 bg-surface px-2 py-1 text-[12.5px] font-semibold text-ink-3"
+                >
+                  {STATUS_OPTIONS.map((s) => (
+                    <option key={s} value={s}>{s}</option>
+                  ))}
+                </select>
+                <button
+                  onClick={() => {
+                    if (confirm("Delete this essay?")) deleteEssay(active.id).then(() => router.refresh());
+                  }}
+                  title="Delete essay"
+                  className="text-ink-placeholder transition hover:text-danger"
+                  aria-label="Delete essay"
+                >
+                  <svg width={15} height={15} viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth={2} strokeLinecap="round" strokeLinejoin="round">
+                    <path d="M3 6h18M8 6V4h8v2M6 6l1 14h10l1-14" />
+                  </svg>
+                </button>
+              </div>
             </div>
 
             <label className="mt-4 text-[11.5px] font-semibold uppercase tracking-wide text-ink-subtle">Prompt</label>

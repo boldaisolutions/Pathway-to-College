@@ -2,6 +2,7 @@
 
 import { revalidatePath } from "next/cache";
 import { createClient } from "@/lib/supabase/server";
+import type { ProjectStage } from "@/lib/types";
 
 const DEFAULT_MILESTONES = [
   "Define scope & a clear goal",
@@ -43,6 +44,28 @@ export async function createProject(name: string, description: string) {
   );
   revalidatePath("/projects");
   return { ok: true as const };
+}
+
+/** Change a project's stage. */
+export async function changeProjectStage(id: string, stage: ProjectStage) {
+  const supabase = await createClient();
+  const {
+    data: { user },
+  } = await supabase.auth.getUser();
+  if (!user) return;
+  await supabase.from("projects").update({ stage }).eq("id", id).eq("student_id", user.id);
+  revalidatePath("/projects");
+}
+
+/** Delete a project (milestones cascade). */
+export async function deleteProject(id: string) {
+  const supabase = await createClient();
+  const {
+    data: { user },
+  } = await supabase.auth.getUser();
+  if (!user) return;
+  await supabase.from("projects").delete().eq("id", id).eq("student_id", user.id);
+  revalidatePath("/projects");
 }
 
 /**

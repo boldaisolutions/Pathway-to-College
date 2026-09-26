@@ -33,6 +33,15 @@ export async function createEssay() {
   return { ok: true as const };
 }
 
+/** Delete an essay (feedback cascades). */
+export async function deleteEssay(id: string) {
+  const { supabase, user } = await requireUser();
+  if (!user) return { ok: false as const, error: "Not signed in." };
+  await supabase.from("essays").delete().eq("id", id).eq("student_id", user.id);
+  revalidatePath("/essays");
+  return { ok: true as const };
+}
+
 /** Save the editor's prompt/body/title/status for one essay. */
 export async function saveEssay(
   id: string,

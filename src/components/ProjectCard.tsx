@@ -1,9 +1,10 @@
 "use client";
 
 import { useState, useTransition } from "react";
+import { useRouter } from "next/navigation";
 import { Check } from "@/components/Icon";
-import { toggleMilestone } from "@/app/(app)/projects/actions";
-import type { Project, ProjectMilestone } from "@/lib/types";
+import { toggleMilestone, changeProjectStage, deleteProject } from "@/app/(app)/projects/actions";
+import type { Project, ProjectMilestone, ProjectStage } from "@/lib/types";
 
 const STAGE_COLOR: Record<string, [string, string]> = {
   Idea: ["#f3eefe", "#7c3aed"],
@@ -11,12 +12,14 @@ const STAGE_COLOR: Record<string, [string, string]> = {
   Building: ["#fef0e7", "#c2410c"],
   Launched: ["#eafaf1", "#1b9e5f"],
 };
+const STAGES: ProjectStage[] = ["Idea", "Planning", "Building", "Launched"];
 
 export interface ProjectWithMilestones extends Project {
   milestones: ProjectMilestone[];
 }
 
 export function ProjectCard({ project }: { project: ProjectWithMilestones }) {
+  const router = useRouter();
   const sorted = [...project.milestones].sort((a, b) => a.position - b.position);
   const [milestones, setMilestones] = useState(sorted);
   const [, startTransition] = useTransition();
@@ -34,12 +37,29 @@ export function ProjectCard({ project }: { project: ProjectWithMilestones }) {
   }
 
   return (
-    <div className="card flex flex-col p-5">
+    <div className="card group flex flex-col p-5">
       <div className="flex items-start justify-between gap-2">
         <h3 className="text-[15px] font-extrabold tracking-[-.01em]">{project.name}</h3>
-        <span className="shrink-0 rounded-chip px-2 py-[2px] text-[10.5px] font-bold" style={{ background: bg, color: fg }}>
-          {project.stage}
-        </span>
+        <div className="flex items-center gap-1.5">
+          <select
+            value={project.stage}
+            onChange={(e) => startTransition(async () => { await changeProjectStage(project.id, e.target.value as ProjectStage); router.refresh(); })}
+            className="rounded-chip border px-1.5 py-[2px] text-[10.5px] font-bold"
+            style={{ background: bg, color: fg, borderColor: "transparent" }}
+          >
+            {STAGES.map((s) => <option key={s} value={s}>{s}</option>)}
+          </select>
+          <button
+            onClick={() => deleteProject(project.id).then(() => router.refresh())}
+            title="Delete project"
+            className="text-ink-placeholder opacity-0 transition hover:text-danger group-hover:opacity-100"
+            aria-label="Delete project"
+          >
+            <svg width={14} height={14} viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth={2.4} strokeLinecap="round">
+              <path d="M6 6l12 12M18 6L6 18" />
+            </svg>
+          </button>
+        </div>
       </div>
       <p className="mt-1.5 text-[13px] leading-snug text-ink-muted">{project.description}</p>
 

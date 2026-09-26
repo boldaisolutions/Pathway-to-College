@@ -1,4 +1,5 @@
 import { Topbar } from "@/components/Topbar";
+import { AddDeadline } from "@/components/AddDeadline";
 import { getSession, getDeadlines } from "@/lib/queries";
 import { formatDeadline } from "@/lib/ui";
 
@@ -102,6 +103,7 @@ export default async function CalendarPage() {
             })}
             {deadlines.length === 0 && <p className="text-[13px] text-ink-muted">No deadlines yet.</p>}
           </div>
+          <AddDeadline />
         </section>
       </div>
     </>
