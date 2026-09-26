@@ -284,6 +284,14 @@ returns boolean language sql security definer stable as $$
     );
 $$;
 
+-- table privileges: RLS gates rows, but the anon/authenticated roles still
+-- need base table grants (Supabase does not always apply these automatically).
+grant usage on schema public to anon, authenticated;
+grant select, insert, update, delete on all tables in schema public to anon, authenticated;
+grant usage, select on all sequences in schema public to anon, authenticated;
+alter default privileges in schema public
+  grant select, insert, update, delete on tables to anon, authenticated;
+
 -- enable RLS everywhere
 alter table profiles            enable row level security;
 alter table students            enable row level security;
