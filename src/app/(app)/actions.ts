@@ -20,6 +20,21 @@ export async function addTask(body: string, tag: string) {
   return { ok: true as const };
 }
 
+/** Dismiss an AI recommendation. */
+export async function dismissRecommendation(id: string) {
+  const supabase = await createClient();
+  const {
+    data: { user },
+  } = await supabase.auth.getUser();
+  if (!user) return;
+  await supabase
+    .from("recommendations")
+    .update({ dismissed: true })
+    .eq("id", id)
+    .eq("student_id", user.id);
+  revalidatePath("/dashboard");
+}
+
 /** Toggle a "This Week" task's done state. */
 export async function toggleTask(id: string, done: boolean) {
   const supabase = await createClient();

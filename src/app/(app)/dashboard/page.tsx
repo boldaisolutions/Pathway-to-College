@@ -4,6 +4,7 @@ import { Topbar } from "@/components/Topbar";
 import { Icon, type IconId } from "@/components/Icon";
 import { HeroRing, RingMini } from "@/components/Charts";
 import { TaskList } from "@/components/TaskList";
+import { DismissButton } from "@/components/DismissButton";
 import { createClient } from "@/lib/supabase/server";
 import {
   getSession,
@@ -44,6 +45,8 @@ export default async function DashboardPage() {
       .toUpperCase() || "S";
   const delta = history.length > 1 ? score.overall - history[0].overall : 12;
   const activities = actCount ?? 0;
+  const hour = new Date().getHours();
+  const greetTime = hour < 12 ? "morning" : hour < 18 ? "afternoon" : "evening";
 
   const quickActions: { label: string; icon: IconId; href: string }[] = [
     { label: "View score", icon: "pathway", href: "/pathway" },
@@ -72,7 +75,7 @@ export default async function DashboardPage() {
         <div className="flex flex-wrap items-end justify-between gap-3">
           <div>
             <h2 className="text-[22px] font-extrabold tracking-[-.02em]">
-              Good afternoon, {firstName}
+              Good {greetTime}, {firstName}
             </h2>
             <p className="text-[13.5px] text-ink-muted">
               You're {score.tier.toLowerCase()} — here's where to focus.
@@ -181,10 +184,16 @@ export default async function DashboardPage() {
                       <span className="rounded-chip bg-success-bg px-2 py-[2px] font-mono text-[12px] font-bold text-success-deep">
                         {r.impact}
                       </span>
+                      <DismissButton id={r.id} />
                     </div>
                   );
                 })}
               </div>
+              {recs.length === 0 && (
+                <p className="text-[13px] text-ink-muted">
+                  All caught up — no open recommendations. Edit your profile to generate fresh ones.
+                </p>
+              )}
             </section>
 
             {/* This Week */}
