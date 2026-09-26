@@ -218,6 +218,19 @@ export type Course = {
   planned: boolean;
 }
 
+export type WorkExperience = {
+  id: string;
+  student_id: string;
+  title: string;
+  employer: string;
+  location: string;
+  start_date: string;
+  end_date: string;
+  description: string;
+  position: number;
+  created_at: string;
+}
+
 /**
  * Minimal Database shape for @supabase/ssr generics. We keep Row/Insert/Update
  * loose (Partial) where the trigger/defaults fill columns.
@@ -253,6 +266,7 @@ export type Database = {
       colleges: Table<College>;
       college_list: Table<CollegeListRow>;
       courses: Table<Course>;
+      work_experience: Table<WorkExperience>;
       roadmap_milestones: Table<RoadmapMilestone>;
       coach_messages: Table<CoachMessage>;
     };

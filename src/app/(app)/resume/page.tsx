@@ -1,18 +1,22 @@
 import { Topbar } from "@/components/Topbar";
 import { PrintButton } from "@/components/PrintButton";
 import { GenerateSummaryButton } from "@/components/GenerateSummaryButton";
+import { WorkExperienceEditor } from "@/components/WorkExperienceEditor";
 import { getSession, getLatestScore } from "@/lib/queries";
 import { buildResumeSummary } from "@/lib/resume";
 import { createClient } from "@/lib/supabase/server";
+import type { WorkExperience } from "@/lib/types";
 
 export default async function ResumePage() {
   const { profile, student } = await getSession();
   const supabase = await createClient();
-  const [{ data: activities }, { data: projects }, score] = await Promise.all([
+  const [{ data: activities }, { data: projects }, { data: work }, score] = await Promise.all([
     supabase.from("activities").select("*").eq("student_id", profile.id).order("created_at"),
     supabase.from("projects").select("*").eq("student_id", profile.id).order("created_at"),
+    supabase.from("work_experience").select("*").eq("student_id", profile.id).order("created_at", { ascending: false }),
     getLatestScore(profile.id),
   ]);
+  const workItems = (work ?? []) as WorkExperience[];
 
   // Prefer the saved AI summary; fall back to the deterministic résumé-voice one.
   const summary =
@@ -40,6 +44,11 @@ export default async function ResumePage() {
           <PrintButton />
         </div>
 
+        {/* Work experience manager (not printed) */}
+        <div className="mx-auto max-w-[760px]">
+          <WorkExperienceEditor items={workItems} />
+        </div>
+
         {/* Paper document */}
         <div className="mx-auto max-w-[760px] rounded-card border border-border bg-white p-10 shadow-card">
           <div className="border-b border-ink/10 pb-4 text-center">
@@ -60,6 +69,27 @@ export default async function ResumePage() {
               </div>
               <p className="text-[13.5px] leading-relaxed text-ink-2">{summary}</p>
             </div>
+          )}
+
+          {workItems.length > 0 && (
+            <Section title="Work Experience">
+              <ul className="flex flex-col gap-2.5">
+                {workItems.map((w) => (
+                  <li key={w.id}>
+                    <div className="flex items-baseline justify-between">
+                      <span className="text-[13.5px] font-bold text-ink">
+                        {w.title}{w.employer ? `, ${w.employer}` : ""}
+                      </span>
+                      <span className="text-[12px] text-ink-muted">
+                        {[w.start_date, w.end_date].filter(Boolean).join(" – ")}
+                        {w.location ? `${w.start_date || w.end_date ? " · " : ""}${w.location}` : ""}
+                      </span>
+                    </div>
+                    {w.description && <div className="text-[12.5px] text-ink-3">{w.description}</div>}
+                  </li>
+                ))}
+              </ul>
+            </Section>
           )}
 
           <Section title="Activities & Leadership">
