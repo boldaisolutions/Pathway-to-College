@@ -1,15 +1,24 @@
 import { Topbar } from "@/components/Topbar";
 import { PrintButton } from "@/components/PrintButton";
-import { getSession } from "@/lib/queries";
+import { getSession, getLatestScore } from "@/lib/queries";
+import { buildResumeSummary } from "@/lib/resume";
 import { createClient } from "@/lib/supabase/server";
 
 export default async function ResumePage() {
   const { profile, student } = await getSession();
   const supabase = await createClient();
-  const [{ data: activities }, { data: projects }] = await Promise.all([
+  const [{ data: activities }, { data: projects }, score] = await Promise.all([
     supabase.from("activities").select("*").eq("student_id", profile.id).order("created_at"),
     supabase.from("projects").select("*").eq("student_id", profile.id).order("created_at"),
+    getLatestScore(profile.id),
   ]);
+
+  const summary = student
+    ? buildResumeSummary(student, {
+        tier: score?.tier,
+        activityCount: (activities ?? []).length,
+      })
+    : "";
 
   const initials =
     profile.full_name.split(" ").map((w) => w[0]).slice(0, 2).join("").toUpperCase() || "S";
@@ -39,9 +48,9 @@ export default async function ResumePage() {
             )}
           </div>
 
-          {student?.narrative && (
+          {summary && (
             <Section title="Summary">
-              <p className="text-[13.5px] leading-relaxed text-ink-2">{student.narrative}</p>
+              <p className="text-[13.5px] leading-relaxed text-ink-2">{summary}</p>
             </Section>
           )}
 
