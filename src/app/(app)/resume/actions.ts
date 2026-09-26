@@ -12,10 +12,11 @@ export async function regenerateResumeSummary() {
   } = await supabase.auth.getUser();
   if (!user) return { ok: false as const, error: "Not signed in." };
 
-  const [{ data: student }, { data: acts }, { data: work }] = await Promise.all([
+  const [{ data: student }, { data: acts }, { data: work }, { data: achv }] = await Promise.all([
     supabase.from("students").select("*").eq("id", user.id).single(),
     supabase.from("activities").select("name, category").eq("student_id", user.id),
     supabase.from("work_experience").select("title, employer").eq("student_id", user.id),
+    supabase.from("achievements").select("title, category, result").eq("student_id", user.id),
   ]);
   if (!student) return { ok: false as const, error: "No student profile." };
 
@@ -25,6 +26,7 @@ export async function regenerateResumeSummary() {
     interests: student.interests,
     activities: (acts ?? []).map((a) => ({ name: a.name, category: a.category })),
     work: (work ?? []).map((w) => ({ title: w.title, employer: w.employer })),
+    achievements: (achv ?? []).map((a) => ({ title: a.title, category: a.category, result: a.result })),
     research: student.research,
     serviceHours: student.service_hours,
     awards: student.awards_count,

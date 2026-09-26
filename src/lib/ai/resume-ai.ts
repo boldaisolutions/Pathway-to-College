@@ -11,6 +11,7 @@ export interface ResumeContext {
   interests: string[];
   activities: { name: string; category: string }[];
   work?: { title: string; employer: string }[];
+  achievements?: { title: string; category: string; result: string }[];
   research: boolean;
   serviceHours: number;
   awards: number;
@@ -24,6 +25,10 @@ function resumePrompt(c: ResumeContext): string {
   const work =
     (c.work ?? []).map((w) => [w.title, w.employer].filter(Boolean).join(" at ")).join("; ") ||
     "none listed";
+  const achievements =
+    (c.achievements ?? [])
+      .map((a) => `${a.title}${a.result ? ` (${a.result})` : ""} [${a.category}]`)
+      .join("; ") || "none listed";
   return [
     "Write a concise resume summary for a high school student using ONLY the information provided below. Invent nothing.",
     "",
@@ -33,6 +38,7 @@ function resumePrompt(c: ResumeContext): string {
     `- Documented INTERESTS (these are interests, NOT expertise or experience): ${c.interests.join(", ") || "none listed"}`,
     `- Documented EXPERIENCE / activities: ${acts}`,
     `- Documented WORK EXPERIENCE (real jobs/internships): ${work}`,
+    `- Documented ACHIEVEMENTS (real awards, competitions, research, etc.): ${achievements}`,
     `- Has research experience: ${c.research ? "yes" : "no"}`,
     `- Community service hours: ${c.serviceHours}`,
     `- Awards / honors: ${c.awards}`,

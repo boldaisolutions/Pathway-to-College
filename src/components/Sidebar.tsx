@@ -41,6 +41,7 @@ const NAV: NavGroup[] = [
     items: [
       { icon: "academics", label: "Academic Planner", href: "/academics", ready: true },
       { icon: "activities", label: "Activities", href: "/activities", ready: true },
+      { icon: "scholarships", label: "Achievement Bank", href: "/achievements", ready: true },
       { icon: "projects", label: "Passion Projects", href: "/projects", ready: true },
       { icon: "resume", label: "Resume", href: "/resume", ready: true },
     ],

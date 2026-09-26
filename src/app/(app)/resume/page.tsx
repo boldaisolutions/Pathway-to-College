@@ -5,18 +5,20 @@ import { WorkExperienceEditor } from "@/components/WorkExperienceEditor";
 import { getSession, getLatestScore } from "@/lib/queries";
 import { buildResumeSummary } from "@/lib/resume";
 import { createClient } from "@/lib/supabase/server";
-import type { WorkExperience } from "@/lib/types";
+import type { WorkExperience, Achievement } from "@/lib/types";
 
 export default async function ResumePage() {
   const { profile, student } = await getSession();
   const supabase = await createClient();
-  const [{ data: activities }, { data: projects }, { data: work }, score] = await Promise.all([
+  const [{ data: activities }, { data: projects }, { data: work }, { data: achievements }, score] = await Promise.all([
     supabase.from("activities").select("*").eq("student_id", profile.id).order("created_at"),
     supabase.from("projects").select("*").eq("student_id", profile.id).order("created_at"),
     supabase.from("work_experience").select("*").eq("student_id", profile.id).order("created_at", { ascending: false }),
+    supabase.from("achievements").select("*").eq("student_id", profile.id).order("created_at", { ascending: false }),
     getLatestScore(profile.id),
   ]);
   const workItems = (work ?? []) as WorkExperience[];
+  const achievementItems = (achievements ?? []) as Achievement[];
 
   // Prefer the saved AI summary; fall back to the deterministic résumé-voice one.
   const summary =
@@ -109,6 +111,28 @@ export default async function ResumePage() {
               </ul>
             )}
           </Section>
+
+          {achievementItems.length > 0 && (
+            <Section title="Awards & Achievements">
+              <ul className="flex flex-col gap-2">
+                {achievementItems.map((a) => (
+                  <li key={a.id}>
+                    <div className="flex items-baseline justify-between">
+                      <span className="text-[13.5px] font-bold text-ink">
+                        {a.title}{a.result ? ` — ${a.result}` : ""}
+                      </span>
+                      <span className="text-[12px] text-ink-muted">
+                        {[a.category, a.date].filter(Boolean).join(" · ")}
+                      </span>
+                    </div>
+                    {(a.organization || a.role) && (
+                      <div className="text-[12.5px] text-ink-3">{[a.role, a.organization].filter(Boolean).join(", ")}</div>
+                    )}
+                  </li>
+                ))}
+              </ul>
+            </Section>
+          )}
 
           {(projects ?? []).length > 0 && (
             <Section title="Projects">
