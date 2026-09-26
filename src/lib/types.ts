@@ -297,6 +297,44 @@ export type Recommender = {
   created_at: string;
 }
 
+export type AidAward = {
+  id: string;
+  student_id: string;
+  college_name: string;
+  cost_of_attendance: number;
+  grants: number;
+  scholarships: number;
+  loans: number;
+  work_study: number;
+  notes: string;
+  created_at: string;
+}
+
+export type VaultDocument = {
+  id: string;
+  student_id: string;
+  name: string;
+  category: string;
+  url: string;
+  notes: string;
+  created_at: string;
+}
+
+export type CollegeFitProfile = {
+  student_id: string;
+  size: string;
+  setting: string;
+  regions: string[];
+  max_distance: string;
+  cost_priority: string;
+  selectivity: string;
+  major_focus: string;
+  campus_life: string;
+  must_haves: string;
+  deal_breakers: string;
+  updated_at: string;
+}
+
 /**
  * Minimal Database shape for @supabase/ssr generics. We keep Row/Insert/Update
  * loose (Partial) where the trigger/defaults fill columns.
@@ -338,6 +376,9 @@ export type Database = {
       opportunities: Table<Opportunity>;
       app_requirements: Table<AppRequirement>;
       recommenders: Table<Recommender>;
+      aid_awards: Table<AidAward>;
+      documents: Table<VaultDocument>;
+      college_fit: Table<CollegeFitProfile>;
       roadmap_milestones: Table<RoadmapMilestone>;
       coach_messages: Table<CoachMessage>;
     };
