@@ -380,16 +380,16 @@ create policy col_read on colleges     for select using (auth.role() = 'authenti
 -- Trigger: create profile + student rows on signup
 -- =============================================================================
 create or replace function handle_new_user()
-returns trigger language plpgsql security definer as $$
+returns trigger language plpgsql security definer set search_path = public as $$
 begin
-  insert into profiles (id, role, full_name, email)
+  insert into public.profiles (id, role, full_name, email)
   values (new.id,
-          coalesce((new.raw_user_meta_data->>'role')::user_role, 'student'),
+          coalesce((new.raw_user_meta_data->>'role')::public.user_role, 'student'),
           coalesce(new.raw_user_meta_data->>'full_name',''),
           coalesce(new.email,''));
   -- only seed a students row for student accounts
   if coalesce((new.raw_user_meta_data->>'role'),'student') = 'student' then
-    insert into students (id) values (new.id);
+    insert into public.students (id) values (new.id);
   end if;
   return new;
 end;
