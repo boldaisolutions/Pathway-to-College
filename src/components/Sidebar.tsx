@@ -35,6 +35,7 @@ const NAV: NavGroup[] = [
       { icon: "pathway", label: "Pathway Score", href: "/pathway", ready: true },
       { icon: "profile", label: "My Profile", href: "/profile", ready: true },
       { icon: "academics", label: "Academic Record", href: "/academic-record", ready: true },
+      { icon: "target", label: "Opportunity Center", href: "/opportunities", ready: true },
       { icon: "roadmap", label: "Roadmap", href: "/roadmap", ready: true },
     ],
   },
@@ -57,6 +58,8 @@ const NAV: NavGroup[] = [
       { icon: "applications", label: "Scholarship Tracker", href: "/scholarship-tracker", ready: true },
       { icon: "colleges", label: "College Explorer", href: "/colleges", ready: true },
       { icon: "applications", label: "Applications", href: "/applications", ready: true },
+      { icon: "doc", label: "App Requirements", href: "/app-requirements", ready: true },
+      { icon: "users", label: "Recommendations", href: "/recommendations", ready: true },
     ],
   },
   {
