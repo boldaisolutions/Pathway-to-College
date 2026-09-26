@@ -72,3 +72,55 @@ select:focus {
   letter-spacing: 0.1em;
   color: #9aa0ab;
 }
+
+/* =============================================================================
+   Print — export ONLY the résumé document, nothing else from the app shell.
+   Uses display:none (not visibility+absolute) so multi-page résumés paginate
+   normally instead of being clipped to page one.
+   ============================================================================= */
+@page {
+  size: Letter;
+  margin: 0.5in;
+}
+
+@media print {
+  /* Remove the app chrome entirely (sidebar, topbar, buttons, editors). */
+  .no-print {
+    display: none !important;
+  }
+
+  /* Flatten backgrounds and any layout that would offset or scale the résumé. */
+  html,
+  body {
+    background: #fff !important;
+    margin: 0 !important;
+    padding: 0 !important;
+  }
+  * {
+    /* prevent min-heights (e.g. min-h-screen shell) from forcing blank pages */
+    min-height: 0 !important;
+  }
+
+  /* The résumé fills the printable page with no card chrome. */
+  .resume-document {
+    width: 100% !important;
+    max-width: none !important;
+    margin: 0 !important;
+    padding: 0 !important;
+    border: 0 !important;
+    border-radius: 0 !important;
+    box-shadow: none !important;
+  }
+
+  /* Keep sections and entries from being split awkwardly across pages. */
+  .resume-document section,
+  .resume-document li {
+    break-inside: avoid;
+  }
+  .resume-document h1,
+  .resume-document h2 {
+    break-after: avoid;
+  }
+}
+
+
