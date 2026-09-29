@@ -255,6 +255,18 @@ export type Test = {
   status: string;
 }
 
+export type SkillAssessment = {
+  id: string;
+  student_id: string;
+  source: string;
+  label: string;
+  taken_on: string | null;
+  /** key -> percent correct (0–100); keys defined in src/lib/skill-gaps.ts */
+  scores: Record<string, number>;
+  notes: string;
+  created_at: string;
+}
+
 export type Opportunity = {
   id: string;
   student_id: string;
@@ -371,6 +383,7 @@ export type Database = {
       college_list: Table<CollegeListRow>;
       courses: Table<Course>;
       tests: Table<Test>;
+      skill_assessments: Table<SkillAssessment>;
       work_experience: Table<WorkExperience>;
       achievements: Table<Achievement>;
       opportunities: Table<Opportunity>;
